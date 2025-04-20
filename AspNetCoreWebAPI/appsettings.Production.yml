@@ -115,7 +115,6 @@ data:
                 "WithMemoryUsageExact",
                 "WithRequestBody",
                 "WithRequestQuery",
-                "WithRequestHeader",
                 {
                     "Name": "WithRequestHeader",
                     "Args": {
