@@ -80,20 +80,19 @@ data:
          },
         "Serilog": {
             "Using": [
-                "Serilog.Sinks.File",
                 "Serilog.Exceptions",
                 "Elastic.Serilog.Sinks",
+                "Serilog.Sinks.Console",
                 "Serilog.Enrichers.Thread",
                 "Serilog.Enrichers.HttpContext"
             ],
             "MinimumLevel": {
-                "Default": "Information",
+                "Default": "Debug",
                 "Override": {
-                    "Microsoft": "Information",
-                    "System": "Warning",
-                    "Grpc": "Warning",
-                    "Microsoft.Hosting.Lifetime": "Information",
-                    "Microsoft.EntityFrameworkCore.Database.Command": "Warning"
+                    "Microsoft": "Debug",
+                    "System": "Debug",
+                    "Grpc": "Debug",
+                    "Microsoft.Hosting.Lifetime": "Debug"
                 }
             },
             "Enrich": [
@@ -163,23 +162,33 @@ data:
                         "headerName": "Content-Length",
                         "propertyName": "ContentLength"
                     }
-                }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "Content-Type",
+                        "propertyName": "ContentType"
+                    }
+                }            
             ],
             "WriteTo": [
                 {
                     "Name": "Console",
                         "Args": {
-                            "outputTemplate": "{Timestamp} {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                            "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
+                            "customFormatter": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
                         }
                 },
                 {
                     "Name": "File",
                         "Args": {
-                            "outputTemplate": "{Timestamp} {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
+                            "path": "/var/log/aspnetcore/log",
+                            "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
                             "rollingInterval": "Day",
-                            "retainedFileCountLimit": 3
+                            "retainedFileCountLimit": 3,
+                            "customFormatter": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
                         }
                 }            
             ]
-        }      
-      }
+        }
+    }
