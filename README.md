@@ -3,6 +3,10 @@
 Kubernetes cluster which consists of the following components:
 
 - gRPC & RestAPI applications
+  - ASP.Net Core
+  - Node.JS
+  - Python Quart with Hypercorn ASGI/WSGI
+  - LLM RAG
 - Databases
   - PostgreSQL
   - Neo4J
