@@ -6,6 +6,7 @@ Kubernetes cluster which consists of the following components:
 - Databases
   - PostgreSQL
   - Neo4J
+  - Chroma vector database
 - Elasticsearch cluster
   - 3 Master nodes
   - 5 Slave nodes
