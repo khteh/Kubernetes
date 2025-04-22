@@ -78,9 +78,9 @@ spec:
           volumeMounts:
             - name: fluentd-config
               mountPath: /etc/td-agent
-            - name: access-log-template
-              mountPath: /tmp/access_log_template.json
-              subPath: access_log_template.json
+            - name: elasticsearch-template
+              mountPath: /tmp/elasticsearch_template.json
+              subPath: elasticsearch_template.json
               readOnly: true
             - name: log
               mountPath: /var/log/ollama
@@ -99,9 +99,9 @@ spec:
         - name: fluentd-config
           configMap:
             name: ollama-fluentd-config
-        - name: access-log-template
+        - name: elasticsearch-template
           configMap:
-            name: access-log-template
+            name: elasticsearch-template
         - name: log
           emptyDir: {}
   volumeClaimTemplates:

@@ -79,9 +79,9 @@ spec:
               mountPath: /usr/local/tomcat/logs
             - name: fluentd-tomcat-config
               mountPath: /etc/td-agent
-            - name: access-log-template
-              mountPath: /tmp/access_log_template.json
-              subPath: access_log_template.json
+            - name: elasticsearch-template
+              mountPath: /tmp/elasticsearch_template.json
+              subPath: elasticsearch_template.json
               readOnly: true
             - mountPath: /fluentd/elastic/tls.crt
               name: elasticsearch-ca
@@ -104,9 +104,9 @@ spec:
         - name: fluentd-tomcat-config
           configMap:
             name: fluentd-tomcat-config
-        - name: access-log-template
+        - name: elasticsearch-template
           configMap:
-            name: access-log-template
+            name: elasticsearch-template
         - name: tomcat-log
           emptyDir: {}
         - name: elasticsearch-ca

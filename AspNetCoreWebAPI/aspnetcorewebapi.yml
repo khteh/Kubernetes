@@ -126,9 +126,9 @@ spec:
               mountPath: /var/log/aspnetcore
             - name: fluentd-config
               mountPath: /etc/td-agent
-            - name: access-log-template
-              mountPath: /tmp/access_log_template.json
-              subPath: access_log_template.json
+            - name: elasticsearch-template
+              mountPath: /tmp/elasticsearch_template.json
+              subPath: elasticsearch_template.json
               readOnly: true
             #- mountPath: /fluentd/elastic/tls.crt
             #  name: elasticsearch-ca
@@ -160,9 +160,9 @@ spec:
         - name: fluentd-config
           configMap:
             name: aspnetcore-fluentd-config
-        - name: access-log-template
+        - name: elasticsearch-template
           configMap:
-            name: access-log-template
+            name: elasticsearch-template
         - name: log
           emptyDir: {}
         #- name: elasticsearch-ca

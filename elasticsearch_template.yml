@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch-template
+  namespace: default
+data:
+  elasticsearch_template.json: |
+    {
+      "index_patterns": ["aspnetcorewebapi.logs-*", "nodejsrestapi.logs-*", "pythonrestapi.logs-*", "ragagent.logs-*", "hypercorn.logs-*", "ollama.logs-*"],
+      "version": 3,
+      "_meta": {
+        "description": "GEO Point"
+      },
+      "template": {
+        "settings": {
+          "number_of_shards": 3
+        },
+        "mappings": {
+            "_source": {
+              "enabled": true
+            },          
+            "properties": {
+                "location_properties": { "type": "geo_point" },
+                "location_string": { "type": "geo_point" },
+                "location_array": { "type": "geo_point" }
+            }
+        }
+    }
