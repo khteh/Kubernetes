@@ -2,7 +2,7 @@
 
 Kubernetes cluster which consists of the following components:
 
-- RestAPI applications
+- gRPC & RestAPI applications
 - Databases
   - PostgreSQL
   - Neo4J
