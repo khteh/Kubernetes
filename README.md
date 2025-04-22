@@ -216,6 +216,9 @@ khteh-es   green    8       8.17.3    Ready   5m35s
 
 ## Kibana
 
+- Point the browser to localhost/kibana
+- Supports GeoIP
+
 ```
 $ k get kibana
 NAME           HEALTH   NODES   VERSION   AGE
@@ -249,32 +252,6 @@ kibana-hpa    StatefulSet/kibana    11%/75%   2         5         2          20s
 restapi-hpa   StatefulSet/restapi   1%/75%    2         5         2          22m
 rabbitmq-hpa  StatefulSet/rabbitmq  41%/75%   3         6         3          4d5h
 ```
-
-## Cluster Information:
-
-```
-$ microk8s.kubectl cluster-info
-Kubernetes master is running at https://127.0.0.1:16443
-Heapster is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/heapster/proxy
-KubeDNS is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-Metrics-server is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy
-Grafana is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
-InfluxDB is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/monitoring-influxdb:http/proxy
-```
-
-## Dashboard:
-
-- Point the browser to the Grafana URL given by the cluster-info above
-
-## Kibana:
-
-- Point the browser to localhost/kibana
-- Supports GeoIP
-
-## Check the application:
-
-- `curl -L localhost/restapi/greeting --http2 --insecure`
-- `curl -L localhost/restapi/greeting?name=Mickey%20Mouse --http2 --insecure`
 
 ## Manifest validation
 
