@@ -8,7 +8,7 @@ Kubernetes cluster which consists of the following components:
   - Python Quart with Hypercorn ASGI/WSGI
   - LLM RAG
 - Databases
-  - PostgreSQL
+  - PostgreSQL (with vector extension)
   - Neo4J
   - Chroma vector database
 - Elasticsearch cluster
