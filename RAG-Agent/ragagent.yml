@@ -47,11 +47,11 @@ spec:
                 secretKeyRef:
                   name: postgresql-secret
                   key: postgresql-password
-            - name: CHROMA_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: chroma-secret
-                  key: token
+            #- name: CHROMA_TOKEN
+            #  valueFrom:
+            #    secretKeyRef:
+            #      name: chroma-secret
+            #      key: token
             - name: NEO4J_AUTH
               valueFrom:
                 secretKeyRef:
