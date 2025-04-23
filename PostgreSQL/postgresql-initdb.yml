@@ -1052,13 +1052,13 @@ data:
 
     ALTER TABLE ONLY public.student_teachers_teacher
     ADD CONSTRAINT "FK_bbce22585af3071bbe4f355a12b" FOREIGN KEY ("teacherId") REFERENCES public.teacher(id);
-  LangchainCheckpoint.sql: |+
+  Langchain.sql: |+
     --
     -- PostgreSQL database dump
     --
 
     -- Dumped from database version 17.4 (Debian 17.4-1.pgdg120+2)
-    -- Dumped by pg_dump version 17.4 (Debian 17.4-1.pgdg120+2)
+    -- Dumped by pg_dump version 17.4 (Ubuntu 17.4-1)
 
     SET statement_timeout = 0;
     SET lock_timeout = 0;
@@ -1071,6 +1071,20 @@ data:
     SET xmloption = content;
     SET client_min_messages = warning;
     SET row_security = off;
+
+    --
+    -- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+    --
+
+    CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+
+
+    --
+    -- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: 
+    --
+
+    COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
+
 
     SET default_tablespace = '';
 
@@ -1140,6 +1154,34 @@ data:
     ALTER TABLE public.checkpoints OWNER TO guest;
 
     --
+    -- Name: langchain_pg_collection; Type: TABLE; Schema: public; Owner: postgres
+    --
+
+    CREATE TABLE public.langchain_pg_collection (
+        uuid uuid NOT NULL,
+        name character varying NOT NULL,
+        cmetadata json
+    );
+
+
+    ALTER TABLE public.langchain_pg_collection OWNER TO postgres;
+
+    --
+    -- Name: langchain_pg_embedding; Type: TABLE; Schema: public; Owner: postgres
+    --
+
+    CREATE TABLE public.langchain_pg_embedding (
+        id character varying NOT NULL,
+        collection_id uuid,
+        embedding public.vector,
+        document character varying,
+        cmetadata jsonb
+    );
+
+
+    ALTER TABLE public.langchain_pg_embedding OWNER TO postgres;
+
+    --
     -- Data for Name: checkpoint_blobs; Type: TABLE DATA; Schema: public; Owner: guest
     --
 
@@ -1182,6 +1224,23 @@ data:
 
 
     --
+    -- Data for Name: langchain_pg_collection; Type: TABLE DATA; Schema: public; Owner: postgres
+    --
+
+    COPY public.langchain_pg_collection (uuid, name, cmetadata) FROM stdin;
+    1fe2df5b-e6cc-4aa6-aff9-90e47ff9d962	LLM-RAG-Agent	null
+    \.
+
+
+    --
+    -- Data for Name: langchain_pg_embedding; Type: TABLE DATA; Schema: public; Owner: postgres
+    --
+
+    COPY public.langchain_pg_embedding (id, collection_id, embedding, document, cmetadata) FROM stdin;
+    \.
+
+
+    --
     -- Name: checkpoint_blobs checkpoint_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
     --
 
@@ -1214,6 +1273,30 @@ data:
 
 
     --
+    -- Name: langchain_pg_collection langchain_pg_collection_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+    --
+
+    ALTER TABLE ONLY public.langchain_pg_collection
+        ADD CONSTRAINT langchain_pg_collection_name_key UNIQUE (name);
+
+
+    --
+    -- Name: langchain_pg_collection langchain_pg_collection_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+    --
+
+    ALTER TABLE ONLY public.langchain_pg_collection
+        ADD CONSTRAINT langchain_pg_collection_pkey PRIMARY KEY (uuid);
+
+
+    --
+    -- Name: langchain_pg_embedding langchain_pg_embedding_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+    --
+
+    ALTER TABLE ONLY public.langchain_pg_embedding
+        ADD CONSTRAINT langchain_pg_embedding_pkey PRIMARY KEY (id);
+
+
+    --
     -- Name: checkpoint_blobs_thread_id_idx; Type: INDEX; Schema: public; Owner: guest
     --
 
@@ -1235,6 +1318,29 @@ data:
 
 
     --
+    -- Name: ix_cmetadata_gin; Type: INDEX; Schema: public; Owner: postgres
+    --
+
+    CREATE INDEX ix_cmetadata_gin ON public.langchain_pg_embedding USING gin (cmetadata jsonb_path_ops);
+
+
+    --
+    -- Name: ix_langchain_pg_embedding_id; Type: INDEX; Schema: public; Owner: postgres
+    --
+
+    CREATE UNIQUE INDEX ix_langchain_pg_embedding_id ON public.langchain_pg_embedding USING btree (id);
+
+
+    --
+    -- Name: langchain_pg_embedding langchain_pg_embedding_collection_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+    --
+
+    ALTER TABLE ONLY public.langchain_pg_embedding
+        ADD CONSTRAINT langchain_pg_embedding_collection_id_fkey FOREIGN KEY (collection_id) REFERENCES public.langchain_pg_collection(uuid) ON DELETE CASCADE;
+
+
+    --
     -- PostgreSQL database dump complete
     --
+
 
