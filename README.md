@@ -57,7 +57,6 @@ Kubernetes cluster which consists of the following components:
 $ k get all
 NAME                                          READY   STATUS      RESTARTS   AGE
 pod/daemonset-8s4zs                           1/1     Running     0          108m
-pod/default-http-backend-5769f6bc66-tslnj     1/1     Running     0          143m
 pod/khteh-es-es-master-0                      1/1     Running     0          3m18s
 pod/khteh-es-es-master-1                      1/1     Running     0          3m18s
 pod/khteh-es-es-master-2                      1/1     Running     0          3m18s
@@ -91,7 +90,6 @@ pod/redis-cluster-4                           1/1     Running     0          14d
 pod/redis-cluster-5                           1/1     Running     0          14d
 
 NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-service/default-http-backend          ClusterIP   10.152.183.205   <none>        80/TCP              143m
 service/kubernetes                    ClusterIP   10.152.183.1     <none>        443/TCP             145m
 service/khteh-es-es-transport         ClusterIP   None             <none>        9300/TCP            5m18s
 service/khteh-es-es-http              ClusterIP   10.152.183.80    <none>        9200/TCP            5m18s
@@ -121,11 +119,7 @@ daemonset.apps/daemonset                           1         1         1       1
 daemonset.apps/nginx-ingress-microk8s-controller   1         1         1       1            1           <none>          143m
 
 NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/default-http-backend   1/1     1            1           143m
 khteh-kibana-kb                        2/2     2            2           7m45s
-
-NAME                                              DESIRED   CURRENT   READY   AGE
-replicaset.apps/default-http-backend-5769f6bc66   1         1         1       143m
 
 NAME                                    READY   AGE
 statefulset.apps/khteh-es-es-master     3/3     16m
