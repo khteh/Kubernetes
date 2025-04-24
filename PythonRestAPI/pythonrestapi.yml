@@ -48,9 +48,6 @@ spec:
                   name: postgresql-secret
                   key: postgresql-password
           ports:
-            - containerPort: 80
-              name: http
-              protocol: TCP
             - containerPort: 443
               name: https-udp
               protocol: UDP
