@@ -110,7 +110,7 @@ service/svc-ollama-nodeport           NodePort    10.152.183.76    <none>       
 service/svc-rabbitmq                  ClusterIP   None             <none>        15672/TCP,5672/TCP  5d7h
 service/svc-redis-cluster             ClusterIP   None             <none>        6379/TCP,16379/TCP  61d
 service/svc-ragagent                  ClusterIP   None             <none>        80/TCP,4433/TCP,443/UDP                        20h
-svc-ragagent-nodeport                 NodePort    10.152.183.169   <none>        443:31003/UDP                                  58s
+service/svc-ragagent-nodeport         NodePort    10.152.183.169   <none>        443:31003/UDP                                  58s
 service/svc-neo4j                     ClusterIP   None             <none>        7473/TCP,7474/TCP,7687/TCP                     5m56s
 service/svc-neo4j-nodeport            NodePort    10.152.183.170   <none>        7473:30002/TCP,7474:30003/TCP,7687:30004/TCP   5m56s
 
