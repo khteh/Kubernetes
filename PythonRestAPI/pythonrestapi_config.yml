@@ -5,7 +5,7 @@ metadata:
 data:
   pythonrestapi_config.json: |
     {
-        "ENVIRONMENT": "development",
+        "ENVIRONMENT": "production",
         "DEBUG": true,
         "TESTING": true,
         "LOGLEVEL": "INFO",
