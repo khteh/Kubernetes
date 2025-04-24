@@ -72,7 +72,6 @@ pod/kibana-1                                  1/1     Running     0          14m
 pod/postgresql-0                              1/1     Running     8 (4h10m ago)     3d22h
 pod/chroma-0                                  1/1     Running     1 (5h50m ago)   23h
 pod/neo4j-0                                   1/1     Running     0          14m
-pod/nginx-ingress-microk8s-controller-ppplj   1/1     Running     0          142m
 pod/nodejsrestapi-0                           2/2     Running     0          30s
 pod/nodejsrestapi-1                           2/2     Running     0          30s
 pod/pythonrestapi-0                           2/2     Running     0          49m
@@ -116,7 +115,6 @@ service/svc-neo4j-nodeport            NodePort    10.152.183.170   <none>       
 
 NAME                                               DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 daemonset.apps/daemonset                           1         1         1       1            1           <none>          108m
-daemonset.apps/nginx-ingress-microk8s-controller   1         1         1       1            1           <none>          143m
 
 NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
 khteh-kibana-kb                        2/2     2            2           7m45s
