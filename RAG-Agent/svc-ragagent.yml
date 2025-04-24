@@ -9,10 +9,6 @@ metadata:
     component: llm-rag
 spec:
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: http
     - name: https-udp
       protocol: UDP
       port: 443
@@ -37,7 +33,7 @@ spec:
       protocol: UDP
       port: 443
       targetPort: https-udp
-      nodePort: 31004
+      nodePort: 31003
   type: NodePort
   selector:
     app: ragagent

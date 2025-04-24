@@ -104,7 +104,7 @@ service/svc-postgresql-nodeport       NodePort    10.152.183.70    <none>       
 service/svc-chroma                    ClusterIP   None             <none>        80/TCP              2d
 service/svc-chroma-nodeport           NodePort    10.152.183.193   <none>        80:30005/TCP        2d
 service/svc-nodejsrestapi             ClusterIP   None             <none>        443/TCP             70s
-service/svc-nodejsrestapi-nodeport    NodePort    10.152.183.243   <none>        443:31005/TCP       69s
+service/svc-nodejsrestapi-nodeport    NodePort    10.152.183.243   <none>        443:31004/TCP       69s
 service/svc-pythonrestapi             ClusterIP   None             <none>        80/TCP,443/UDP      49m
 service/svc-pythonrestapi-nodeport    NodePort    10.152.183.195   <none>        443:31002/UDP       49m
 service/svc-ollama                    ClusterIP   None             <none>        11434/TCP           19m
@@ -112,7 +112,7 @@ service/svc-ollama-nodeport           NodePort    10.152.183.76    <none>       
 service/svc-rabbitmq                  ClusterIP   None             <none>        15672/TCP,5672/TCP  5d7h
 service/svc-redis-cluster             ClusterIP   None             <none>        6379/TCP,16379/TCP  61d
 service/svc-ragagent                  ClusterIP   None             <none>        80/TCP,4433/TCP,443/UDP                        20h
-service/svc-ragagent-nodeport         NodePort    10.152.183.66    <none>        443:31003/TCP,443:31004/UDP                    20h
+svc-ragagent-nodeport                 NodePort    10.152.183.169   <none>        443:31003/UDP                                  58s
 service/svc-neo4j                     ClusterIP   None             <none>        7473/TCP,7474/TCP,7687/TCP                     5m56s
 service/svc-neo4j-nodeport            NodePort    10.152.183.170   <none>        7473:30002/TCP,7474:30003/TCP,7687:30004/TCP   5m56s
 
