@@ -16,7 +16,7 @@ data:
         "DB_DATABASE": "LangchainCheckpoint",
         "DB_MAX_CONNECTIONS": 10,
         "EMBEDDING_MODEL": "nomic-embed-text",
-        "LLM_RAG_MODEL": "llama3.3",
+        "LLM_RAG_MODEL": "gemma3:27b",
         "CHROMA_URI": "http://svc-chroma:8000",
         "NEO4J_URI": "neo4j://svc-neo4j:7687",
         "OLLAMA_URI": "http://svc-ollama:11434"
