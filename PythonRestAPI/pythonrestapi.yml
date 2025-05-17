@@ -47,6 +47,11 @@ spec:
                 secretKeyRef:
                   name: postgresql-secret
                   key: postgresql-password
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: google-gemini
+                  key: GEMINI_API_KEY
           ports:
             - containerPort: 443
               name: https-udp

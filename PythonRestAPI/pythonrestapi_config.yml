@@ -14,12 +14,5 @@ data:
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
         "DB_MAX_CONNECTIONS": 10,
-        "OIDC_CLIENT_SECRETS": "/tmp/oidc-secret.json",
-        "OIDC_ID_TOKEN_COOKIE_SECURE": false,
-        "OIDC_USER_INFO_ENABLED": true,
-        "OIDC_REQUIRE_VERIFIED_EMAIL": false,
-        "OIDC_OPENID_REALM": "OneClick",
-        "OIDC_SCOPES": ["openid", "email", "profile", "roles"],
-        "OIDC_INTROSPECTION_AUTH_METHOD": "client_secret_post",
-        "OIDC_TOKEN_TYPE_HINT": "access_token"
+        "UPLOADS_DEFAULT_DEST": "/var/uploads"
     }
