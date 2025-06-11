@@ -90,6 +90,9 @@ spec:
             timeoutSeconds: 5
           volumeMounts:
             - name: postgresql-persistent-storage
+              # Check https://hub.docker.com/_/postgres on latest update on data volume mount point in the PGDATA section
+              # The Dockerfile that builds the image declares a volume at <path> and if no data volume is mounted at that path then the container runtime will automatically create an anonymous volume⁠ that is not reused across container re-creations.
+              # Data will be written to the anonymous volume rather than your intended data volume and won't persist when the container is deleted and re-created.
               mountPath: /var/lib/postgresql
               subPath: postgresql
             - name: postgresql-initdb
