@@ -180,21 +180,25 @@ data:
             "WriteTo": [
                 {
                     "Name": "Console",
-                        "Args": {
-                            "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
-                            "customFormatter": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
-                        }
+                    "Args": {
+                        "formatter": {
+                            "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
+                        },                    
+                        "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                    }
                 },
                 {
                     "Name": "File",
-                        "Args": {
-                            "path": "/var/log/aspnetcore/log",
-                            "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
-                            "rollingInterval": "Day",
-                            "retainedFileCountLimit": 3,
-                            "customFormatter": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
-                        }
-                }            
+                    "Args": {
+                        "path": "/var/log/aspnetcore/log",
+                        "formatter": {
+                            "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog"
+                        },                    
+                        "outputTemplate": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}",
+                        "rollingInterval": "Day",
+                        "retainedFileCountLimit": 3
+                    }
+                }
             ]
         }
     }
