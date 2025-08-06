@@ -12,6 +12,7 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
     alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    # Use comma-separated ARNs to use different multiple certificate ARNs to serve different multiple domains
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:<region>:<account>:certificate/<GUID>
     #alb.ingress.kubernetes.io/backend-protocol-version: HTTP2 Use this in individual Service
     alb.ingress.kubernetes.io/load-balancer-attributes: routing.http2.enabled=true
