@@ -253,3 +253,35 @@ rabbitmq-hpa  StatefulSet/rabbitmq  41%/75%   3         6         3          4d5
 
 - `sudo apt install -y yamllint`
 - `yamllint <filename>.yml`
+
+## GPU
+
+- Ensure the operator is running properly
+
+```
+$ k get all -n gpu-operator-resources
+$ k logs -n gpu-operator-resources -lapp=nvidia-operator-validator -c nvidia-operator-validator
+```
+
+- Check GPU resource availability:
+
+```
+$ k get nodes
+$ k describe node <node name>
+Capacity:
+  cpu:                16
+  ephemeral-storage:  959786032Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             71442080Ki
+  nvidia.com/gpu:     0       <- XXX
+  pods:               110
+Allocatable:
+  cpu:                16
+  ephemeral-storage:  958737456Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             71339680Ki
+  nvidia.com/gpu:     0     <- XXX
+  pods:               110
+```
