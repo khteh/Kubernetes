@@ -8,18 +8,16 @@ aws iam create-role \
   --role-name AmazonEKS_EFS_CSI_Driver_Role \
   --assume-role-policy-document file://"trust-policy.json"
 aws iam attach-role-policy \
-  --policy-arn arn:aws:iam::400679711653:policy/AmazonEKS_EFS_CSI_Driver_Policy \
+  --policy-arn arn:aws:iam::ACCOUNT:policy/AmazonEKS_EFS_CSI_Driver_Policy \
   --role-name AmazonEKS_EFS_CSI_Driver_Role
 
 #microk8s.kubectl kustomize "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.4.6" > private_ecr_driver.yml
 microk8s.kubectl kustomize "/usr/src/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/" > private_ecr_driver.yml
 sed -i.bak -e 's|us-west-2|ap-southeast-1|' private_ecr_driver.yml
-sed -i.bak -e 's|602401143452|400679711653|' private_ecr_driver.yml
+sed -i.bak -e 's|602401143452|ACCOUNT|' private_ecr_driver.yml
 
-microk8s.kubectl annotate serviceaccount efs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn=arn:aws:iam::400679711653:role/AmazonEKS_EFS_CSI_Driver_Role
-microk8s.kubectl delete pods \
-  -n kube-system \
-  -l=app=efs-csi-controller
+microk8s.kubectl annotate serviceaccount efs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn=arn:aws:iam::ACCOUNT:role/AmazonEKS_EFS_CSI_Driver_Role
+microk8s.kubectl delete pods -n kube-system -l=app=efs-csi-controller
 #cd /usr/src/aws-efs-csi-driver/examples/kubernetes/dynamic-provisioning
 #microk8s.kubectl apply -f manifests/
 
