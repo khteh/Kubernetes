@@ -5,7 +5,8 @@ metadata:
 data:
   default.json: |
     {
+        "Secret": "Node.JSRestAPI",
         "DBHost": "svc-postgresql",
-        "Port": "5432",
+        "DBPort": "5432",
         "Database" : "school"
     }
