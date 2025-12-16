@@ -6,7 +6,7 @@ metadata:
     app: elasticsearch
     component: elasticsearch-kibana
 spec:
-  version: 8.17.3 #https://www.elastic.co/guide/en/elasticsearch/reference/current/es-release-notes.html
+  version: 9.2.2 # https://www.elastic.co/guide/en/elasticsearch/reference/current/es-release-notes.html
   auth:
     fileRealm:
       - secretName: elasticsearch-secret

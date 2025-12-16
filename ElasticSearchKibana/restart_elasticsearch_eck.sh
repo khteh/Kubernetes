@@ -11,8 +11,8 @@ for pvc in ${pvcs[@]}; do
     kubectl patch pvc $pvc -p '{"metadata":{"finalizers":null}}'
 done
 # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-deploy-elasticsearch.html
-kubectl create -f https://download.elastic.co/downloads/eck/2.16.0/crds.yaml
-kubectl apply -f https://download.elastic.co/downloads/eck/2.16.0/operator.yaml
+kubectl create -f https://download.elastic.co/downloads/eck/3.2.0/crds.yaml
+kubectl apply -f https://download.elastic.co/downloads/eck/3.2.0/operator.yaml
 kubectl delete elasticsearch khteh-es --ignore-not-found=true
 kubectl delete agent fleet-server elastic-agent --ignore-not-found=true
 kubectl apply -f elastic_eck_snapshots_secret.yml,elastic_agent_account.yml,elasticsearch_secret.yml,elasticsearch_eck_fleet.yml,elasticsearch_eck.yml

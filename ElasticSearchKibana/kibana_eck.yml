@@ -6,7 +6,7 @@ metadata:
     app: kibana
     component: elasticsearch-kibana
 spec:
-  version: 8.17.3
+  version: 9.2.2
   count: 2
   elasticsearchRef:
     name: khteh-es
