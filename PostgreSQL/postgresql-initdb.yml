@@ -9,10 +9,10 @@ data:
     -- PostgreSQL database dump
     --
 
-    \restrict CUF6izUKsQZxKuIFJ6Q0ibkD85wsdGfXalrcbXvHrbPtEmKRKzjX8KgTriIkUTD
+    \restrict S6BihzUpkoyHBZfAQrN89gieEbnfojE8mmk7Ps4ZbMCpX79oCuxSGHpEIz5efZ9
 
-    -- Dumped from database version 18.1
-    -- Dumped by pg_dump version 18.1
+    -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
+    -- Dumped by pg_dump version 18.1 (Ubuntu 18.1-1.pgdg25.10+2)
 
     SET statement_timeout = 0;
     SET lock_timeout = 0;
@@ -173,7 +173,7 @@ data:
 
     CREATE TABLE public."RefreshTokens" (
         "Id" integer NOT NULL,
-        "Token" text,
+        "Token" text NOT NULL,
         "Expires" timestamp with time zone NOT NULL,
         "UserId" integer NOT NULL,
         "RemoteIpAddress" text,
@@ -204,7 +204,7 @@ data:
 
     CREATE TABLE public."Users" (
         "Id" integer NOT NULL,
-        "IdentityId" text,
+        "IdentityId" text NOT NULL,
         "Created" timestamp with time zone NOT NULL,
         "Modified" timestamp with time zone NOT NULL,
         "Address" jsonb
@@ -260,8 +260,8 @@ data:
     --
 
     COPY public."AspNetUserClaims" ("Id", "UserId", "ClaimType", "ClaimValue") FROM stdin;
-    1	28a027ce-1cc0-436c-92ea-1d6433f50643	http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name	mickey
-    2	958d76b2-309c-4820-9a65-ac7eceb9c3ba	http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name	khteh
+    1	1b275037-61e4-40fa-b7e8-5f73eda0af06	http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name	khteh
+    2	9c7d4b22-4767-437c-b279-3910c7e06cfc	http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name	mickey
     \.
 
 
@@ -294,8 +294,8 @@ data:
     --
 
     COPY public."AspNetUsers" ("Id", "FirstName", "LastName", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") FROM stdin;
-    28a027ce-1cc0-436c-92ea-1d6433f50643	Mickey	Mouse	mickey	MICKEY	mickey@mouse.com	MICKEY@MOUSE.COM	f	AQAAAAIAAYagAAAAECjT6niW84QaARGlRiQo/L8Y5Bj2cxzIhkOwhF9z2T5eXJrHG20f+O3GR0poP8CRSg==	P3YW2TRGCWTKUSVUUDAFG6HOH6I6LXGA	170f59ab-42dd-485a-8c0d-af489ecaef2d	\N	f	f	\N	t	0
-    958d76b2-309c-4820-9a65-ac7eceb9c3ba	KH	Teh	khteh	KHTEH	khteh@email.com	KHTEH@EMAIL.COM	f	AQAAAAIAAYagAAAAEDKfjEbbOo6h1ITi/rxjAwNwTuWtaxseuC5ubJe94Zs9Cor3/qwLpuuTcqYwUK+y3g==	3YQRJVWCIEY6A4QEBMWZGZBBTGFEALXM	3ca9fb64-6ba5-46c7-ad3f-bc6b06e4c785	\N	f	f	\N	t	0
+    1b275037-61e4-40fa-b7e8-5f73eda0af06	Kok How	Teh	khteh	KHTEH	khteh@email.com	KHTEH@EMAIL.COM	f	AQAAAAIAAYagAAAAEBPxPEXEJRFDP2EZmK3ev7l7H+BbhRJKLUweYzZS2MUghirx/VKRTRYkPo4WsYp0+Q==	EIQGQKLZ4X6TPUAHQDSKSCBKSRC7CDEI	69f27f12-eb66-4295-bd14-c1a4ec65b962	\N	f	f	\N	t	0
+    9c7d4b22-4767-437c-b279-3910c7e06cfc	Mmickey	Mouse	mickey	MICKEY	mickey@email.com	MICKEY@EMAIL.COM	f	AQAAAAIAAYagAAAAEEBLEzYdFsyLtHwPooCHVjsGQbeh4xgjywfP1697ICokZShtIJ91jvG32DRZNbrkVA==	CVHDILIPJG727L4YU3P4NQ2DUMFVKZPV	33135468-febd-4a41-b85e-21290d106a12	\N	f	f	\N	t	0
     \.
 
 
@@ -304,6 +304,7 @@ data:
     --
 
     COPY public."RefreshTokens" ("Id", "Token", "Expires", "UserId", "RemoteIpAddress", "Created", "Modified") FROM stdin;
+    1	r419CHKogPGl15l7VZYfVi4fI++M9IGCm0DZQB9Gr74=	2025-12-28 04:12:43.258308+00	1	::1	2025-12-23 04:12:43.278472+00	2025-12-23 04:12:43.278472+00
     \.
 
 
@@ -312,8 +313,8 @@ data:
     --
 
     COPY public."Users" ("Id", "IdentityId", "Created", "Modified", "Address") FROM stdin;
-    5	28a027ce-1cc0-436c-92ea-1d6433f50643	2025-11-23 13:39:16.991034+08	2025-11-23 13:39:16.991153+08	\N
-    6	958d76b2-309c-4820-9a65-ac7eceb9c3ba	2025-11-23 13:39:52.310291+08	2025-11-23 13:39:52.310291+08	\N
+    2	9c7d4b22-4767-437c-b279-3910c7e06cfc	2025-12-23 04:12:23.30093+00	2025-12-23 04:12:23.30093+00	\N
+    1	1b275037-61e4-40fa-b7e8-5f73eda0af06	2025-12-23 04:11:44.31124+00	2025-12-23 04:12:43.278473+00	\N
     \.
 
 
@@ -322,8 +323,8 @@ data:
     --
 
     COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
-    20251123053136_Initial	10.0.0
-    20251123053144_Initial	10.0.0
+    20251223040054_Initial	10.0.1
+    20251223040105_Initial	10.0.1
     \.
 
 
@@ -345,14 +346,14 @@ data:
     -- Name: RefreshTokens_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: guest
     --
 
-    SELECT pg_catalog.setval('public."RefreshTokens_Id_seq"', 4, true);
+    SELECT pg_catalog.setval('public."RefreshTokens_Id_seq"', 1, true);
 
 
     --
     -- Name: Users_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: guest
     --
 
-    SELECT pg_catalog.setval('public."Users_Id_seq"', 6, true);
+    SELECT pg_catalog.setval('public."Users_Id_seq"', 2, true);
 
 
     --
@@ -530,12 +531,14 @@ data:
     ALTER TABLE ONLY public."AspNetUserRoles"
         ADD CONSTRAINT "FK_AspNetUserRoles_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES public."AspNetUsers"("Id") ON DELETE CASCADE;
 
+
     --
     -- Name: AspNetUserTokens FK_AspNetUserTokens_AspNetUsers_UserId; Type: FK CONSTRAINT; Schema: public; Owner: guest
     --
 
     ALTER TABLE ONLY public."AspNetUserTokens"
         ADD CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES public."AspNetUsers"("Id") ON DELETE CASCADE;
+
 
     --
     -- Name: RefreshTokens FK_RefreshTokens_Users_UserId; Type: FK CONSTRAINT; Schema: public; Owner: guest
@@ -544,11 +547,13 @@ data:
     ALTER TABLE ONLY public."RefreshTokens"
         ADD CONSTRAINT "FK_RefreshTokens_Users_UserId" FOREIGN KEY ("UserId") REFERENCES public."Users"("Id") ON DELETE CASCADE;
 
+
     --
     -- PostgreSQL database dump complete
     --
 
-    \unrestrict CUF6izUKsQZxKuIFJ6Q0ibkD85wsdGfXalrcbXvHrbPtEmKRKzjX8KgTriIkUTD
+    \unrestrict S6BihzUpkoyHBZfAQrN89gieEbnfojE8mmk7Ps4ZbMCpX79oCuxSGHpEIz5efZ9
+
 
   library.sql: |+
     --

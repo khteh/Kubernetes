@@ -207,7 +207,7 @@ connected
 ```
 $ k get es
 NAME       HEALTH   NODES   VERSION   PHASE   AGE
-khteh-es   green    8       8.17.3    Ready   5m35s
+khteh-es   green    8       9.2.2    Ready   5m35s
 ```
 
 ## Kibana
@@ -218,7 +218,7 @@ khteh-es   green    8       8.17.3    Ready   5m35s
 ```
 $ k get kibana
 NAME           HEALTH   NODES   VERSION   AGE
-khteh-kibana   green    2       8.17.3    5m5s
+khteh-kibana   green    2       9.2.2    5m5s
 ```
 
 ## RabbitMQ Cluster:
