@@ -75,6 +75,7 @@ spec:
               nvidia.com/gpu: 1 # Required value: Limit must be set for non overcommitable resources
         - name: fluentd
           image: khteh/fluentd:latest
+          imagePullPolicy: Always
           volumeMounts:
             - name: fluentd-config
               mountPath: /etc/td-agent
