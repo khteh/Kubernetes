@@ -16,6 +16,7 @@ data:
         "DB_DATABASE": "LangchainCheckpoint",
         "DB_MAX_CONNECTIONS": 10,
         "EMBEDDING_MODEL": "embeddinggemma",
+        "EMBEDDING_DIMENSIONS": 768,
         "MODEL_PROVIDER": "ollama",
         "LLM_RAG_MODEL": "gpt-oss",
         "CHROMA_URI": "http://svc-chroma:8000",
