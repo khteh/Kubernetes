@@ -1042,8 +1042,10 @@ data:
     -- PostgreSQL database dump
     --
 
-    -- Dumped from database version 17.4 (Debian 17.4-1.pgdg120+2)
-    -- Dumped by pg_dump version 17.4 (Ubuntu 17.4-1)
+    \restrict tQj7f8VX8YcV4kte8CT4LvWx5hQs3Ct5uO3e8q9ES6vbncrfrTLJce2w0pA2va8
+
+    -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
+    -- Dumped by pg_dump version 18.1 (Ubuntu 18.1-1.pgdg25.10+2)
 
     SET statement_timeout = 0;
     SET lock_timeout = 0;
@@ -1139,7 +1141,7 @@ data:
     ALTER TABLE public.checkpoints OWNER TO guest;
 
     --
-    -- Name: langchain_pg_collection; Type: TABLE; Schema: public; Owner: postgres
+    -- Name: langchain_pg_collection; Type: TABLE; Schema: public; Owner: guest
     --
 
     CREATE TABLE public.langchain_pg_collection (
@@ -1149,10 +1151,10 @@ data:
     );
 
 
-    ALTER TABLE public.langchain_pg_collection OWNER TO postgres;
+    ALTER TABLE public.langchain_pg_collection OWNER TO guest;
 
     --
-    -- Name: langchain_pg_embedding; Type: TABLE; Schema: public; Owner: postgres
+    -- Name: langchain_pg_embedding; Type: TABLE; Schema: public; Owner: guest
     --
 
     CREATE TABLE public.langchain_pg_embedding (
@@ -1164,7 +1166,62 @@ data:
     );
 
 
-    ALTER TABLE public.langchain_pg_embedding OWNER TO postgres;
+    ALTER TABLE public.langchain_pg_embedding OWNER TO guest;
+
+    --
+    -- Name: store; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.store (
+        prefix text NOT NULL,
+        key text NOT NULL,
+        value jsonb NOT NULL,
+        created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+        updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+        expires_at timestamp with time zone,
+        ttl_minutes integer
+    );
+
+
+    ALTER TABLE public.store OWNER TO guest;
+
+    --
+    -- Name: store_migrations; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.store_migrations (
+        v integer NOT NULL
+    );
+
+
+    ALTER TABLE public.store_migrations OWNER TO guest;
+
+    --
+    -- Name: store_vectors; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.store_vectors (
+        prefix text NOT NULL,
+        key text NOT NULL,
+        field_name text NOT NULL,
+        embedding public.vector(768),
+        created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+        updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+    );
+
+
+    ALTER TABLE public.store_vectors OWNER TO guest;
+
+    --
+    -- Name: vector_migrations; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.vector_migrations (
+        v integer NOT NULL
+    );
+
+
+    ALTER TABLE public.vector_migrations OWNER TO guest;
 
     --
     -- Data for Name: checkpoint_blobs; Type: TABLE DATA; Schema: public; Owner: guest
@@ -1209,19 +1266,58 @@ data:
 
 
     --
-    -- Data for Name: langchain_pg_collection; Type: TABLE DATA; Schema: public; Owner: postgres
+    -- Data for Name: langchain_pg_collection; Type: TABLE DATA; Schema: public; Owner: guest
     --
 
     COPY public.langchain_pg_collection (uuid, name, cmetadata) FROM stdin;
-    1fe2df5b-e6cc-4aa6-aff9-90e47ff9d962	LLM-RAG-Agent	null
+    f5b393ff-3f1d-41f4-9594-e6483ad5295a	LLM-RAG-Agent	null
     \.
 
 
     --
-    -- Data for Name: langchain_pg_embedding; Type: TABLE DATA; Schema: public; Owner: postgres
+    -- Data for Name: langchain_pg_embedding; Type: TABLE DATA; Schema: public; Owner: guest
     --
 
     COPY public.langchain_pg_embedding (id, collection_id, embedding, document, cmetadata) FROM stdin;
+    \.
+
+
+    --
+    -- Data for Name: store; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.store (prefix, key, value, created_at, updated_at, expires_at, ttl_minutes) FROM stdin;
+    \.
+
+
+    --
+    -- Data for Name: store_migrations; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.store_migrations (v) FROM stdin;
+    0
+    1
+    2
+    3
+    \.
+
+
+    --
+    -- Data for Name: store_vectors; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.store_vectors (prefix, key, field_name, embedding, created_at, updated_at) FROM stdin;
+    \.
+
+
+    --
+    -- Data for Name: vector_migrations; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.vector_migrations (v) FROM stdin;
+    0
+    1
+    2
     \.
 
 
@@ -1258,7 +1354,7 @@ data:
 
 
     --
-    -- Name: langchain_pg_collection langchain_pg_collection_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+    -- Name: langchain_pg_collection langchain_pg_collection_name_key; Type: CONSTRAINT; Schema: public; Owner: guest
     --
 
     ALTER TABLE ONLY public.langchain_pg_collection
@@ -1266,7 +1362,7 @@ data:
 
 
     --
-    -- Name: langchain_pg_collection langchain_pg_collection_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+    -- Name: langchain_pg_collection langchain_pg_collection_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
     --
 
     ALTER TABLE ONLY public.langchain_pg_collection
@@ -1274,11 +1370,43 @@ data:
 
 
     --
-    -- Name: langchain_pg_embedding langchain_pg_embedding_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+    -- Name: langchain_pg_embedding langchain_pg_embedding_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
     --
 
     ALTER TABLE ONLY public.langchain_pg_embedding
         ADD CONSTRAINT langchain_pg_embedding_pkey PRIMARY KEY (id);
+
+
+    --
+    -- Name: store_migrations store_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.store_migrations
+        ADD CONSTRAINT store_migrations_pkey PRIMARY KEY (v);
+
+
+    --
+    -- Name: store store_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.store
+        ADD CONSTRAINT store_pkey PRIMARY KEY (prefix, key);
+
+
+    --
+    -- Name: store_vectors store_vectors_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.store_vectors
+        ADD CONSTRAINT store_vectors_pkey PRIMARY KEY (prefix, key, field_name);
+
+
+    --
+    -- Name: vector_migrations vector_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.vector_migrations
+        ADD CONSTRAINT vector_migrations_pkey PRIMARY KEY (v);
 
 
     --
@@ -1303,21 +1431,35 @@ data:
 
 
     --
-    -- Name: ix_cmetadata_gin; Type: INDEX; Schema: public; Owner: postgres
+    -- Name: idx_store_expires_at; Type: INDEX; Schema: public; Owner: guest
+    --
+
+    CREATE INDEX idx_store_expires_at ON public.store USING btree (expires_at) WHERE (expires_at IS NOT NULL);
+
+
+    --
+    -- Name: ix_cmetadata_gin; Type: INDEX; Schema: public; Owner: guest
     --
 
     CREATE INDEX ix_cmetadata_gin ON public.langchain_pg_embedding USING gin (cmetadata jsonb_path_ops);
 
 
     --
-    -- Name: ix_langchain_pg_embedding_id; Type: INDEX; Schema: public; Owner: postgres
+    -- Name: store_prefix_idx; Type: INDEX; Schema: public; Owner: guest
     --
 
-    CREATE UNIQUE INDEX ix_langchain_pg_embedding_id ON public.langchain_pg_embedding USING btree (id);
+    CREATE INDEX store_prefix_idx ON public.store USING btree (prefix text_pattern_ops);
 
 
     --
-    -- Name: langchain_pg_embedding langchain_pg_embedding_collection_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+    -- Name: store_vectors_embedding_idx; Type: INDEX; Schema: public; Owner: guest
+    --
+
+    CREATE INDEX store_vectors_embedding_idx ON public.store_vectors USING hnsw (embedding public.vector_cosine_ops);
+
+
+    --
+    -- Name: langchain_pg_embedding langchain_pg_embedding_collection_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guest
     --
 
     ALTER TABLE ONLY public.langchain_pg_embedding
@@ -1325,7 +1467,16 @@ data:
 
 
     --
+    -- Name: store_vectors store_vectors_prefix_key_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.store_vectors
+        ADD CONSTRAINT store_vectors_prefix_key_fkey FOREIGN KEY (prefix, key) REFERENCES public.store(prefix, key) ON DELETE CASCADE;
+
+
+    --
     -- PostgreSQL database dump complete
     --
 
+    \unrestrict tQj7f8VX8YcV4kte8CT4LvWx5hQs3Ct5uO3e8q9ES6vbncrfrTLJce2w0pA2va8
 
