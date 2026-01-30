@@ -13,7 +13,7 @@ data:
         "JWT_SECRET_KEY": "RAGAgent",
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
-        "DB_DATABASE": "LangchainCheckpoint",
+        "DB_DATABASE": "Langchain",
         "DB_MAX_CONNECTIONS": 10,
         "EMBEDDING_MODEL": "embeddinggemma",
         "EMBEDDING_DIMENSIONS": 768,
