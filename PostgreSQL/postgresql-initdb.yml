@@ -1098,7 +1098,7 @@ data:
     -- PostgreSQL database dump
     --
 
-    \restrict tQj7f8VX8YcV4kte8CT4LvWx5hQs3Ct5uO3e8q9ES6vbncrfrTLJce2w0pA2va8
+    \restrict Ax5YRBcWOrvqOzqHYbYvGoVY2yaFcXphvQfvhOiOgjrBetxSOQKc08bMWzjsV0j
 
     -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
     -- Dumped by pg_dump version 18.1 (Ubuntu 18.1-1.pgdg25.10+2)
@@ -1132,6 +1132,17 @@ data:
     SET default_tablespace = '';
 
     SET default_table_access_method = heap;
+
+    --
+    -- Name: alembic_version; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.alembic_version (
+        version_num character varying(32) NOT NULL
+    );
+
+
+    ALTER TABLE public.alembic_version OWNER TO guest;
 
     --
     -- Name: checkpoint_blobs; Type: TABLE; Schema: public; Owner: guest
@@ -1269,6 +1280,47 @@ data:
     ALTER TABLE public.store_vectors OWNER TO guest;
 
     --
+    -- Name: users; Type: TABLE; Schema: public; Owner: guest
+    --
+
+    CREATE TABLE public.users (
+        id integer NOT NULL,
+        firstname character varying(128) NOT NULL,
+        lastname character varying(128) NOT NULL,
+        email character varying(255) NOT NULL,
+        phone character varying(15),
+        password character varying(128),
+        lastlogin timestamp with time zone,
+        created_at timestamp with time zone DEFAULT now() NOT NULL,
+        modified_at timestamp with time zone DEFAULT now() NOT NULL
+    );
+
+
+    ALTER TABLE public.users OWNER TO guest;
+
+    --
+    -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: guest
+    --
+
+    CREATE SEQUENCE public.users_id_seq
+        AS integer
+        START WITH 1
+        INCREMENT BY 1
+        NO MINVALUE
+        NO MAXVALUE
+        CACHE 1;
+
+
+    ALTER SEQUENCE public.users_id_seq OWNER TO guest;
+
+    --
+    -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: guest
+    --
+
+    ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+    --
     -- Name: vector_migrations; Type: TABLE; Schema: public; Owner: guest
     --
 
@@ -1278,6 +1330,22 @@ data:
 
 
     ALTER TABLE public.vector_migrations OWNER TO guest;
+
+    --
+    -- Name: users id; Type: DEFAULT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+    --
+    -- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.alembic_version (version_num) FROM stdin;
+    8991664a5b66
+    \.
+
 
     --
     -- Data for Name: checkpoint_blobs; Type: TABLE DATA; Schema: public; Owner: guest
@@ -1367,6 +1435,15 @@ data:
 
 
     --
+    -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: guest
+    --
+
+    COPY public.users (id, firstname, lastname, email, phone, password, lastlogin, created_at, modified_at) FROM stdin;
+    1	Kok How	Teh	khteh@email.com	\N	$2b$10$AC1Q.wtba453AKHEhqZfOO/pNhkDCqJ9E8eEUGnsL3t8sO7DEdMSK	\N	2026-01-31 03:49:39.623031+00	2026-01-31 03:49:39.623031+00
+    \.
+
+
+    --
     -- Data for Name: vector_migrations; Type: TABLE DATA; Schema: public; Owner: guest
     --
 
@@ -1375,6 +1452,21 @@ data:
     1
     2
     \.
+
+
+    --
+    -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guest
+    --
+
+    SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+
+
+    --
+    -- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.alembic_version
+        ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
 
 
     --
@@ -1458,6 +1550,14 @@ data:
 
 
     --
+    -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
+    --
+
+    ALTER TABLE ONLY public.users
+        ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+    --
     -- Name: vector_migrations vector_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: guest
     --
 
@@ -1501,6 +1601,20 @@ data:
 
 
     --
+    -- Name: ix_users_email; Type: INDEX; Schema: public; Owner: guest
+    --
+
+    CREATE UNIQUE INDEX ix_users_email ON public.users USING btree (email);
+
+
+    --
+    -- Name: ix_users_phone; Type: INDEX; Schema: public; Owner: guest
+    --
+
+    CREATE UNIQUE INDEX ix_users_phone ON public.users USING btree (phone);
+
+
+    --
     -- Name: store_prefix_idx; Type: INDEX; Schema: public; Owner: guest
     --
 
@@ -1534,5 +1648,5 @@ data:
     -- PostgreSQL database dump complete
     --
 
-    \unrestrict tQj7f8VX8YcV4kte8CT4LvWx5hQs3Ct5uO3e8q9ES6vbncrfrTLJce2w0pA2va8
+    \unrestrict Ax5YRBcWOrvqOzqHYbYvGoVY2yaFcXphvQfvhOiOgjrBetxSOQKc08bMWzjsV0j
 
