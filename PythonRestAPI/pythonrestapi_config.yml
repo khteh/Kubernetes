@@ -13,6 +13,7 @@ data:
         "JWT_SECRET_KEY": "PythonRestAPI",
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
+        "DB_DATABASE": "library",
         "DB_MAX_CONNECTIONS": 10,
         "UPLOADS_DEFAULT_DEST": "/var/uploads"
     }
