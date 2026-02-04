@@ -18,7 +18,7 @@ data:
         "EMBEDDING_MODEL": "embeddinggemma",
         "EMBEDDING_DIMENSIONS": 768,
         "MODEL_PROVIDER": "ollama",
-        "LLM_RAG_MODEL": "gpt-oss",
+        "LLM_RAG_MODEL": "qwen3-next",
         "CHROMA_URI": "http://svc-chroma:8000",
         "NEO4J_URI": "neo4j://svc-neo4j:7687",
         "BASE_URI": "http://svc-ollama:11434"
