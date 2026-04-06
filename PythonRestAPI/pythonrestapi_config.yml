@@ -10,7 +10,6 @@ data:
         "TESTING": true,
         "LOGLEVEL": "INFO",
         "SECRET_KEY": "PythonRestAPI",
-        "JWT_SECRET_KEY": "PythonRestAPI",
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
         "DB_DATABASE": "library",
