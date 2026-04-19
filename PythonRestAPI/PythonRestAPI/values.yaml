@@ -1,0 +1,273 @@
+# Default values for PythonRestAPI.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+applicationName: pythonrestapi
+sidecarName: fluentd
+componentName: pythonrestapi
+serviceName: svc-pythonrestapi
+serviceNameNodePort: svc-pythonrestapi-nodeport
+podManagementPolicy: Parallel
+updateStrategy: RollingUpdate
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 2
+terminationGracePeriodSeconds: 10
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  application:
+    repository: khteh/pythonrestapi
+    # This sets the pull policy for images.
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  sidecar:
+    repository: khteh/fluentd
+    # This sets the pull policy for images.
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 443
+  portName: https-udp
+  protocol: UDP
+  targetPort: https-udp
+  nodePort: 31002
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# -- Expose the service via gateway-api HTTPRoute
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+    - name: gateway
+      sectionName: http
+      # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+    - chart-example.local
+  # List of rules and filters applied.
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
+  #   filters:
+  #   - type: RequestHeaderModifier
+  #     requestHeaderModifier:
+  #       set:
+  #       - name: My-Overwrite-Header
+  #         value: this-is-the-only-value
+  #       remove:
+  #       - User-Agent
+  # - matches:
+  #   - path:
+  #       type: PathPrefix
+  #       value: /echo
+  #     headers:
+  #     - name: version
+  #       value: v2
+postgresql:
+  secret: postgresql-secret
+  user: postgresql-user
+  password: postgresql-password
+
+gemini:
+  secret: google-gemini
+  apikey: GEMINI_API_KEY
+
+resources:
+  application:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  sidecar:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe: # failureThreshold * periodSeconds long enough to cover the worst case startup time
+  httpGet:
+    path: /health/ready
+    port: https-udp
+    scheme: HTTPS
+    #httpHeaders:
+    #  - name: Host
+    #    value: khteh.com
+  initialDelaySeconds: 20
+  periodSeconds: 5
+  timeoutSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /health/ready
+    port: https-udp
+    scheme: HTTPS
+    #httpHeaders:
+    #  - name: Host
+    #    value: khteh.com
+  initialDelaySeconds: 20
+  periodSeconds: 5
+  timeoutSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
+livenessProbe:
+  httpGet:
+    path: /health/live
+    port: https-udp
+    scheme: HTTPS
+    #httpHeaders:
+    #  - name: Host
+    #    value: khteh.com
+  initialDelaySeconds: 20
+  periodSeconds: 5
+  timeoutSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  containerAverageUtilization: 75
+  requestsPerSecond: 10k
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes:
+  - name: hypercorn-config
+    configMap:
+      name: hypercorn-config
+  - name: pythonrestapi-config
+    configMap:
+      name: pythonrestapi
+  - name: pythonrestapi-fluentd-config
+    configMap:
+      name: pythonrestapi-fluentd-config
+  - name: elasticsearch-template
+    configMap:
+      name: elasticsearch-template
+  - name: log
+    emptyDir: {}
+  - name: hypercornlog
+    emptyDir: {}
+
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts:
+  application:
+    - name: pythonrestapi-config
+      mountPath: /etc/pythonrestapi_config.json
+      subPath: pythonrestapi_config.json
+      readOnly: true
+    - name: hypercorn-config
+      mountPath: /etc/hypercorn.toml
+      subPath: hypercorn.toml
+      readOnly: true
+    - name: log
+      mountPath: /var/log/pythonrestapi
+    - name: hypercornlog
+      mountPath: /var/log/hypercorn
+  sidecar:
+    - name: log
+      mountPath: /var/log/pythonrestapi
+    - name: hypercornlog
+      mountPath: /var/log/hypercorn
+    - name: pythonrestapi-fluentd-config
+      mountPath: /etc/td-agent
+    - name: elasticsearch-template
+      mountPath: /tmp/elasticsearch_template.json
+      subPath: elasticsearch_template.json
+      readOnly: true
+
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
