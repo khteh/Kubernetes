@@ -285,3 +285,10 @@ Allocatable:
   nvidia.com/gpu:     0     <- XXX
   pods:               110
 ```
+
+## Helm Charts
+
+### Debug
+
+- `helm template --debug <chart folder>`
+- `helm install <name> --dry-run --debug <chart folder>`
