@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pythonrestapi
+data:
+  pythonrestapi_config.json: |
+    {
+        "ENVIRONMENT": "production",
+        "DEBUG": true,
+        "TESTING": true,
+        "LOGLEVEL": "INFO",
+        "SECRET_KEY": "PythonRestAPI",
+        "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+        "DB_HOST": "svc-postgresql",
+        "DB_DATABASE": "library",
+        "DB_MAX_CONNECTIONS": 10,
+        "UPLOADS_DEFAULT_DEST": "/var/uploads"
+    }

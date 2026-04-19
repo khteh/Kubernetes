@@ -20,6 +20,9 @@ spec:
       labels:
         app: {{ .Values.applicationName }}
         component: {{ .Values.componentName }}
+      annotations:
+        # Re-evaluates on every upgrade; triggers restart if config changes
+        checksum/config: {{ include (print $.Template.BasePath "/pythonrestapi_config.yml") . | sha512sum }}        
     spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.affinity }}
@@ -31,23 +34,23 @@ spec:
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-        {{- if .Values.postgresql.secret }}
+        {{- if .Values.postgresql }}
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secret }}
+                name: {{ .Values.postgresql.secretName }}
                 key: {{ .Values.postgresql.user }}
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secret }}
-                key: {{ .Values.postgresql.password }}
+                name: {{ .Values.postgresql.secretName }}
+                key: {{ .Values.postgresql.passwordKey }}
         {{- end }}
-        {{- if .Values.gemini.secret }}
+        {{- if .Values.gemini }}
           - name: GEMINI_API_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.gemini.secret }}
+                name: {{ .Values.gemini.secretName }}
                 key: {{ .Values.gemini.apikey }}
         {{- end }}
         ports:
@@ -90,6 +93,3 @@ spec:
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  test: false
-  triggers:
-    - type: ConfigChange

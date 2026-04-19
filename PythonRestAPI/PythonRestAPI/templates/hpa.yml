@@ -2,14 +2,15 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "PythonRestAPI.fullname" . }}
+  name: {{ .Values.hpaName }}
   labels:
-    {{- include "PythonRestAPI.labels" . | nindent 4 }}
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: StatefulSet
-    name: {{ include "PythonRestAPI.fullname" . }}
+    name: {{ .Values.applicationName }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

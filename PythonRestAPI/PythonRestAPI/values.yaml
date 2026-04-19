@@ -6,6 +6,7 @@ sidecarName: fluentd
 componentName: pythonrestapi
 serviceName: svc-pythonrestapi
 serviceNameNodePort: svc-pythonrestapi-nodeport
+hpaName: hpa-pythonrestapi
 podManagementPolicy: Parallel
 updateStrategy: RollingUpdate
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
@@ -128,13 +129,13 @@ httpRoute:
   #     - name: version
   #       value: v2
 postgresql:
-  secret: postgresql-secret
+  secretName: postgresql-secret
   user: postgresql-user
-  password: postgresql-password
+  passwordKey: postgresql-password
 
-gemini:
-  secret: google-gemini
-  apikey: GEMINI_API_KEY
+gemini: {}
+#  secretName: google-gemini
+#  apikey: GEMINI_API_KEY
 
 resources:
   application:
