@@ -1,0 +1,197 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ragagent-fluentd-config
+  namespace: default
+data:
+  td-agent.conf: |
+    ####
+    ## Output descriptions:
+    ##
+    # https://docs.fluentd.org/how-to-guides/http-to-td
+    # Treasure Data (http://www.treasure-data.com/) provides cloud based data
+    # analytics platform, which easily stores and processes data from td-agent.
+    # FREE plan is also provided.
+    # @see http://docs.fluentd.org/articles/http-to-td
+    #
+    # This section matches events whose tag is td.DATABASE.TABLE
+    ####
+    ## Source descriptions:
+    ##
+    ## built-in TCP input
+    ## @see http://docs.fluentd.org/articles/in_forward
+    <source>
+      @type forward
+      @id input_forward
+    </source>
+    <source>
+      @type http
+      @id input_http
+      port 8889
+    </source>
+    ## live debugging agent
+    <source>
+      @type debug_agent
+      @id input_debug_agent
+      bind 127.0.0.1
+      port 24230
+    </source>
+    <source>
+      @type tail
+      @id input_tail
+      tag ragagent
+      #sample [{"python_log": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
+      path /var/log/ragagent/log*
+      pos_file /var/log/td-agent/pos/ragagent_logs.pos
+      read_from_head true
+      key_name message
+      # even if we failed to parse the time send the record over to splunk
+      emit_invalid_record_to_error false
+      reserve_time true
+      reserve_data true
+      <parse>
+          @type regexp
+          time_type string
+          time_format %Y-%m-%d %H:%M:%S
+          keep_time_key true
+          expression /^(?<time>.+?) (?<level>\w{0,8}) (?<message>.*)$/
+      </parse>      
+    </source>
+    <source>
+      @type tail
+      @id input_tail
+      tag hypercorn
+      #sample [{"hypercorn": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
+      path /var/log/hypercorn/errors.log
+      pos_file /var/log/td-agent/pos/hypercorn_logs.pos
+      read_from_head true
+      key_name message
+      emit_invalid_record_to_error false
+      reserve_data true
+      reserve_time true
+      <parse>
+          @type regexp
+          time_type string
+          time_format %Y-%m-%d %H:%M:%S
+          keep_time_key true
+          expression /^(?<time>.+?) (?<level>\w{0,8}) (?<message>.*)$/
+      </parse>      
+    </source>
+    <source>
+      @type tail
+      @id input_tail
+      tag hypercorn-access
+      # https://docs.fluentd.org/configuration/parse-section
+      # nginx:    127.0.0.1 192.168.0.1 - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777 "-" "Opera/12.0" -
+      # apache2:  192.168.0.1 - - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777 "-" "Opera/12.0"
+      # hypercorn:192.168.0.149:43472 - - [04/Apr/2025:08:44:16 +0000] "GET /health/live 2" 200 2 "-" "kube-probe/1.27"
+      # expression /^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>(?:[^\"]|\\.)*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>(?:[^\"]|\\.)*)" "(?<agent>(?:[^\"]|\\.)*)")?$/
+      path /var/log/hypercorn/access.log
+      pos_file /var/log/td-agent/pos/hypercorn_access_logs.pos
+      read_from_head true
+      emit_invalid_record_to_error false
+      reserve_time true
+      reserve_data true
+      <parse>
+          @type regexp
+          time_type string
+          time_format %Y-%m-%d %H:%M:%S [+-]HHMM
+          keep_time_key true
+          expression /^(?<time>.+?) (?<level>\w{0,8}) (?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>(?:[^\"]|\\.)*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>(?:[^\"]|\\.)*)" "(?<agent>(?:[^\"]|\\.)*)")$/
+      </parse>      
+    </source>
+    <filter fluent.*>
+      @type grep
+      <exclude>
+        key tag
+        pattern /fluent\.trace/
+     </exclude>
+    </filter>
+    <filter ragagent>
+      @type typecast
+      types ContentLength:integer,ResponseTime:float
+    </filter>
+    <filter hypercorn-access>
+      @type grep
+      <exclude>
+        key path
+        pattern (^/$|health|^/$)
+     </exclude>
+    </filter>
+    <filter ragagent>
+      @type geoip
+      # Specify one or more geoip lookup field which has ip address (default: host)
+      geoip_lookup_keys IP
+
+      # Specify optional geoip database (using bundled GeoLiteCity databse by default)
+      # geoip_database    "/path/to/your/GeoIPCity.dat"
+      # Specify optional geoip2 database
+      # geoip2_database   "/path/to/your/GeoLite2-City.mmdb" (using bundled GeoLite2-City.mmdb by default)
+      # Specify backend library (geoip2_c, geoip, geoip2_compat)
+      backend_library geoip2_c
+
+      # Set adding field with placeholder (more than one settings are required.)
+     <record>
+        city            ${city.names.en["IP"]}
+        latitude        ${location.latitude["IP"]}
+        longitude       ${location.longitude["IP"]}
+        country         ${country.iso_code["IP"]}
+        country_name    ${country.names.en["IP"]}
+        postal_code     ${postal.code["IP"]}
+        region_code     ${subdivisions.0.iso_code["IP"]}
+        region_name     ${subdivisions.0.names.en["IP"]}
+        location_properties '{ "lat" : ${location.latitude["IP"]}, "lon" : ${location.longitude["IP"]} }'
+        location_string     ${location.latitude["IP"]},${location.longitude["IP"]}
+        location_array      '[${location.longitude["IP"]},${location.latitude["IP"]}]'
+      </record>      
+      # To avoid get stacktrace error with `[null, null]` array for elasticsearch.
+      skip_adding_null_record  true
+      # Set @log_level (default: warn)
+      @log_level         info
+    </filter>
+    ## match tag=debug.** and dump to console
+    <match debug.**>
+      @type stdout
+      @id output_stdout
+    </match>
+    <match ragagent>
+      @type copy
+      <store> 
+        @type elasticsearch
+        @log_level trace
+        time_key @timestamp
+        include_timestamp true
+        include_tag_key true
+        reconnect_on_error true
+        reload_on_failure true
+        reload_connections false
+        request_timeout 120s
+        host ragagent-es-internal-http
+        port 9200
+        scheme https
+        ssl_verify false
+        ssl_version TLSv1_2
+        ca_file "/fluentd/elastic/tls.crt"
+        user elastic
+        password P@$$w0rd
+        flush_interval 1s
+        # index_name fluentd.${tag}.%Y%m%d 
+        type_name _doc
+        logstash_format true # Setting this option to true will ignore the index_name setting. The default index name prefix is logstash-.
+        logstash_prefix ragagent.logs
+        template_name elasticsearch_template
+        template_file /tmp/elasticsearch_template.json
+        template_overwrite true
+        <buffer tag, time>
+          timekey 60# chunks per hours ("3600" also available)
+        </buffer>
+      </store>
+      <store>
+        @type stdout
+      </store>
+    </match>
+    <label @ERROR>
+      <match **>
+        @type stdout
+      </match>
+    </label>

@@ -1,12 +1,12 @@
-# Default values for PythonRestAPI.
+# Default values for ragagent.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-applicationName: pythonrestapi
+applicationName: ragagent
 sidecarName: fluentd
-componentName: pythonrestapi
-serviceName: svc-pythonrestapi
-serviceNameNodePort: svc-pythonrestapi-nodeport
-hpaName: hpa-pythonrestapi
+componentName: ragagent
+serviceName: svc-ragagent
+serviceNameNodePort: svc-ragagent-nodeport
+hpaName: hpa-ragagent
 podManagementPolicy: Parallel
 updateStrategy: RollingUpdate
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
@@ -15,7 +15,7 @@ terminationGracePeriodSeconds: 10
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   application:
-    repository: khteh/pythonrestapi
+    repository: khteh/ragagent
     # This sets the pull policy for images.
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
@@ -72,7 +72,7 @@ service:
   portName: https-udp
   protocol: UDP
   targetPort: https-udp
-  nodePort: 31002
+  nodePort: 31003
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -136,6 +136,10 @@ postgresql:
 gemini: {}
 #  secretName: google-gemini
 #  apikey: GEMINI_API_KEY
+
+neo4j:
+  secretName: neo4j-secret
+  secretKey: NEO4J_AUTH
 
 resources:
   application:
@@ -214,15 +218,21 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
+  - name: ragagent-secret
+    secret:
+      secretName: ragagent-secret
+      items:
+        - key: .env
+          path: .env
   - name: hypercorn-config
     configMap:
       name: hypercorn-config
-  - name: pythonrestapi-config
+  - name: ragagent-config
     configMap:
-      name: pythonrestapi
-  - name: pythonrestapi-fluentd-config
+      name: ragagent
+  - name: ragagent-fluentd-config
     configMap:
-      name: pythonrestapi-fluentd-config
+      name: ragagent-fluentd-config
   - name: elasticsearch-template
     configMap:
       name: elasticsearch-template
@@ -239,24 +249,28 @@ volumes:
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
   application:
-    - name: pythonrestapi-config
-      mountPath: /etc/pythonrestapi_config.json
-      subPath: pythonrestapi_config.json
+    - name: ragagent-secret
+      mountPath: /app/.env
+      subPath: .env
+      readOnly: true
+    - name: ragagent-config
+      mountPath: /etc/ragagent_config.json
+      subPath: ragagent_config.json
       readOnly: true
     - name: hypercorn-config
       mountPath: /etc/hypercorn.toml
       subPath: hypercorn.toml
       readOnly: true
     - name: log
-      mountPath: /var/log/pythonrestapi
+      mountPath: /var/log/ragagent
     - name: hypercornlog
       mountPath: /var/log/hypercorn
   sidecar:
     - name: log
-      mountPath: /var/log/pythonrestapi
+      mountPath: /var/log/ragagent
     - name: hypercornlog
       mountPath: /var/log/hypercorn
-    - name: pythonrestapi-fluentd-config
+    - name: ragagent-fluentd-config
       mountPath: /etc/td-agent
     - name: elasticsearch-template
       mountPath: /tmp/elasticsearch_template.json

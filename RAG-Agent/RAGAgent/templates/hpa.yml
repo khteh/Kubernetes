@@ -1,0 +1,55 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.hpaName }}
+  labels:
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ .Values.applicationName }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.autoscaling.containerAverarageCPUUtilization }}
+    - type: ContainerResource
+      containerResource:
+        name: cpu
+        container: {{.Values.applicationName}}
+        target: 
+          type: Utilization
+          averageUtilization: {{.Values.autoscaling.containerAverarageCPUUtilization }}
+    {{- end}}
+    {{- if .Values.autoscaling.requestsPerSecond }}
+    - type: Object
+      object: 
+        metric: 
+          name: requests-per-second
+        describedObject:
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress 
+          name: ingress
+        target: 
+          type: Value
+          value: {{.Values.autoscaling.requestsPerSecond }}
+    {{- end}}
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

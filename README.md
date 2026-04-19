@@ -202,6 +202,16 @@ connected
 1666
 ```
 
+## Helm Charts
+
+```
+$ helm list
+NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+common-config	default  	2       	2026-04-19 19:01:50.557941943 +0800 +08	deployed	common-config-1.0.0	1.0.0
+pythonrestapi	default  	1       	2026-04-19 18:25:46.309313553 +0800 +08	deployed	PythonRestAPI-1.0.0	1.0.0
+rag-agent    	default  	2       	2026-04-19 18:56:28.672494333 +0800 +08	deployed	RAGAgent-1.0.0     	1.0.0
+```
+
 ## Elasticsearch Cluster:
 
 ```
@@ -290,5 +300,13 @@ Allocatable:
 
 ### Debug
 
+- `helm lint <chart folder>`
 - `helm template --debug <chart folder>`
-- `helm install <name> --dry-run --debug <chart folder>`
+
+### Install
+
+- `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path>`
+
+### Update
+
+- `helm upgrade --install <name> <chart folder>`

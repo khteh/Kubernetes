@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: aspnetcorewebapi-hpa
+  name: hpa-aspnetcorewebapi
   namespace: default
 spec:
   minReplicas: 2
@@ -37,7 +37,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: restapi-hpa
+  name: hpa-restapi
   namespace: default
 spec:
   minReplicas: 2
@@ -73,7 +73,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: pythonrestapi-hpa
+  name: hpa-pythonrestapi
   namespace: default
 spec:
   minReplicas: 2
@@ -109,7 +109,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: nodejsrestapi-hpa
+  name: hpa-nodejsrestapi
   namespace: default
 spec:
   minReplicas: 2
@@ -145,7 +145,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: kibana-hpa
+  name: hpa-kibana
   namespace: default 
 spec:
   minReplicas: 2
@@ -181,7 +181,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: rabbitmq-hpa
+  name: hpa-rabbitmq
   namespace: default 
 spec:
   minReplicas: 3
