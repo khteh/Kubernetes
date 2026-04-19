@@ -208,6 +208,7 @@ connected
 $ helm list
 NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
 common-config	default  	2       	2026-04-19 19:01:50.557941943 +0800 +08	deployed	common-config-1.0.0	1.0.0
+nodejsrestapi	default  	1       	2026-04-19 19:36:12.291615359 +0800 +08	deployed	NodeJSRestAPI-1.0.0	1.0.0
 pythonrestapi	default  	1       	2026-04-19 18:25:46.309313553 +0800 +08	deployed	PythonRestAPI-1.0.0	1.0.0
 rag-agent    	default  	2       	2026-04-19 18:56:28.672494333 +0800 +08	deployed	RAGAgent-1.0.0     	1.0.0
 ```
@@ -310,3 +311,7 @@ Allocatable:
 ### Update
 
 - `helm upgrade --install <name> <chart folder>`
+
+### Uninstall
+
+- `helm uninstall <name>`
