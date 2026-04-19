@@ -1,6 +1,6 @@
 apiVersion: v2
 name: RAGAgent
-description: A Helm chart for Kubernetes
+description: Python LLM-RAG deep agent using LangChain, LangGraph and LangSmith built on Quart web microframework and served using Hypercorn ASGI and WSGI web server.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

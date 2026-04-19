@@ -1,6 +1,6 @@
 apiVersion: v2
 name: NodeJSRestAPI
-description: A Helm chart for Kubernetes
+description: Simple RESTful API using HTTP/2 SPDY server for Node.JS with Clean Architecture design and implemented using Typescript language.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

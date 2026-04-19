@@ -1,6 +1,6 @@
 apiVersion: v2
 name: common-config
-description: A Helm chart for Kubernetes
+description: Common ConfigMap shared by many applications
 
 # A chart can be either an 'application' or a 'library' chart.
 #
