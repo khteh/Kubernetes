@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejsrestapi
+data:
+  default.json: |
+    {
+        "Secret": "Node.JSRestAPI",
+        "DBHost": "svc-postgresql",
+        "DBPort": "5432",
+        "Database" : "school"
+    }

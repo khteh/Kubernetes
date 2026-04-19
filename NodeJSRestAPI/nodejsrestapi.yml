@@ -99,8 +99,6 @@ spec:
             #  mountPath: /etc/ca-certificates/tls.crt
             #  subPath: tls.crt
             #  readOnly: true
-            - name: nodejs-fluentd-config
-              mountPath: /etc/td-agent
             - name: nodejsrestapi-config
               mountPath: config/default.json
               subPath: default.json
@@ -116,7 +114,7 @@ spec:
           volumeMounts:
             - name: log
               mountPath: /var/log/nodejsrestapi
-            - name: nodejsrestapi-config
+            - name: nodejs-fluentd-config
               mountPath: /etc/td-agent
             - name: elasticsearch-template
               mountPath: /tmp/elasticsearch_template.json
