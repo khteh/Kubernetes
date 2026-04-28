@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
+spec:
+  ports:
+    - port: {{ .Values.client.port }}
+      name: {{ .Values.client.portName }}
+      targetPort: {{ .Values.client.targetPort }}
+    - port: {{ .Values.gossip.port }}
+      name: {{ .Values.gossip.portName }}
+      targetPort: {{ .Values.gossip.targetPort }}
+  clusterIP: None
+  selector:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}

@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.initJobName }}
+  labels:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
+  annotations:
+    # Trigger after install and upgrades
+    "helm.sh/hook": post-install,post-upgrade
+    # Delete the job after it finishes successfully
+    #"helm.sh/hook-delete-policy": hook-succeeded
+spec:
+#  ttlSecondsAfterFinished: 100
+  backoffLimit: 3
+  activeDeadlineSeconds: 100
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: {{ .Values.initJobName }}
+        image: "{{ .Values.image.initJob.repository }}:{{ .Values.image.initJob.tag | default .Chart.AppVersion }}"
+        #image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        #command:
+        #  - sh
+        #  - -c
+        #  - |
+        #    redis-cli --cluster create \
+        #      redis-cluster-0.redis:6379 \
+        #      redis-cluster-1.redis:6379 \
+        #      redis-cluster-2.redis:6379 \
+        #      --cluster-replicas 1 --cluster-yes
+      restartPolicy: OnFailure

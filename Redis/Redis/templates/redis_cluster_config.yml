@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-cluster-config
+  labels:
+    app: redis-cluster
+    component: redis
+data:
+  redis.conf: |+
+    cluster-enabled yes
+    cluster-require-full-coverage no
+    cluster-node-timeout 15000
+    cluster-config-file /data/nodes.conf
+    cluster-migration-barrier 1
+    appendonly yes
+    appendfsync everysec
+    protected-mode no
+    loglevel notice
+    logfile /var/log/redis.log
+    save 30 10
