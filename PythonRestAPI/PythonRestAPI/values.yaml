@@ -133,9 +133,9 @@ postgresql:
   user: postgresql-user
   passwordKey: postgresql-password
 
-gemini: {}
-#  secretName: google-gemini
-#  apikey: GEMINI_API_KEY
+gemini:
+  secretName: google-gemini
+  apikey: GEMINI_API_KEY
 
 resources:
   application:

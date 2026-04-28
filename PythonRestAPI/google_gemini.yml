@@ -4,4 +4,4 @@ type: Opaque
 metadata:
   name: google-gemini
 data:
-  GEMINI_API_KEY: <https://aistudio.google.com/apikey>
+  GEMINI_API_KEY: kubectl create secret generic --from-literal=GEMINI_API_KEY=<https://aistudio.google.com/apikey>
