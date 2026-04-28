@@ -33,12 +33,17 @@ spec:
       containers:
         - name: redis
           image: redis:latest
+          command: ["redis-server", "/conf/redis.conf"]
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
           ports:
             - containerPort: 6379
               name: client
             - containerPort: 16379
               name: gossip
-          command: ["redis-server", "/conf/redis.conf"]
           readinessProbe:
             exec:
               command:
@@ -55,11 +60,6 @@ spec:
                 - "redis-cli -h $(hostname) ping"
             initialDelaySeconds: 20
             periodSeconds: 3
-          env:
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
           volumeMounts:
             - name: conf
               mountPath: /conf

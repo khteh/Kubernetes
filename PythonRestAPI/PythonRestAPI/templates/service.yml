@@ -10,7 +10,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: {{ .Values.service.protocol }}
-      name: {{ .Values.service.name }}
+      name: {{ .Values.service.portName }}
   clusterIP: None
   selector:
     app: {{ .Values.applicationName }}
@@ -29,7 +29,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: {{ .Values.service.protocol }}
-      name: {{ .Values.service.name }}
+      name: {{ .Values.service.portName }}
       nodePort: {{ .Values.service.nodePort }}
   selector:
     app: {{ .Values.applicationName }}

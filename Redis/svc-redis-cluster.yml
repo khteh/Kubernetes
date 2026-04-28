@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: svc-redis-cluster
   labels:
-    app: svc-redis-cluster
+    app: redis-cluster
     component: redis
 spec:
   ports:
