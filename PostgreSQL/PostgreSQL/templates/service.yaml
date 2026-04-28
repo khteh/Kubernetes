@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+      name: {{ .Values.service.portName }}
+  clusterIP: None
+  selector:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceNameNodePort }}
+  labels:
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+      name: {{ .Values.service.portName }}
+      nodePort: {{ .Values.service.nodePort }}
+  selector:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}

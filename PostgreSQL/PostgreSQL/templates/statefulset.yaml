@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.applicationName }}
+  labels:
+    component: {{ .Values.componentName }}
+    app: {{ .Values.applicationName }}
+spec:
+  serviceName: {{ .Values.serviceName }}
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  replicas: {{ .Values.replicaCount }}
+  updateStrategy: 
+    type: {{ .Values.updateStrategy }}
+  selector:
+    matchLabels:
+      app: {{ .Values.applicationName }}
+      component: {{ .Values.componentName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.applicationName }}
+        component: {{ .Values.componentName }}
+      annotations:
+        # Re-evaluates on every upgrade; triggers restart if config changes
+        checksum/config: {{ include (print $.Template.BasePath "/postgresql-initdb.yml") . | sha512sum }}        
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.applicationName }}
+        image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.secrets.secretName }}
+                key: {{ .Values.secrets.pgpassword }}
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.secrets.secretName }}
+                key: {{ .Values.secrets.user }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.secrets.secretName }}
+                key: {{ .Values.secrets.postgres_password }}
+        {{- if .Values.databases.db1 }}
+          - name: POSTGRES_DB_1
+            value: {{ .Values.databases.db1 }}
+        {{- end }}
+        {{- if .Values.databases.db2 }}
+          - name: POSTGRES_DB_2
+            value: {{ .Values.databases.db2 }}
+        {{- end }}
+        {{- if .Values.databases.db3 }}
+          - name: POSTGRES_DB_3
+            value: {{ .Values.databases.db3 }}
+        {{- end }}
+        {{- if .Values.databases.db4 }}
+          - name: POSTGRES_DB_4
+            value: {{ .Values.databases.db4 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: {{ .Values.service.portName }}
+          protocol: {{ .Values.service.protocol }}
+        {{- with .Values.startupProbe }}
+        startupProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- with .Values.volumeClaimTemplates }}
+  volumeClaimTemplates:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
