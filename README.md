@@ -306,7 +306,8 @@ Allocatable:
 
 ### Install
 
-- `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path>`
+- `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path> --wait`
+- `--wait` is needed especially for running helm hooks which need the pods to be in ready state.
 
 ### Update
 
