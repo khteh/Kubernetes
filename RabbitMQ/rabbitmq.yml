@@ -36,39 +36,6 @@ spec:
       containers:        
       - name: rabbitmq-k8s
         image: rabbitmq:latest
-        volumeMounts:
-        - name: rabbitmq-config
-          mountPath: /etc/rabbitmq
-        - name: rabbitmq-persistent-storage
-          mountPath: /var/lib/rabbitmq/mnesia
-        - name: rabbitmq-definitions
-          mountPath: /tmp/rabbitmq.definitions.json
-          subPath: rabbitmq.definitions.json
-          readOnly: true
-        ports:
-          - name: http
-            protocol: TCP
-            containerPort: 15672
-          - name: amqp
-            protocol: TCP
-            containerPort: 5672
-        livenessProbe:
-          # See https://www.rabbitmq.com/monitoring.html for monitoring frequency recommendations.
-          exec:
-            command: ["rabbitmqctl", "status"]
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 10
-          failureThreshold: 3
-          successThreshold: 1
-        readinessProbe:
-          exec:
-            command: ["rabbitmqctl", "status"]
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 10
-          failureThreshold: 3
-          successThreshold: 1
         imagePullPolicy: Always
         env:
           - name: MY_POD_NAME
@@ -95,6 +62,39 @@ spec:
             value: $(MY_POD_SERVICE_ACCOUNT)
           - name: RABBITMQ_ERLANG_COOKIE
             value: "mycookie" 
+        ports:
+          - name: http
+            protocol: TCP
+            containerPort: 15672
+          - name: amqp
+            protocol: TCP
+            containerPort: 5672
+        livenessProbe:
+          # See https://www.rabbitmq.com/monitoring.html for monitoring frequency recommendations.
+          exec:
+            command: ["rabbitmqctl", "status"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          exec:
+            command: ["rabbitmqctl", "status"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+        volumeMounts:
+        - name: rabbitmq-config
+          mountPath: /etc/rabbitmq
+        - name: rabbitmq-persistent-storage
+          mountPath: /var/lib/rabbitmq/mnesia
+        - name: rabbitmq-definitions
+          mountPath: /tmp/rabbitmq.definitions.json
+          subPath: rabbitmq.definitions.json
+          readOnly: true
         resources:
           requests:
             cpu: 500m
