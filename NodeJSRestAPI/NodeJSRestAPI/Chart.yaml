@@ -27,3 +27,11 @@ maintainers:
   - name: Teh Kok How
     email: funcoolgeek@gmail.com
     url: https://github.com/khteh
+# Chart.yaml
+dependencies:
+- name: common-config
+  version: "1.0.0"
+  repository: "file://../../common-config/"
+- name: PostgreSQL
+  version: "1.0.0"
+  repository: "file://../../PostgreSQL/PostgreSQL"

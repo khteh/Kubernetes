@@ -1,0 +1,9 @@
+dependencies:
+- name: common-config
+  repository: file://../../common-config/
+  version: 1.0.0
+- name: PostgreSQL
+  repository: file://../../PostgreSQL/PostgreSQL
+  version: 1.0.0
+digest: sha256:e333303ee20e8815000d233459b210ebc1d1a275b57bc68894b7e463f97dce9f
+generated: "2026-04-29T13:51:55.159103251+08:00"
