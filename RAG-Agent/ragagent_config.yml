@@ -16,10 +16,10 @@ data:
         "DB_MAX_CONNECTIONS": 10,
         "EMBEDDING_MODEL": "embeddinggemma",
         "EMBEDDING_DIMENSIONS": 768,
+        "VECTORSTORE_TABLE": "ragagent_vectorstore",
         "MODEL_PROVIDER": "ollama",
-        "LLM_RAG_MODEL": "gemma4:31b",
-        "OLLAMA_CONTEXT_LENGTH": "262144",
-        "CHROMA_URI": "http://svc-chroma:8000",
+        "LLM_RAG_MODEL": "gpt-oss:120b-cloud",
+        "OLLAMA_CONTEXT_LENGTH": "8192",
         "NEO4J_URI": "neo4j://svc-neo4j:7687",
         "OLLAMA_CLOUD_URI": "https://ollama.com",
         "OLLAMA_LOCAL_URI": "http://svc-ollama:11434"
