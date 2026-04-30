@@ -34,7 +34,6 @@ spec:
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-        {{- if .Values.postgresql }}
           - name: POSTGRESQL_HOST
             value: "{{ .Values.postgresql.hostname }}"
           - name: POSTGRESQL_PORT
@@ -44,14 +43,13 @@ spec:
           - name: POSTGRESQL_USER
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secretName }}
-                key: {{ .Values.postgresql.user }}
+                name: {{ required "PostgreSQL DB username secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB username secretKey!" .Values.postgresql.user }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secretName }}
-                key: {{ .Values.postgresql.passwordKey }}
-        {{- end }}
+                name: {{ required "PostgreSQL DB password secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB password secretKey!" .Values.postgresql.passwordKey }}
         {{- if .Values.gemini }}
           - name: GEMINI_API_KEY
             valueFrom:

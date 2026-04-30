@@ -53,6 +53,22 @@ Kubernetes cluster which consists of the following components:
 
 ![Kubernetes cluster](./k8s.jpg?raw=true "Kubernetes Cluster")
 
+## Helm Charts
+
+```
+$ helm list
+NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+common-config	default  	5       	2026-04-29 15:17:11.971094947 +0800 +08	deployed	common-config-1.0.0	1.0.0
+neo4j        	default  	1       	2026-04-30 12:14:44.725694023 +0800 +08	deployed	Neo4J-1.0.0        	1.0.0
+nodejsrestapi	default  	1       	2026-04-30 12:26:15.66047827 +0800 +08 	deployed	NodeJSRestAPI-1.0.0	1.0.0
+postgresql   	default  	1       	2026-04-30 12:05:46.188732426 +0800 +08	deployed	PostgreSQL-1.0.0   	1.0.0
+pythonrestapi	default  	1       	2026-04-30 12:26:31.715122897 +0800 +08	deployed	PythonRestAPI-1.0.0	1.0.0
+ragagent     	default  	1       	2026-04-30 12:27:31.357106725 +0800 +08	deployed	RAGAgent-1.0.0     	1.0.0
+redis-cluster	default  	3       	2026-04-29 12:51:28.67599083 +0800 +08 	deployed	RedisCluster-1.0.0 	1.0.0
+```
+
+## Cluster Resources
+
 ```
 $ k get all
 NAME                                          READY   STATUS      RESTARTS   AGE
@@ -152,65 +168,59 @@ cluster_known_nodes:6
 cluster_size:3
 cluster_current_epoch:6
 cluster_my_epoch:1
-cluster_stats_messages_ping_sent:1208
-cluster_stats_messages_pong_sent:1178
-cluster_stats_messages_sent:2386
-cluster_stats_messages_ping_received:1173
-cluster_stats_messages_pong_received:1208
-cluster_stats_messages_meet_received:5
-cluster_stats_messages_received:2386
+cluster_stats_messages_ping_sent:8729
+cluster_stats_messages_pong_sent:8827
+cluster_stats_messages_sent:17556
+cluster_stats_messages_ping_received:8827
+cluster_stats_messages_pong_received:8727
+cluster_stats_messages_received:17554
+total_cluster_links_buffer_limit_exceeded:0
+cluster_slot_migration_active_tasks:0
+cluster_slot_migration_active_trim_running:0
+cluster_slot_migration_active_trim_current_job_keys:0
+cluster_slot_migration_active_trim_current_job_trimmed:0
+cluster_slot_migration_stats_active_trim_started:0
+cluster_slot_migration_stats_active_trim_completed:0
+cluster_slot_migration_stats_active_trim_cancelled:0
 redis-cluster-0
 master
-1680
-10.1.1.80
+12446
+10.1.207.204
 6379
-1680
+12446
 
 redis-cluster-1
 master
-1666
-10.1.1.81
+12441
+10.1.207.222
 6379
-1666
+12441
 
 redis-cluster-2
 master
-1666
-10.1.1.79
-6379
-1666
+154
+
 
 redis-cluster-3
 slave
-10.1.1.78
+10.1.207.222
 6379
 connected
-1666
+12441
 
 redis-cluster-4
 slave
-10.1.1.76
+10.1.207.246
 6379
 connected
-1680
+12446
 
 redis-cluster-5
 slave
-10.1.1.77
+10.1.207.244
 6379
 connected
-1666
-```
-
-## Helm Charts
-
-```
-$ helm list
-NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
-common-config	default  	2       	2026-04-19 19:01:50.557941943 +0800 +08	deployed	common-config-1.0.0	1.0.0
-nodejsrestapi	default  	1       	2026-04-19 19:36:12.291615359 +0800 +08	deployed	NodeJSRestAPI-1.0.0	1.0.0
-pythonrestapi	default  	1       	2026-04-19 18:25:46.309313553 +0800 +08	deployed	PythonRestAPI-1.0.0	1.0.0
-rag-agent    	default  	2       	2026-04-19 18:56:28.672494333 +0800 +08	deployed	RAGAgent-1.0.0     	1.0.0
+12441
 ```
 
 ## Elasticsearch Cluster:

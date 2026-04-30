@@ -36,18 +36,16 @@ spec:
         env:
           - name: ENVIRONMENT
             value: {{ .Values.environment }}
-        {{- if .Values.postgresql }}
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secretName }}
-                key: {{ .Values.postgresql.user }}
+                name: {{ required "PostgreSQL DB username secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB username secretKey!" .Values.postgresql.user }}
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.postgresql.secretName }}
-                key: {{ .Values.postgresql.passwordKey }}
-        {{- end }}
+                name: {{ required "PostgreSQL DB password secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB password secretKey!" .Values.postgresql.passwordKey }}
         {{- if .Values.gemini }}
           - name: GEMINI_API_KEY
             valueFrom:

@@ -5,8 +5,8 @@ metadata:
 data:
   OLLAMA_MODELS: "/models"
   OLLAMA_SCHED_SPREAD: "true"
-  OLLAMA_CONTEXT_LENGTH: "262144"
+  OLLAMA_CONTEXT_LENGTH: "8192"
   OLLAMA_HOST: "http://0.0.0.0:11434"
   OLLAMA_DEBUG: "true"
-  OLLAMA_FLASH_ATTENTION: "true"
+  #OLLAMA_FLASH_ATTENTION: "true" pending https://github.com/ollama/ollama/pull/15378
   MODELS: "gemma4:31b, embeddinggemma"
