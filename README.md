@@ -58,13 +58,14 @@ Kubernetes cluster which consists of the following components:
 ```
 $ helm list
 NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
-common-config	default  	5       	2026-04-29 15:17:11.971094947 +0800 +08	deployed	common-config-1.0.0	1.0.0
+common-config	default  	1       	2026-04-30 19:48:02.558336511 +0800 +08	deployed	common-config-1.0.0	1.0.0
 neo4j        	default  	1       	2026-04-30 12:14:44.725694023 +0800 +08	deployed	Neo4J-1.0.0        	1.0.0
 nodejsrestapi	default  	1       	2026-04-30 12:26:15.66047827 +0800 +08 	deployed	NodeJSRestAPI-1.0.0	1.0.0
+ollama       	default  	1       	2026-04-30 19:43:59.079113432 +0800 +08	deployed	Ollama-1.0.0       	1.0.0
 postgresql   	default  	1       	2026-04-30 12:05:46.188732426 +0800 +08	deployed	PostgreSQL-1.0.0   	1.0.0
 pythonrestapi	default  	1       	2026-04-30 12:26:31.715122897 +0800 +08	deployed	PythonRestAPI-1.0.0	1.0.0
 ragagent     	default  	1       	2026-04-30 12:27:31.357106725 +0800 +08	deployed	RAGAgent-1.0.0     	1.0.0
-redis-cluster	default  	3       	2026-04-29 12:51:28.67599083 +0800 +08 	deployed	RedisCluster-1.0.0 	1.0.0
+redis-cluster	default  	1       	2026-04-30 19:02:33.72235715 +0800 +08 	deployed	RedisCluster-1.0.0 	1.0.0
 ```
 
 ## Cluster Resources
