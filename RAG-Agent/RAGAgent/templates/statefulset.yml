@@ -34,6 +34,8 @@ spec:
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+          - name: ENVIRONMENT
+            value: {{ .Values.environment }}
         {{- if .Values.postgresql }}
           - name: DB_USERNAME
             valueFrom:
