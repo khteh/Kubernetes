@@ -47,7 +47,7 @@ serviceAccount:
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/      
 podLabels: {}
 
 podSecurityContext: {}

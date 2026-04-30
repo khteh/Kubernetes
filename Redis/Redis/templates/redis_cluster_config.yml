@@ -12,6 +12,9 @@ data:
     cluster-node-timeout 15000
     cluster-config-file /data/nodes.conf
     cluster-migration-barrier 1
+    cluster-announce-ip $(POD_IP)
+    cluster-announce-port 6379
+    cluster-announce-bus-port 16379    
     appendonly yes
     appendfsync everysec
     protected-mode no
