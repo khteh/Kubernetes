@@ -169,12 +169,13 @@ cluster_known_nodes:6
 cluster_size:3
 cluster_current_epoch:6
 cluster_my_epoch:1
-cluster_stats_messages_ping_sent:8729
-cluster_stats_messages_pong_sent:8827
-cluster_stats_messages_sent:17556
-cluster_stats_messages_ping_received:8827
-cluster_stats_messages_pong_received:8727
-cluster_stats_messages_received:17554
+cluster_stats_messages_ping_sent:167
+cluster_stats_messages_pong_sent:171
+cluster_stats_messages_sent:338
+cluster_stats_messages_ping_received:166
+cluster_stats_messages_pong_received:170
+cluster_stats_messages_meet_received:5
+cluster_stats_messages_received:341
 total_cluster_links_buffer_limit_exceeded:0
 cluster_slot_migration_active_tasks:0
 cluster_slot_migration_active_trim_running:0
@@ -185,43 +186,45 @@ cluster_slot_migration_stats_active_trim_completed:0
 cluster_slot_migration_stats_active_trim_cancelled:0
 redis-cluster-0
 master
-12446
-10.1.207.204
+238
+10.1.207.205
 6379
-12446
+238
 
 redis-cluster-1
 master
-12441
+238
 10.1.207.222
 6379
-12441
+238
 
 redis-cluster-2
 master
-154
-
+238
+10.1.207.223
+6379
+238
 
 redis-cluster-3
 slave
-10.1.207.222
+redis-cluster-2.svc-redis-cluster.default.svc
 6379
 connected
-12441
+238
 
 redis-cluster-4
 slave
-10.1.207.246
+redis-cluster-0.svc-redis-cluster.default.svc
 6379
 connected
-12446
+238
 
 redis-cluster-5
 slave
-10.1.207.244
+redis-cluster-1.svc-redis-cluster.default.svc
 6379
 connected
-12441
+238
 ```
 
 ## Elasticsearch Cluster:
