@@ -28,6 +28,9 @@ spec:
       podTemplate:
         spec:
           initContainers:
+            # https://stackoverflow.com/questions/79935638/helm-create-secret-from-parsing-external-ini-file
+            # EKS Pod Identity - Apps that make AWS API calls should be using the AWS SDK. The AWS SDK, when initialised properly, looks for credentials in multiple places, including the environment variables that pod identity injects.
+            # "aws configure sso" sets up a browser based login that re-uses your browsers AWS Console login or your enterprise linked AD identity.
             - name: add-aws-keys
               env:
                 - name: AWS_ACCESS_KEY_ID

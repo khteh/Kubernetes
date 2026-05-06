@@ -5,13 +5,13 @@ metadata:
   namespace: default
 spec:
   version: 9.2.2
-  kibanaRef:
-    name: MyFleetServer
-  elasticsearchRefs:
-    - name: <name>
   mode: fleet
   fleetServerEnabled: true
   policyID: eck-fleet-server
+  kibanaRef:
+    name: khteh-kibana
+  elasticsearchRefs:
+    - name: khteh-es
   deployment:
     replicas: 3
     podTemplate:
@@ -28,12 +28,12 @@ metadata:
   namespace: default
 spec:
   version: 9.2.2
-  kibanaRef:
-    name: <name>
-  fleetServerRef:
-    name: fleet-server
   mode: fleet
   policyID: eck-agent
+  kibanaRef:
+    name: khteh-kibana
+  fleetServerRef:
+    name: fleet-server
   daemonSet:
     podTemplate:
       spec:
