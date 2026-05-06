@@ -37,7 +37,7 @@ spec:
           args:
           - /conf/redis.conf
           - --cluster-announce-ip
-          - $(POD_NAME).$(POD_SERVICE_NAME).$(POD_NAMESPACE).svc.cluster.local
+          - $(POD_IP)
           env:
             - name: POD_IP
               valueFrom:
