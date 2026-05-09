@@ -21,4 +21,3 @@ spec:
       - name: {{ .Values.initJobName }}
         image: "{{ .Values.image.initJob.repository }}:{{ .Values.image.initJob.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-      restartPolicy: OnFailure
