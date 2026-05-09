@@ -1,0 +1,43 @@
+# templates/init-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init
+  annotations:
+    "helm.sh/hook": post-install
+    #"helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded, before-hook-creation
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: init
+          image: postgres:18
+          command: ["sh", "-c"]
+          args:
+            - |
+              until pg_isready -h postgresql-cluster-rw -p 5432; do sleep 2; done
+              psql -h postgresql-cluster-rw -U guest -f /tmp/Langchain.sql
+              psql -h postgresql-cluster-rw -U guest -f /tmp/library.sql
+              psql -h postgresql-cluster-rw -U guest -f /tmp/school.sql
+          volumeMounts:
+            - name: db-langchain
+              mountPath: /tmp/Langchain.sql
+              subPath: Langchain.sql
+            - name: db-library
+              mountPath: /tmp/library.sql
+              subPath: library.sql
+            - name: db-school
+              mountPath: /tmp/school.sql
+              subPath: school.sql
+      volumes:
+        - name: db-langchain
+          configMap:
+            name: db-langchain
+        - name: db-library
+          configMap:
+            name: db-library        
+        - name: db-school
+          configMap:
+            name: db-school

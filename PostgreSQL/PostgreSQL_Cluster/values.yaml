@@ -1,0 +1,58 @@
+# Default values for PostgreSQL_Cluster.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/README.md#Configuration-options
+# https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
+# -- Override the name of the chart
+nameOverride: postgresql-cluster
+# -- Override the namespace of the chart
+namespaceOverride: default
+cluster:
+  # -- Number of instances
+  instances: 3
+
+  # -- Image pull policy. One of Always, Never or IfNotPresent. If not defined, it defaults to IfNotPresent. Cannot be updated.
+  # More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+  imagePullPolicy: IfNotPresent
+
+  superuserSecret:
+    name: superuser-secret
+  enableSuperuserAccess: true
+
+  roles:
+    - name: guest
+      ensure: present
+      login: true
+      superuser: true
+      passwordSecret:
+        name: guest-secret  # must be type kubernetes.io/basic-auth        
+
+  initdb:
+    database: AspNetCoreWebApi
+    owner: guest
+    postInitSQL:
+      - CREATE DATABASE library OWNER guest
+      - CREATE DATABASE school OWNER guest  
+      - CREATE DATABASE Langchain OWNER guest
+  postInitApplicationSQLRefs:
+    configMapRefs:
+      - name: db-aspnetcorewebapi
+        key: AspNetCoreWebApi.sql
+
+  managed:
+    services:
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: svc-postgresql-nodeport
+              labels:
+                test-label: "true"
+              annotations:
+                test-annotation: "true"
+            spec:
+              type: NodePort
+
+  storage:
+    size: 10Gi
+    storageClass: ""
