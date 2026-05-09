@@ -46,10 +46,6 @@ cluster:
           serviceTemplate:
             metadata:
               name: svc-postgresql-nodeport
-              labels:
-                test-label: "true"
-              annotations:
-                test-annotation: "true"
             spec:
               type: NodePort
 
