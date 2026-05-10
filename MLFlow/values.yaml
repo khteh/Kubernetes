@@ -35,6 +35,7 @@ artifactRoot:
   defaultArtifactsDestination: "/mlflow/data/mlartifacts"
 
 backendStore:
+  databaseConnectionCheck: true
   postgres:
     enabled: true
     host: svc-postgresql
