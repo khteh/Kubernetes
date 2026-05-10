@@ -13,8 +13,10 @@ extraVolumeMounts:
 
 auth:
   enabled: true
-  adminUsername: admin
-  adminPassword: P@$$w0rd
+  #adminUsername: admin
+  #adminPassword: P@$$w0rd
+  existingAdminSecret:
+    name: mlflow-secret
 
 autoscaling:
   enabled: true
