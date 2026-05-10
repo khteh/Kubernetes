@@ -7,7 +7,6 @@ metadata:
   #  component: sql-db
 spec:
   #storageClassName: efs-sc
-  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:

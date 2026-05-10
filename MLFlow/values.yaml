@@ -47,6 +47,7 @@ backendStore:
 service:
   type: ClusterIP
   port: 5000
+  name: svc-mlflow
 
 persistence:
   enabled: true
