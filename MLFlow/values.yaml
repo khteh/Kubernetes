@@ -1,0 +1,54 @@
+# https://github.com/community-charts/helm-charts/tree/main/charts/mlflow
+strategy:
+  type: RollingUpdate
+
+extraVolumes:
+  - name: mlflow-volume
+    persistentVolumeClaim:
+      claimName: pvc-mlflow
+
+extraVolumeMounts:
+  - name: mlflow-volume
+    mountPath: /mlflow/data
+
+auth:
+  enabled: true
+  adminUsername: admin
+  adminPassword: P@$$w0rd
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+artifactRoot:
+  proxiedArtifactStorage: true
+  defaultArtifactsDestination: "/mlflow/data/mlartifacts"
+
+backendStore:
+  postgres:
+    enabled: true
+    host: svc-postgresql
+    port: 5432
+    database: MLFlow
+
+  existingDatabaseSecret:
+    name: postgresql-secret
+    usernameKey: postgresql-user
+    passwordKey: postgresql-password
+
+service:
+  type: ClusterIP
+  port: 5000
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: ""

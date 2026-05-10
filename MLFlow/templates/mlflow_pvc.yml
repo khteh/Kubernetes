@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-mlflow
+  #labels:
+  #  app: pgadmin
+  #  component: sql-db
+spec:
+  #storageClassName: efs-sc
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
