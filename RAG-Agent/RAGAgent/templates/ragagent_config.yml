@@ -22,5 +22,6 @@ data:
         "OLLAMA_CONTEXT_LENGTH": "8192",
         "NEO4J_URI": "neo4j://svc-neo4j:7687",
         "OLLAMA_CLOUD_URI": "https://ollama.com",
-        "OLLAMA_LOCAL_URI": "http://svc-ollama:11434"
+        "OLLAMA_LOCAL_URI": "http://svc-ollama:11434",
+        "MLFLOW_URI": "http://mlflow"
     }
