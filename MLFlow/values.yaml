@@ -57,11 +57,6 @@ backendStore:
     name: postgresql-secret
     usernameKey: postgresql-user
     passwordKey: postgresql-password
-    
-postgresql:
-  enabled: true
-  auth:
-    database: MLFlow
 
 service:
   type: ClusterIP
