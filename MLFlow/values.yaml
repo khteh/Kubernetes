@@ -16,6 +16,17 @@ auth:
   existingAdminSecret:
     name: mlflow-secret
 
+extraEnvVars:
+  # Database Connection Pooling
+  MLFLOW_SQLALCHEMYSTORE_POOL_SIZE: "10"  # SQLAlchemy connection pool size
+  MLFLOW_SQLALCHEMYSTORE_MAX_OVERFLOW: "20"  # SQLAlchemy max overflow connections
+  MLFLOW_SQLALCHEMYSTORE_POOL_RECYCLE: "3600"  # SQLAlchemy pool recycle time
+
+  # Logging and Monitoring
+  MLFLOW_LOGGING_LEVEL: "INFO"  # MLflow logging level
+  MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING: "true"  # Enable system metrics logging
+  MLFLOW_SYSTEM_METRICS_SAMPLING_INTERVAL: "1.0"  # System metrics sampling interval
+
 autoscaling:
   enabled: true
   minReplicas: 1
@@ -34,21 +45,60 @@ artifactRoot:
 
 backendStore:
   databaseConnectionCheck: true
+  databaseMigration: true
   postgres:
     enabled: true
     host: svc-postgresql
     port: 5432
     database: MLFlow
+    driver: psycopg
 
   existingDatabaseSecret:
     name: postgresql-secret
     usernameKey: postgresql-user
     passwordKey: postgresql-password
+    
+postgresql:
+  enabled: true
+  auth:
+    database: MLFlow
 
 service:
   type: ClusterIP
   port: 5000
   name: svc-mlflow
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  interval: 30s
+  telemetryPath: /metrics
+  labels:
+    release: prometheus
+  timeout: 10s
+  targetLabels: []
+
+startupProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 6
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 6
+  failureThreshold: 3
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 6
+  failureThreshold: 3
+ 
+log:
+  enabled: true
+  level: debug  # Set to debug, info, warning, error, or critical
 
 persistence:
   enabled: true
