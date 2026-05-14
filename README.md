@@ -25,6 +25,8 @@ Kubernetes cluster which consists of the following components:
 
 - Install microk8s
 - Install awscli
+- Install sops for secrets encryption/decryption.
+- Install helm-secrets plugin.
 - Run `aws config` to set up aws configurations and credentials
 
 ## Update kubeconfig
