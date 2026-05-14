@@ -1,0 +1,7 @@
+# Default environment values
+# These values are available in helmfile.yaml as {{ .Values }}
+# Example:
+# replicaCount: 1
+# image:
+#   repository: nginx
+#   tag: latest

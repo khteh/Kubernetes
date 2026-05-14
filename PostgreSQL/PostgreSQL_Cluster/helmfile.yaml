@@ -1,0 +1,49 @@
+# Helmfile configuration
+# Documentation: https://helmfile.readthedocs.io/
+
+# Common Helm defaults applied to all releases
+helmDefaults:
+  createNamespace: true
+  wait: true
+  timeout: 300
+
+# # Helm chart repositories
+repositories:
+  - name: cloudnative-pg
+    url: https://cloudnative-pg.github.io/charts
+  - name: cluster
+    url: https://cloudnative-pg.github.io/charts
+
+# # Environment-specific values
+# # Usage: helmfile -e <environment> apply
+# environments:
+#   default:
+#     values:
+#       - environments/default.yaml
+#   staging:
+#     values:
+#       - environments/staging.yaml
+#   production:
+#     values:
+#       - environments/production.yaml
+
+# # Helm releases
+releases:
+  - name: cloudnative-pg # name of the release (helm install <...> first_chart)
+    chart: cloudnative-pg/cloudnative-pg
+    version: v0.28.0
+    namespace: postgresql-operator
+
+  - name: cluster
+    chart: cloudnative-pg/cluster
+    version: v0.6.0
+    namespace: default
+    values: 
+      - values/values.yaml
+      - ConfigMaps/db-aspnetcorewebapi.yml
+      - ConfigMaps/db-langchain.yml
+      - ConfigMaps/db-library.yml
+      - ConfigMaps/db-school.yml
+    secrets:
+      - Secrets/postgresql_secret.yml.enc
+      - Secrets/postgresql_superuser.yml.enc

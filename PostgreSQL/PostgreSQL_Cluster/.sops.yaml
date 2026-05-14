@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: .*\.yml$
+    pgp: "3D2A8FF323FA17B4947DB440EFC45A2954F505E1"

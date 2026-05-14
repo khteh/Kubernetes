@@ -314,6 +314,14 @@ Allocatable:
 
 ## Helm Charts
 
+### Secrets
+
+- Create a GPG key: `gpg --full-generate-key`
+- `gpg --list-keys`
+  - Use the public key signature as `pgp` value in `.sops.yaml` configuration file.
+- `gpg --list-secret-keys`
+- Encrypt secret files: `helm secrets encrypt my_secret.yml > my_secret.yml.enc`
+
 ### Debug
 
 - `helm lint <chart folder>`
@@ -323,6 +331,8 @@ Allocatable:
 
 - `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path> --wait`
 - `--wait` is needed especially for running helm hooks which need the pods to be in ready state.
+- `helmfile sync`: Executes `helm upgrade --install` for all releases defined in the file.
+- `helmfile apply`: Similar to sync, but often used with the helm-diff plugin to show changes before applying them.
 
 ### Update
 
