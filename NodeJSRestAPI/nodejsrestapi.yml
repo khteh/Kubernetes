@@ -103,8 +103,8 @@ spec:
               mountPath: config/default.json
               subPath: default.json
               readOnly: true
-          #        - name: log
-          #          mountPath: /var/log/aspnetcore
+            - name: log
+              mountPath: /var/log/nodejsrestapi
           resources:
             limits:
               cpu: 500m

@@ -39,7 +39,7 @@ data:
     <source>
       @type tail
       format json
-      path /var/log/nodejs/log*
+      path /var/log/nodejsrestapi/log*
       pos_file /var/log/td-agent/pos/nodejs_logs.pos
       read_from_head true
       tag nodejs
