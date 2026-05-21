@@ -32,12 +32,14 @@ releases:
   - name: cloudnative-pg # name of the release (helm install <...> first_chart)
     chart: cloudnative-pg/cloudnative-pg
     version: 0.28.2 # helm search repo cloudnative-pg/cloudnative-pg --versions
-    namespace: postgresql-operator
+    namespace: postgresql-cluster
 
   - name: cluster
     chart: cloudnative-pg/cluster
     version: 0.6.0 # helm search repo cloudnative-pg/cluster --versions
-    namespace: default
+    namespace: postgresql-cluster
+    needs:
+      - postgresql-cluster/cloudnative-pg
     values: 
       - values/values.yaml
       - ConfigMaps/db-aspnetcorewebapi.yml

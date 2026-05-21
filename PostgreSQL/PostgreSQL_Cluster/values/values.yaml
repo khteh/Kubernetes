@@ -4,9 +4,9 @@
 # https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/README.md#Configuration-options
 # https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
 # -- Override the name of the chart
-nameOverride: postgresql-cluster
+nameOverride: postgresql
 # -- Override the namespace of the chart
-namespaceOverride: default
+namespaceOverride: postgresql-cluster
 cluster:
   # -- Number of instances
   instances: 3
