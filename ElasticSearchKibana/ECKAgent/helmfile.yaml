@@ -29,15 +29,6 @@ repositories:
 releases:
   # Deploy the ECK Operator first
   # Cluster-wide (global) installation – Installs both the operator and all its Custom Resource Definitions (CRDs) in a single step.
-  #- name: eck-operator-crds
-  #  namespace: elastic-system
-  #  chart: elastic/eck-operator-crds
-    # $ helm search repo elastic/eck-operator --versions
-  #  version: 3.4.0 # https://www.elastic.co/docs/release-notes/cloud-on-k8s https://github.com/elastic/cloud-on-k8s/releases
-    #wait: true
-
-  # Deploy the ECK Operator first
-  # Cluster-wide (global) installation – Installs both the operator and all its Custom Resource Definitions (CRDs) in a single step.
   - name: eck-operator
     namespace: elastic-system
     chart: elastic/eck-operator
@@ -55,4 +46,3 @@ releases:
       - elastic-system/eck-operator
     values:
       - values/elasticsearch_eck.yml
-    #wait: true
