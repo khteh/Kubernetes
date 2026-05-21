@@ -11,6 +11,7 @@ for pvc in ${pvcs[@]}; do
     kubectl patch pvc $pvc -p '{"metadata":{"finalizers":null}}'
 done
 # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-deploy-elasticsearch.html
+# https://github.com/elastic/cloud-on-k8s/releases
 kubectl create -f https://download.elastic.co/downloads/eck/3.2.0/crds.yaml
 kubectl apply -f https://download.elastic.co/downloads/eck/3.2.0/operator.yaml
 kubectl delete elasticsearch khteh-es --ignore-not-found=true
