@@ -331,6 +331,12 @@ Allocatable:
 
 ### Install
 
+- To find versions of chart from remote repository:
+
+```
+$ helm search repo <repo-name>/<chart-name> --versions
+```
+
 - `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path> --wait`
 - `--wait` is needed especially for running helm hooks which need the pods to be in ready state.
 - `helmfile sync`: Executes `helm upgrade --install` for all releases defined in the file.

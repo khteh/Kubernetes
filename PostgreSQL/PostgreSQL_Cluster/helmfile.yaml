@@ -31,12 +31,12 @@ repositories:
 releases:
   - name: cloudnative-pg # name of the release (helm install <...> first_chart)
     chart: cloudnative-pg/cloudnative-pg
-    version: v0.28.0
+    version: 0.28.2 # helm search repo cloudnative-pg/cloudnative-pg --versions
     namespace: postgresql-operator
 
   - name: cluster
     chart: cloudnative-pg/cluster
-    version: v0.6.0
+    version: 0.6.0 # helm search repo cloudnative-pg/cluster --versions
     namespace: default
     values: 
       - values/values.yaml
