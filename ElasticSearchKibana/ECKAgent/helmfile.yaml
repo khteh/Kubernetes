@@ -1,0 +1,58 @@
+# Helmfile configuration
+# Documentation: https://helmfile.readthedocs.io/
+
+# Common Helm defaults applied to all releases
+helmDefaults:
+  createNamespace: true
+  wait: true
+  timeout: 300
+
+# # Helm chart repositories
+repositories:
+  - name: elastic
+    url: https://helm.elastic.co
+
+# # Environment-specific values
+# # Usage: helmfile -e <environment> apply
+# environments:
+#   default:
+#     values:
+#       - environments/default.yaml
+#   staging:
+#     values:
+#       - environments/staging.yaml
+#   production:
+#     values:
+#       - environments/production.yaml
+
+# # Helm releases
+releases:
+  # Deploy the ECK Operator first
+  # Cluster-wide (global) installation – Installs both the operator and all its Custom Resource Definitions (CRDs) in a single step.
+  #- name: eck-operator-crds
+  #  namespace: elastic-system
+  #  chart: elastic/eck-operator-crds
+    # $ helm search repo elastic/eck-operator --versions
+  #  version: 3.4.0 # https://www.elastic.co/docs/release-notes/cloud-on-k8s https://github.com/elastic/cloud-on-k8s/releases
+    #wait: true
+
+  # Deploy the ECK Operator first
+  # Cluster-wide (global) installation – Installs both the operator and all its Custom Resource Definitions (CRDs) in a single step.
+  - name: eck-operator
+    namespace: elastic-system
+    chart: elastic/eck-operator
+    # $ helm search repo elastic/eck-operator --versions
+    version: 3.4.0 # https://www.elastic.co/docs/release-notes/cloud-on-k8s https://github.com/elastic/cloud-on-k8s/releases
+    wait: true
+
+  # Deploy the Elasticsearch Cluster using the eck-stack chart or raw manifests
+  - name: eck-cluster
+    namespace: elasticsearch
+    chart: elastic/eck-stack
+    # $ helm search repo elastic/eck-stack --versions
+    version: 0.19.0 # https://www.elastic.co/docs/release-notes/cloud-on-k8s https://github.com/elastic/cloud-on-k8s/releases
+    needs:
+      - elastic-system/eck-operator
+    values:
+      - values/elasticsearch_eck.yml
+    #wait: true
