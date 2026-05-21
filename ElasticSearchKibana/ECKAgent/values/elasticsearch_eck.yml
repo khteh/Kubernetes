@@ -44,16 +44,16 @@ eck-elasticsearch:
         #           #
         #           values:
         #           - highio
-          affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/statefulset-name
-                        operator: In
-                        values:
-                          - eck-cluster-masters
-                  topologyKey: kubernetes.io/hostname
+          #affinity:
+          #  podAntiAffinity:
+          #    requiredDuringSchedulingIgnoredDuringExecution:
+          #      - labelSelector:
+          #          matchExpressions:
+          #            - key: elasticsearch.k8s.elastic.co/statefulset-name
+          #              operator: In
+          #              values:
+          #                - eck-cluster-masters
+          #        topologyKey: kubernetes.io/hostname
     # Volume Claim settings.
     # ref: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-volume-claim-templates.html
     #
@@ -101,16 +101,16 @@ eck-elasticsearch:
         #           #
         #           values:
         #           - highio
-          affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/statefulset-name
-                        operator: In
-                        values:
-                          - eck-cluster-hot
-                  topologyKey: kubernetes.io/hostname
+          #affinity:
+          #  podAntiAffinity:
+          #    requiredDuringSchedulingIgnoredDuringExecution:
+          #      - labelSelector:
+          #          matchExpressions:
+          #            - key: elasticsearch.k8s.elastic.co/statefulset-name
+          #              operator: In
+          #              values:
+          #                - eck-cluster-hot
+          #        topologyKey: kubernetes.io/hostname
     # Volume Claim settings.
     # ref: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-volume-claim-templates.html
     #
@@ -161,15 +161,15 @@ eck-elasticsearch:
         #           values:
         #           - highstorage
           affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/statefulset-name
-                        operator: In
-                        values:
-                          - eck-cluster-warm
-                  topologyKey: kubernetes.io/hostname
+            #podAntiAffinity:
+            #  requiredDuringSchedulingIgnoredDuringExecution:
+            #    - labelSelector:
+            #        matchExpressions:
+            #          - key: elasticsearch.k8s.elastic.co/statefulset-name
+            #            operator: In
+            #            values:
+            #              - eck-cluster-warm
+            #      topologyKey: kubernetes.io/hostname
     # Volume Claim settings.
     # ref: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-volume-claim-templates.html
     #
@@ -219,16 +219,16 @@ eck-elasticsearch:
         #           #
         #           values:
         #           - highstorage
-          affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/statefulset-name
-                        operator: In
-                        values:
-                          - eck-cluster-cold
-                  topologyKey: kubernetes.io/hostname
+          #affinity:
+          #  podAntiAffinity:
+          #    requiredDuringSchedulingIgnoredDuringExecution:
+          #      - labelSelector:
+          #          matchExpressions:
+          #            - key: elasticsearch.k8s.elastic.co/statefulset-name
+          #              operator: In
+          #              values:
+          #                - eck-cluster-cold
+          #        topologyKey: kubernetes.io/hostname
     # Volume Claim settings.
     # ref: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-volume-claim-templates.html
     #
