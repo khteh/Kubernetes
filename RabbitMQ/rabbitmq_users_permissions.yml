@@ -1,0 +1,29 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Permission
+metadata:
+  name: guest-permission
+  namespace: rabbitmq-system
+spec:
+  vhost: guest
+  user: guest # name of the RabbitMQ user
+  permissions:
+    write: ".*"
+    configure: ".*"
+    read: ".*"
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Permission
+metadata:
+  name: admin-permission
+  namespace: rabbitmq-system
+spec:
+  vhost: "/"
+  user: admin # name of the RabbitMQ user
+  permissions:
+    write: ".*"
+    configure: ".*"
+    read: ".*"
+  rabbitmqClusterReference:
+    name: rabbitmq
