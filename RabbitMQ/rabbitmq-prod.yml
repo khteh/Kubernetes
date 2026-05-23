@@ -1,10 +1,9 @@
-apiVersion: rabbitmq.com/v1beta1 # https://github.com/rabbitmq/cluster-operator/blob/main/docs/examples/production-ready/rabbitmq.yaml
+apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
+# https://www.rabbitmq.com/kubernetes/operator/using-operator
+# https://github.com/rabbitmq/cluster-operator/blob/main/docs/examples/production-ready/rabbitmq.yaml
 metadata:
-  name: production-ready
-  labels:
-    app: rabbitmq
-    component: rabbitmq
+  name: rabbitmq
 spec:
   replicas: 3
   resources:
@@ -19,6 +18,8 @@ spec:
       name: "rabbitmq-secret"
   rabbitmq:
     additionalPlugins:
+      - rabbitmq_top
+      - rabbitmq_shovel    
       - rabbitmq_federation
       - rabbitmq_federation_management
       - rabbitmq_management
@@ -29,19 +30,24 @@ spec:
       vm_memory_high_watermark_paging_ratio = 0.99
       disk_free_limit.relative = 1.0
       collect_statistics_interval = 10000
+    erlangInetConfig: |
+      {inet6, true}.
+    envConfig: |
+        SERVER_ADDITIONAL_ERL_ARGS="-kernel inetrc '/etc/rabbitmq/erl_inetrc'  -proto_dist inet6_tcp"
+        RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"      
   persistence:
-    storageClassName: gp3
-    storage: "500Gi"
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - production-ready
-        topologyKey: kubernetes.io/hostname
+    #storageClassName: gp3
+    storage: 10Gi
+  #affinity:
+  #  podAntiAffinity:
+  #    requiredDuringSchedulingIgnoredDuringExecution:
+  #    - labelSelector:
+  #        matchExpressions:
+  #          - key: app.kubernetes.io/name
+  #            operator: In
+  #            values:
+  #            - rabbitmq
+  #      topologyKey: kubernetes.io/hostname
   override:
     statefulSet:
       spec:
@@ -54,4 +60,4 @@ spec:
               whenUnsatisfiable: DoNotSchedule
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: production-ready
+                  app.kubernetes.io/name: rabbitmq

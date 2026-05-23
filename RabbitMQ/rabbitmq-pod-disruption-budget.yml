@@ -1,9 +1,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: MyPodDisruptionBudget
+  name: rabbitmq-pdb
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: <name>
+      app.kubernetes.io/name: rabbitmq
