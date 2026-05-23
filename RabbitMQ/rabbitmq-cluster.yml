@@ -6,35 +6,35 @@ metadata:
   name: rabbitmq
 spec:
   replicas: 3
+  terminationGracePeriodSeconds: 60
   resources:
     requests:
-      cpu: 4
-      memory: 10Gi
+      cpu: 1
+      memory: 5Gi
     limits:
-      cpu: 4
-      memory: 10Gi
-  secretBackend:
-    externalSecret: 
-      name: "rabbitmq-secret"
+      cpu: 1
+      memory: 5Gi
   rabbitmq:
     additionalPlugins:
       - rabbitmq_top
       - rabbitmq_shovel    
       - rabbitmq_federation
       - rabbitmq_federation_management
-      - rabbitmq_management
       - rabbitmq_management_agent
-      - rabbitmq_peer_discovery_k8s
     additionalConfig: |
       cluster_partition_handling = pause_minority
       vm_memory_high_watermark_paging_ratio = 0.99
       disk_free_limit.relative = 1.0
       collect_statistics_interval = 10000
-    erlangInetConfig: |
-      {inet6, true}.
-    envConfig: |
-        SERVER_ADDITIONAL_ERL_ARGS="-kernel inetrc '/etc/rabbitmq/erl_inetrc'  -proto_dist inet6_tcp"
-        RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"      
+    #erlangInetConfig: |
+    #  {inet6, true}.
+    #envConfig: |
+    #    SERVER_ADDITIONAL_ERL_ARGS="-kernel inetrc '/etc/rabbitmq/erl_inetrc'  -proto_dist inet6_tcp"
+    #    RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"
+  tls:
+    secretName: rabbitmq-tls-secret
+    caSecretName: selfsigned-issuer
+    disableNonTLSListeners: true    
   persistence:
     #storageClassName: gp3
     storage: 10Gi
@@ -54,10 +54,10 @@ spec:
         template:
           spec:
             containers: []
-            topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: "topology.kubernetes.io/zone"
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: rabbitmq
+            #topologySpreadConstraints:
+            #- maxSkew: 1
+            #  topologyKey: "topology.kubernetes.io/zone"
+            #  whenUnsatisfiable: DoNotSchedule
+            #  labelSelector:
+            #    matchLabels:
+            #      app.kubernetes.io/name: rabbitmq

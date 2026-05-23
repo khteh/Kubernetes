@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned-issuer
+  namespace: default
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rabbitmq-cert
+spec:
+  # The name of the Kubernetes Secret that will be created
+  secretName: rabbitmq-tls-secret
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
+  #commonName: rabbitmq.khteh.com
+  dnsNames:
+    #- rabbitmq.khteh.com
+    #- localhost
+    - "*.rabbitmq-nodes.default.svc.cluster.local"
+    - rabbitmq.default.svc.cluster.local
