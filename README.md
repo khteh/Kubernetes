@@ -34,6 +34,7 @@ Kubernetes cluster which consists of the following components:
 - `aws eks update-kubeconfig --region <region> --name <cluster name>`
 - The step above will update `~/.kube/config`
 - However, `microk8s.kubectl` uses the config in `/var/snap/microk8s/current/credentials/client.config`
+- For local k8s cluster, `cp /var/snap/microk8s/current/credentials/client.config ~/.kube/config`
 - So, copy the EKS config from `~/.kube/config` to `/var/snap/microk8s/current/credentials/client.config`
 
 ## Set Aliases
