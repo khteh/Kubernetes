@@ -16,7 +16,7 @@ cluster:
   imagePullPolicy: IfNotPresent
 
   superuserSecret:
-    name: superuser-secret
+    name: superuser-secret # https://github.com/cloudnative-pg/charts/issues/874
   enableSuperuserAccess: true
 
   roles:

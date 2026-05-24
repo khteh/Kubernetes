@@ -7,15 +7,15 @@ helmDefaults:
   wait: true
   timeout: 300
 
-# # Helm chart repositories
+# Helm chart repositories
 repositories:
   - name: cloudnative-pg
     url: https://cloudnative-pg.github.io/charts
   - name: cluster
     url: https://cloudnative-pg.github.io/charts
 
-# # Environment-specific values
-# # Usage: helmfile -e <environment> apply
+# Environment-specific values
+# Usage: helmfile -e <environment> apply
 # environments:
 #   default:
 #     values:
@@ -27,7 +27,8 @@ repositories:
 #     values:
 #       - environments/production.yaml
 
-# # Helm releases
+# Helm releases
+# https://github.com/cloudnative-pg/charts/issues/874
 releases:
   - name: cloudnative-pg # name of the release (helm install <...> first_chart)
     chart: cloudnative-pg/cloudnative-pg
