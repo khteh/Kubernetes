@@ -86,6 +86,16 @@ spec:
       http:
         paths:
           - pathType: Prefix
+            path: /ragagent(/|$)(.*)
+            backend:
+              service:
+                name: svc-ragagent
+                port:
+                  number: 443
+    - host:
+      http:
+        paths:
+          - pathType: Prefix
             path: /nodejsrestapi(/|$)(.*)
             backend:
               service:
