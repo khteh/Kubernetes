@@ -27,6 +27,8 @@ spec:
       vm_memory_high_watermark_paging_ratio = 0.99
       disk_free_limit.relative = 1.0
       collect_statistics_interval = 10000
+    envConfig: |
+      RABBITMQ_USE_LONGNAME=true
     #erlangInetConfig: |
     #  {inet6, true}.
     #envConfig: |
@@ -34,7 +36,7 @@ spec:
     #    RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"
   tls:
     secretName: rabbitmq-tls-secret
-    caSecretName: selfsigned-issuer
+    caSecretName: letsencrypt-issuer
     disableNonTLSListeners: true    
   persistence:
     #storageClassName: gp3

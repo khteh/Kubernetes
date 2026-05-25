@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+  namespace: default
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: funcoolgeek@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-account-key
+    # 2. Challenge Types
+    # HTTP-01: The most common method. Cert-manager places a small file on your web server, and Let's Encrypt verifies it over the internet. This requires an NGINX Ingress Controller or similar to be reachable via port 80.
+    # DNS-01: Used for wildcard certificates or when your cluster isn't publicly accessible via HTTP. It proves ownership by creating a temporary TXT record in your DNS (e.g., AWS Route53, Azure DNS, or Cloudflare).
+    # Add a single challenge solver, HTTP01 using traefik
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
