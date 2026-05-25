@@ -35,8 +35,9 @@ spec:
     #    SERVER_ADDITIONAL_ERL_ARGS="-kernel inetrc '/etc/rabbitmq/erl_inetrc'  -proto_dist inet6_tcp"
     #    RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"
   tls:
+    # The Secret must already exist in the same Namespace as the RabbitmqCluster object. It is expected that the Secret contains tls.key and tls.crt for the private key and public certificate respectively.
     secretName: rabbitmq-tls-secret
-    caSecretName: letsencrypt-issuer
+    caSecretName: rabbitmq-tls-secret
     disableNonTLSListeners: true    
   persistence:
     #storageClassName: gp3

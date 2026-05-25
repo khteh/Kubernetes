@@ -4,10 +4,11 @@ metadata:
   name: rabbitmq-cert
 spec:
   # The name of the Kubernetes Secret that will be created
+  # The signed certificate will be stored in a Secret resource named example-com-tls in the same namespace as the Certificate once the issuer has successfully issued the requested certificate.
   secretName: rabbitmq-tls-secret
   issuerRef:
-    name: letsencrypt-issuer
-    kind: Issuer
+    name: selfsigned-issuer
+    kind: ClusterIssuer
   #commonName: rabbitmq.khteh.com
   dnsNames:
     #- rabbitmq.khteh.com
