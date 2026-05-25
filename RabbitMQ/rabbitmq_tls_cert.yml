@@ -1,12 +1,15 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
+  # kubectl get certificate rabbitmq-cert -o yaml to check the status of the certificate and see if it has been issued successfully.
   name: rabbitmq-cert
 spec:
   # The name of the Kubernetes Secret that will be created
   # The signed certificate will be stored in a Secret resource named example-com-tls in the same namespace as the Certificate once the issuer has successfully issued the requested certificate.
+  # kubectl get secret rabbitmq-tls-secret -o yaml to verify that ca.crt, tls.crt an tls.key have been created.
   secretName: rabbitmq-tls-secret
   issuerRef:
+    #name: letsencrypt-issuer Domain name does not end with a valid public suffix (TLD)
     name: selfsigned-issuer
     kind: ClusterIssuer
   #commonName: rabbitmq.khteh.com
