@@ -17,16 +17,8 @@ spec:
           image: khteh/rabbitmq-publisher:latest
           imagePullPolicy: Always
           env:
-            - name: ASPNETCORE_ENVIRONMENT
+            - name: DOTNET_ENVIRONMENT
               value: Production
-            - name: ASPNETCORE_URLS
-              value: "https://+;http://+"
-            - name: ASPNETCORE_HTTPS_PORT
-              value: "5000"
-            - name: COMPlus_ThreadPool_ForceMinWorkerThreads
-              value: "1000"
-            - name: COMPlus_ThreadPool_ForceMaxWorkerThreads
-              value: "10000"
             - name: EXCHANGE
               value: "topic_exchange"
             - name: ROUTINGKEY
@@ -34,11 +26,18 @@ spec:
             - name: MESSAGE
               value: "Hello World!!!"
           volumeMounts:
+            - name: appsettings-production
+              mountPath: /app/appsettings.Production.json
+              subPath: appsettings.Production.json
+              readOnly: true
             - name: rabbitmq-secret
               mountPath: /app/appsettings.secret.json
               subPath: appsettings.secret.json
               readOnly: true
       volumes:
+        - name: appsettings-production
+          configMap:
+            name: appsettings-production
         - name: rabbitmq-secret
           secret:
             secretName: rabbitmq-secret
