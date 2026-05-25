@@ -2,7 +2,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Vhost
 metadata:
   name: root-vhost # name of this custom resource
-  namespace: rabbitmq-system
 spec:
   name: "/" # name of the vhost
   rabbitmqClusterReference:
@@ -12,7 +11,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Vhost
 metadata:
   name: guest-vhost # name of this custom resource
-  namespace: rabbitmq-system
 spec:
   name: guest # name of the vhost
   rabbitmqClusterReference:
