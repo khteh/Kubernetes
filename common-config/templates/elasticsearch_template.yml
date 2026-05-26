@@ -6,7 +6,7 @@ metadata:
 data:
   elasticsearch_template.json: |
     {
-      "index_patterns": ["aspnetcorewebapi.logs-*", "nodejsrestapi.logs-*", "pythonrestapi.logs-*", "ragagent.logs-*", "hypercorn.logs-*", "ollama.logs-*"],
+      "index_patterns": ["aspnetcorewebapi.logs-*", "nodejsrestapi.logs-*", "pythonrestapi.logs-*", "ragagent.logs-*", "hypercorn.logs-*", "ollama.logs-*", "subscriber.logs-*", "publisher.logs-*"],
       "version": 3,
       "_meta": {
         "description": "GEO Point"

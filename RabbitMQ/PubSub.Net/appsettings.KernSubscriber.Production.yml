@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: appsettings-production
+  name: appsettings-kernsubscriber-production
   namespace: default
 data:
-  appsettings.Production.json: |
+  appsettings.KernSubscriber.Production.json: |
     {
        "DetailedErrors": true,
         "RabbitMQConfig": {

@@ -59,15 +59,44 @@ spec:
               protocol: TCP
           #          hostPort: 8082
           volumeMounts:
-            - name: appsettings-production
-              mountPath: /app/appsettings.Production.json
-              subPath: appsettings.Production.json
+            - name: appsettings-kernsubscriber-production
+              mountPath: /app/appsettings.KernSubscriber.Production.json
+              subPath: appsettings.KernSubscriber.Production.json
               readOnly: true
+            - name: log
+              mountPath: /var/log/subscriber
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+        - name: fluentd
+          image: khteh/fluentd:latest
+          volumeMounts:
+            - name: log
+              mountPath: /var/log/subscriber
+            - name: subscriber-fluentd-config
+              mountPath: /etc/td-agent
+            - name: elasticsearch-template
+              mountPath: /tmp/elasticsearch_template.json
+              subPath: elasticsearch_template.json
+              readOnly: true
+            #- mountPath: /fluentd/elastic/tls.crt
+            #  name: elasticsearch-ca
+            #  subPath: tls.crt
+            #  readOnly: true
           resources:
             limits:
               cpu: 500m
               memory: 2Gi
       volumes:
-        - name: appsettings-production
+        - name: appsettings-kernsubscriber-production
           configMap:
-            name: appsettings-production
+            name: appsettings-kernsubscriber-production
+        - name: subscriber-fluentd-config
+          configMap:
+            name: subscriber-fluentd-config
+        - name: elasticsearch-template
+          configMap:
+            name: elasticsearch-template
+        - name: log
+          emptyDir: {}
