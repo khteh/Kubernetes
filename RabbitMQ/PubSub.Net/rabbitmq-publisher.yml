@@ -19,6 +19,16 @@ spec:
           env:
             - name: DOTNET_ENVIRONMENT
               value: Production
+            - name: UserName
+              valueFrom:
+                secretKeyRef:
+                  name: guest-secret
+                  key: username
+            - name: Password
+              valueFrom:
+                secretKeyRef:
+                  name: guest-secret
+                  key: password
             - name: EXCHANGE
               value: "topic_exchange"
             - name: ROUTINGKEY

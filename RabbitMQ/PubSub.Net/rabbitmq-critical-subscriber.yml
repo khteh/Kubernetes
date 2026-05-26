@@ -39,6 +39,16 @@ spec:
           env:
             - name: DOTNET_ENVIRONMENT
               value: Production
+            - name: UserName
+              valueFrom:
+                secretKeyRef:
+                  name: guest-secret
+                  key: username
+            - name: Password
+              valueFrom:
+                secretKeyRef:
+                  name: guest-secret
+                  key: password
             - name: EXCHANGE
               value: "topic_exchange"
             - name: BINDINGS
@@ -57,10 +67,6 @@ spec:
               mountPath: /app/appsettings.Production.json
               subPath: appsettings.Production.json
               readOnly: true
-            - name: rabbitmq-secret
-              mountPath: /app/appsettings.secret.json
-              subPath: appsettings.secret.json
-              readOnly: true
           resources:
             limits:
               cpu: 500m
@@ -69,9 +75,3 @@ spec:
         - name: appsettings-production
           configMap:
             name: appsettings-production
-        - name: rabbitmq-secret
-          secret:
-            secretName: rabbitmq-secret
-            items:
-              - key: rabbitmq_secret.json
-                path: appsettings.secret.json

@@ -7,6 +7,13 @@ data:
   appsettings.Production.json: |
     {
        "DetailedErrors": true,
+        "RabbitMQConfig": {
+            "ConnectionName": "RabbitMQPubSub",
+            "Endpoint": "rabbitmq",
+            "UserName": "",
+            "Password": "",
+            "VHost": "guest"
+        },
        "ElasticApm": {
             "ServiceName": "my-apm",
             "ServerUrl": "https://my-apm-http:8200",
