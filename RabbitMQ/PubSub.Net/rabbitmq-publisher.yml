@@ -40,39 +40,8 @@ spec:
               mountPath: /app/appsettings.Production.json
               subPath: appsettings.Production.json
               readOnly: true
-            - name: rabbitmq-secret
-              mountPath: /app/appsettings.secret.json
-              subPath: appsettings.secret.json
-              readOnly: true
-            - name: default_user.conf
-              mountPath: /app/default_user.conf
-              subPath: default_user.conf
-              readOnly: true
-            - name: connection_string
-              mountPath: /app/connection_string
-              subPath: connection_string
-              readOnly: true
       volumes:
         - name: appsettings-production
           configMap:
             name: appsettings-production
         # Admin credentials for a RabbitmqCluster are stored in a Kubernetes secret called INSTANCE-default-user, where INSTANCE is the name of the RabbitmqCluster object.
-        - name: rabbitmq-secret
-          secret:
-            secretName: rabbitmq-secret
-            items:
-              - key: rabbitmq_secret.json
-                path: appsettings.secret.json
-        - name: rabbitmq-default-user
-          secret:
-            secretName: rabbitmq-default-user
-            items:
-              - key: default_user.conf
-                path: default_user.conf
-        - name: connection_string
-          secret:
-            secretName: rabbitmq-default-user
-            items:
-              - key: connection_string
-                path: connection_string
-
