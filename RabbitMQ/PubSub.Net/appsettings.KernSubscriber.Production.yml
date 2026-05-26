@@ -78,8 +78,7 @@ data:
                 "Serilog.Exceptions",
                 "Elastic.Serilog.Sinks",
                 "Serilog.Sinks.Console",
-                "Serilog.Enrichers.Thread",
-                "Serilog.Enrichers.HttpContext"
+                "Serilog.Enrichers.Thread"
             ],
             "MinimumLevel": {
                 "Default": "Debug",
