@@ -12,7 +12,10 @@ data:
             "Endpoint": "rabbitmq",
             "UserName": "",
             "Password": "",
-            "VHost": "guest"
+            "VHost": "guest",
+            "Exchange": "topic_exchange",
+            "Bindings": "",
+            "RoutingKey": "kern.info"
         },
        "ElasticApm": {
             "ServiceName": "my-apm",

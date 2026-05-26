@@ -31,8 +31,6 @@ spec:
                   key: password
             - name: EXCHANGE
               value: "topic_exchange"
-            - name: ROUTINGKEY
-              value: "kern.info"
             - name: MESSAGE
               value: "Hello World!!!"
           volumeMounts:

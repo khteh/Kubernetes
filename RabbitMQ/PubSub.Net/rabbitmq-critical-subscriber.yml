@@ -49,10 +49,6 @@ spec:
                 secretKeyRef:
                   name: guest-secret
                   key: password
-            - name: EXCHANGE
-              value: "topic_exchange"
-            - name: BINDINGS
-              value: "*.critical"
           ports:
             - containerPort: 5000
               name: http
