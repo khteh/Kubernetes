@@ -1,0 +1,21 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: critical-queue # name of this custom resource; does not have to the same as the actual queue name
+spec:
+  name: critical # name of the queue
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: kern-queue # name of this custom resource; does not have to the same as the actual queue name
+spec:
+  name: kern # name of the queue
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq

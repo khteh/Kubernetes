@@ -1,5 +1,5 @@
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: rabbitmq-publisher-job
   labels:
@@ -7,39 +7,81 @@ metadata:
     component: rabbitmq
 spec:
   #  ttlSecondsAfterFinished: 100
-  backoffLimit: 3
-  activeDeadlineSeconds: 100
-  template:
+  timeZone: "Asia/Singapore"
+  schedule: "*/5 * * * *" # once every x min of an hour
+  startingDeadlineSeconds: 60
+  successfulJobsHistoryLimit: 3
+  suspend: false
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
     spec:
-      restartPolicy: OnFailure
-      containers:
-        - name: rabbitmq-publisher-job
-          image: khteh/rabbitmq-publisher:latest
-          imagePullPolicy: Always
-          env:
-            - name: DOTNET_ENVIRONMENT
-              value: Production
-            - name: UserName
-              valueFrom:
-                secretKeyRef:
-                  name: guest-secret
-                  key: username
-            - name: Password
-              valueFrom:
-                secretKeyRef:
-                  name: guest-secret
-                  key: password
-            - name: EXCHANGE
-              value: "topic_exchange"
-            - name: MESSAGE
-              value: "Hello World!!!"
-          volumeMounts:
-            - name: appsettings-production
-              mountPath: /app/appsettings.Production.json
-              subPath: appsettings.Production.json
-              readOnly: true
-      volumes:
-        - name: appsettings-production
-          configMap:
-            name: appsettings-production
-        # Admin credentials for a RabbitmqCluster are stored in a Kubernetes secret called INSTANCE-default-user, where INSTANCE is the name of the RabbitmqCluster object.
+      template:
+        spec:
+          dnsPolicy: Default
+          hostNetwork: true
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          containers:
+            - name: rabbitmq-publisher-job
+              image: khteh/rabbitmq-publisher:latest
+              imagePullPolicy: Always
+              env:
+                - name: DOTNET_ENVIRONMENT
+                  value: Production
+                - name: UserName
+                  valueFrom:
+                    secretKeyRef:
+                      name: guest-secret
+                      key: username
+                - name: Password
+                  valueFrom:
+                    secretKeyRef:
+                      name: guest-secret
+                      key: password
+                - name: MESSAGE
+                  value: "Hello World!!!"
+              volumeMounts:
+                - name: appsettings-publisher-production
+                  mountPath: /app/appsettings.Production.json
+                  subPath: appsettings.Production.json
+                  readOnly: true
+                - name: log
+                  mountPath: /var/log/subscriber
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 2Gi
+            - name: fluentd
+              image: khteh/fluentd:latest
+              volumeMounts:
+                - name: log
+                  mountPath: /var/log/subscriber
+                - name: publisher-fluentd-config
+                  mountPath: /etc/td-agent
+                - name: elasticsearch-template
+                  mountPath: /tmp/elasticsearch_template.json
+                  subPath: elasticsearch_template.json
+                  readOnly: true
+                #- mountPath: /fluentd/elastic/tls.crt
+                #  name: elasticsearch-ca
+                #  subPath: tls.crt
+                #  readOnly: true
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 2Gi
+          volumes:
+            - name: appsettings-publisher-production
+              configMap:
+                name: appsettings-publisher-production
+            - name: publisher-fluentd-config
+              configMap:
+                name: publisher-fluentd-config
+            - name: elasticsearch-template
+              configMap:
+                name: elasticsearch-template
+            - name: log
+              emptyDir: {}

@@ -4,7 +4,7 @@ metadata:
   name: appsettings-publisher-production
   namespace: default
 data:
-  appsettings.Publisher.Production.json: |
+  appsettings.Production.json: |
     {
        "DetailedErrors": true,
         "RabbitMQConfig": {
@@ -16,6 +16,7 @@ data:
             "VHost": "guest",
             "Exchange": "topic_exchange",
             "Bindings": "",
+            "QueueName": "kern",
             "RoutingKey": "kern.info"
         },
        "ElasticApm": {

@@ -1,0 +1,21 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: critical-binding
+spec:
+  source: topic_exchange # an existing exchange
+  destination: critical # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: kern-binding
+spec:
+  source: topic_exchange # an existing exchange
+  destination: kern # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq

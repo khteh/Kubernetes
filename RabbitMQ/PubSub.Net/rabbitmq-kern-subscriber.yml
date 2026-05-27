@@ -60,8 +60,8 @@ spec:
           #          hostPort: 8082
           volumeMounts:
             - name: appsettings-kernsubscriber-production
-              mountPath: /app/appsettings.KernSubscriber.Production.json
-              subPath: appsettings.KernSubscriber.Production.json
+              mountPath: /app/appsettings.Production.json
+              subPath: appsettings.Production.json
               readOnly: true
             - name: log
               mountPath: /var/log/subscriber

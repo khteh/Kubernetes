@@ -4,7 +4,7 @@ metadata:
   name: appsettings-criticalsubscriber-production
   namespace: default
 data:
-  appsettings.CriticalSubscriber.Production.json: |
+  appsettings.Production.json: |
     {
        "DetailedErrors": true,
         "RabbitMQConfig": {
@@ -16,6 +16,7 @@ data:
             "VHost": "guest",
             "Exchange": "topic_exchange",
             "Bindings": "*.critical",
+            "QueueName": "critical",
             "RoutingKey": ""
         },
        "ElasticApm": {

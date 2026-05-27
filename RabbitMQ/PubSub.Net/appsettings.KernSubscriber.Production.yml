@@ -4,7 +4,7 @@ metadata:
   name: appsettings-kernsubscriber-production
   namespace: default
 data:
-  appsettings.KernSubscriber.Production.json: |
+  appsettings.Production.json: |
     {
        "DetailedErrors": true,
         "RabbitMQConfig": {
@@ -16,6 +16,7 @@ data:
             "VHost": "guest",
             "Exchange": "topic_exchange",
             "Bindings": "kern.*",
+            "QueueName": "kern",
             "RoutingKey": ""
         },
        "ElasticApm": {
