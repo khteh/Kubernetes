@@ -99,9 +99,9 @@ pod/pythonrestapi-0                           2/2     Running     0          49m
 pod/pythonrestapi-1                           2/2     Running     0          49m
 pod/ollama-0                                  2/2     Running     0          19m
 pod/ollama-1                                  2/2     Running     0          19m
-pod/rabbitmq-0                                1/1     Running     0          3d6h
-pod/rabbitmq-1                                1/1     Running     0          3d6h
-pod/rabbitmq-2                                1/1     Running     0          3d6h
+pod/rabbitmq-server-0                         1/1     Running    11         2d3h
+pod/rabbitmq-server-1                         1/1     Running    11         2d3h
+pod/rabbitmq-server-2                         1/1     Running    11         2d3h
 pod/redis-cluster-0                           1/1     Running     0          14d
 pod/redis-cluster-1                           1/1     Running     0          14d
 pod/redis-cluster-2                           1/1     Running     0          14d
@@ -127,7 +127,8 @@ service/svc-pythonrestapi             ClusterIP   None             <none>       
 service/svc-pythonrestapi-nodeport    NodePort    10.152.183.195   <none>        443:31002/UDP       49m
 service/svc-ollama                    ClusterIP   None             <none>        11434/TCP           19m
 service/svc-ollama-nodeport           NodePort    10.152.183.76    <none>        11434:32000/TCP     19m
-service/svc-rabbitmq                  ClusterIP   None             <none>        15672/TCP,5672/TCP  5d7h
+service/rabbitmq                      ClusterIP   10.152.183.93    <none>        5671/TCP,15671/TCP,15691/TCP                   2d3h
+service/rabbitmq-nodes                ClusterIP   None             <none>        4369/TCP,25672/TCP                             2d3h
 service/svc-redis-cluster             ClusterIP   None             <none>        6379/TCP,16379/TCP  61d
 service/svc-ragagent                  ClusterIP   None             <none>        80/TCP,4433/TCP,443/UDP                        20h
 service/svc-ragagent-nodeport         NodePort    10.152.183.169   <none>        443:31003/UDP                                  58s
@@ -149,13 +150,12 @@ statefulset.apps/neo4j                  1/1     140m
 statefulset.apps/nodejsrestapi          2/2     105s
 statefulset.apps/pythonrestapi          2/2     49m
 statefulset.apps/ollama                 2/2     19m
-statefulset.apps/rabbitmq               3/3     3d6h
+statefulset.appsrabbitmq-server         3/3     2d3h
 statefulset.apps/redis-cluster          6/6     14d
 
 NAME                                              REFERENCE             TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
 horizontalpodautoscaler.autoscaling/kibana-hpa    StatefulSet/kibana    3%/75%    2         5         2          74s
 horizontalpodautoscaler.autoscaling/restapi-hpa   StatefulSet/restapi   1%/75%    2         5         2          23m
-horizontalpodautoscaler.autoscaling/rabbitmq-hpa  StatefulSet/rabbitmq  15%/75%   3         6         3          4d5h
 ```
 
 ## Redis Cluster:
@@ -253,19 +253,151 @@ khteh-kibana   green    2       9.2.2    5m5s
 ## RabbitMQ Cluster:
 
 ```
-# rabbitmqctl cluster_status
-Cluster status of node rabbit@rabbitmq-0.svc-rabbitmq.default.svc.cluster.local ...
-[{nodes,[{disc,['rabbit@rabbitmq-0.svc-rabbitmq.default.svc.cluster.local',
-                'rabbit@rabbitmq-1.svc-rabbitmq.default.svc.cluster.local',
-                'rabbit@rabbitmq-2.svc-rabbitmq.default.svc.cluster.local']}]},
- {running_nodes,['rabbit@rabbitmq-2.svc-rabbitmq.default.svc.cluster.local',
-                 'rabbit@rabbitmq-1.svc-rabbitmq.default.svc.cluster.local',
-                 'rabbit@rabbitmq-0.svc-rabbitmq.default.svc.cluster.local']},
- {cluster_name,<<"rabbit@rabbitmq-0.svc-rabbitmq.default.svc.cluster.local">>},
- {partitions,[]},
- {alarms,[{'rabbit@rabbitmq-2.svc-rabbitmq.default.svc.cluster.local',[]},
-          {'rabbit@rabbitmq-1.svc-rabbitmq.default.svc.cluster.local',[]},
-          {'rabbit@rabbitmq-0.svc-rabbitmq.default.svc.cluster.local',[]}]}]
+$ k get rabbitmqcluster
+NAME       ALLREPLICASREADY   RECONCILESUCCESS   AGE
+rabbitmq   True               True               2d3h
+```
+
+- Status:
+
+```
+$ k exec -it rabbitmq-server-0 -- rabbitmq-diagnostics status
+Defaulted container "rabbitmq" out of: rabbitmq, setup-container (init)
+Status of node rabbit@rabbitmq-server-0.rabbitmq-nodes.default ...
+Runtime
+
+OS PID: 1
+OS: Linux
+Uptime (seconds): 13461
+Is under maintenance?: false
+RabbitMQ version: 4.2.6
+RabbitMQ release series support status: see https://www.rabbitmq.com/release-information
+Node name: rabbit@rabbitmq-server-0.rabbitmq-nodes.default
+Erlang configuration: Erlang/OTP 27 [erts-15.2.7.8] [source] [64-bit] [smp:16:1] [ds:16:1:10] [async-threads:1] [jit:ns]
+Crypto library: OpenSSL 3.5.6 7 Apr 2026
+Erlang processes: 501 used, 1048576 limit
+Scheduler run queue: 1
+Cluster heartbeat timeout (net_ticktime): 60
+
+Plugins
+
+Enabled plugin file: /operator/enabled_plugins
+Enabled plugins:
+
+ * rabbitmq_prometheus
+ * rabbitmq_peer_discovery_k8s
+ * rabbitmq_federation_management
+ * rabbitmq_federation
+ * rabbitmq_top
+ * rabbitmq_exchange_federation
+ * rabbitmq_peer_discovery_common
+ * rabbitmq_shovel
+ * amqp10_client
+ * prometheus
+ * gun
+ * rabbitmq_queue_federation
+ * rabbitmq_federation_common
+ * ddskerl
+ * rabbitmq_management
+ * rabbitmq_management_agent
+ * rabbitmq_web_dispatch
+ * amqp_client
+ * cowboy
+ * oauth2_client
+ * jose
+
+Data directory
+
+Node data directory: /var/lib/rabbitmq/mnesia/rabbit@rabbitmq-server-0.rabbitmq-nodes.default
+Raft data directory: /var/lib/rabbitmq/mnesia/rabbit@rabbitmq-server-0.rabbitmq-nodes.default/quorum/rabbit@rabbitmq-server-0.rabbitmq-nodes.default
+
+Config files
+
+ * /etc/rabbitmq/conf.d/10-defaults.conf
+ * /etc/rabbitmq/conf.d/10-operatorDefaults.conf
+ * /etc/rabbitmq/conf.d/11-default_user.conf
+ * /etc/rabbitmq/conf.d/90-userDefinedConfiguration.conf
+
+Log file(s)
+
+ * <stdout>
+
+Alarms
+
+(none)
+
+Tags
+
+(none)
+
+Memory
+
+Total memory used: 0.1321 gb
+Calculation strategy: rss
+Memory high watermark setting: 0.6 of available memory, computed to: 2.577 gb
+
+reserved_unallocated: 0.0519 gb (39.26 %)
+other_system: 0.0277 gb (20.96 %)
+code: 0.0242 gb (18.36 %)
+other_proc: 0.0176 gb (13.34 %)
+plugins: 0.0039 gb (2.98 %)
+metrics: 0.002 gb (1.51 %)
+other_ets: 0.0012 gb (0.91 %)
+atom: 0.0012 gb (0.89 %)
+allocated_unused: 0.0011 gb (0.86 %)
+metadata_store: 0.0004 gb (0.32 %)
+msg_index: 0.0004 gb (0.27 %)
+mgmt_db: 0.0002 gb (0.15 %)
+binary: 0.0002 gb (0.14 %)
+metadata_store_ets: 0.0 gb (0.03 %)
+quorum_ets: 0.0 gb (0.0 %)
+connection_other: 0.0 gb (0.0 %)
+quorum_queue_procs: 0.0 gb (0.0 %)
+quorum_queue_dlx_procs: 0.0 gb (0.0 %)
+stream_queue_procs: 0.0 gb (0.0 %)
+stream_queue_replica_reader_procs: 0.0 gb (0.0 %)
+mnesia: 0.0 gb (0.0 %)
+connection_readers: 0.0 gb (0.0 %)
+connection_writers: 0.0 gb (0.0 %)
+stream_queue_coordinator_procs: 0.0 gb (0.0 %)
+queue_procs: 0.0 gb (0.0 %)
+connection_channels: 0.0 gb (0.0 %)
+
+File Descriptors
+
+Total: 0, limit: 65439
+
+Free Disk Space
+
+Low free disk space watermark: 2.0 gb
+Free disk space: 259.0934 gb
+
+Totals
+
+Connection count: 0
+Queue count: 0
+Virtual host count: 1
+
+Listeners
+
+Interface: [::], port: 15671, protocol: https, purpose: HTTP API over TLS (HTTPS)
+Interface: [::], port: 15692, protocol: http/prometheus, purpose: Prometheus exporter API over HTTP
+Interface: [::], port: 15691, protocol: https/prometheus, purpose: Prometheus exporter API over TLS (HTTPS)
+Interface: [::], port: 25672, protocol: clustering, purpose: inter-node and CLI tool communication
+Interface: [::], port: 5671, protocol: amqp/ssl, purpose: AMQP 0-9-1 and AMQP 1.0 over TLS
+```
+
+- Listeners:
+
+```
+$ k exec -it rabbitmq-server-0 -- rabbitmq-diagnostics listeners
+Defaulted container "rabbitmq" out of: rabbitmq, setup-container (init)
+Asking node rabbit@rabbitmq-server-0.rabbitmq-nodes.default to report its protocol listeners ...
+Interface: [::], port: 15671, protocol: https, purpose: HTTP API over TLS (HTTPS)
+Interface: [::], port: 15692, protocol: http/prometheus, purpose: Prometheus exporter API over HTTP
+Interface: [::], port: 15691, protocol: https/prometheus, purpose: Prometheus exporter API over TLS (HTTPS)
+Interface: [::], port: 25672, protocol: clustering, purpose: inter-node and CLI tool communication
+Interface: [::], port: 5671, protocol: amqp/ssl, purpose: AMQP 0-9-1 and AMQP 1.0 over TLS
 ```
 
 ## Horizontal Pod Autoscaler:

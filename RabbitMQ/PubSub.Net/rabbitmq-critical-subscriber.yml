@@ -65,10 +65,10 @@ spec:
               readOnly: true
             - name: log
               mountPath: /var/log/subscriber
-          resources:
-            limits:
-              cpu: 500m
-              memory: 2Gi
+          #resources:
+          #  limits:
+          #    cpu: 500m
+          #    memory: 2Gi
         - name: fluentd
           image: khteh/fluentd:latest
           volumeMounts:
@@ -84,10 +84,10 @@ spec:
             #  name: elasticsearch-ca
             #  subPath: tls.crt
             #  readOnly: true
-          resources:
-            limits:
-              cpu: 500m
-              memory: 2Gi
+          #resources:
+          #  limits:
+          #    cpu: 500m
+          #    memory: 2Gi
       volumes:
         - name: appsettings-criticalsubscriber-production
           configMap:

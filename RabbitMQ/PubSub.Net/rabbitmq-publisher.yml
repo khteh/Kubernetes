@@ -49,16 +49,16 @@ spec:
                   subPath: appsettings.Production.json
                   readOnly: true
                 - name: log
-                  mountPath: /var/log/subscriber
-              resources:
-                limits:
-                  cpu: 500m
-                  memory: 2Gi
+                  mountPath: /var/log/publisher
+              #resources:
+              #  limits:
+              #    cpu: 500m
+              #    memory: 2Gi
             - name: fluentd
               image: khteh/fluentd:latest
               volumeMounts:
                 - name: log
-                  mountPath: /var/log/subscriber
+                  mountPath: /var/log/publisher
                 - name: publisher-fluentd-config
                   mountPath: /etc/td-agent
                 - name: elasticsearch-template
@@ -69,10 +69,10 @@ spec:
                 #  name: elasticsearch-ca
                 #  subPath: tls.crt
                 #  readOnly: true
-              resources:
-                limits:
-                  cpu: 500m
-                  memory: 2Gi
+              #resources:
+              #  limits:
+              #    cpu: 500m
+              #    memory: 2Gi
           volumes:
             - name: appsettings-publisher-production
               configMap:
