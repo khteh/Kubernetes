@@ -10,7 +10,7 @@ data:
         "RabbitMQConfig": {
             "ConnectionName": "RabbitMQPubSub",
             "Endpoint": "rabbitmq",
-            "Port": 5671,
+            "Port": 5672,
             "UserName": "",
             "Password": "",
             "VHost": "guest",

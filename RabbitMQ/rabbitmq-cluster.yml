@@ -41,7 +41,7 @@ spec:
     # Note that caSecretName can be the same Secret as spec.tls.secretName. This Secret must have a key ca.crt containing the CA certificate.
     secretName: rabbitmq-tls-secret
     caSecretName: rabbitmq-tls-secret
-    disableNonTLSListeners: true    
+    disableNonTLSListeners: false
   persistence:
     #storageClassName: gp3
     storage: 10Gi
