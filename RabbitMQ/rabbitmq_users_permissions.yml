@@ -2,7 +2,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Permission
 metadata:
   name: guest-permission
-  namespace: rabbitmq-system
 spec:
   vhost: guest
   user: guest # name of the RabbitMQ user
@@ -17,7 +16,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Permission
 metadata:
   name: admin-permission
-  namespace: rabbitmq-system
 spec:
   vhost: "/"
   user: admin # name of the RabbitMQ user

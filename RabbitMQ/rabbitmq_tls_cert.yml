@@ -18,3 +18,5 @@ spec:
     #- localhost
     - "*.rabbitmq-nodes.default.svc.cluster.local"
     - rabbitmq.default.svc.cluster.local
+    - "*.rabbitmq-nodes.default.svc"
+    - rabbitmq.default.svc
