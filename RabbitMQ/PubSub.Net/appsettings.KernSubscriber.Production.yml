@@ -16,8 +16,14 @@ data:
             "VHost": "guest",
             "Exchange": "topic_exchange",
             "Bindings": "kern.*",
-            "QueueName": "kern",
             "RoutingKey": ""
+        },
+        "RabbitMQQueueConfig": {
+            "Temporary": false,
+            "Durable": true,
+            "Exclusive": true,
+            "AutoDelete": true,
+            "Name": "kern"
         },
        "ElasticApm": {
             "ServiceName": "my-apm",

@@ -1,0 +1,12 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: policy-example # name of this custom resource
+spec:
+  name: lazy-queue
+  pattern: "^lazy-queue-" # matches any queue begins with "lazy-queue-"
+  applyTo: "queues"
+  definition:
+    queue-mode: lazy
+  rabbitmqClusterReference:
+    name: rabbitmq

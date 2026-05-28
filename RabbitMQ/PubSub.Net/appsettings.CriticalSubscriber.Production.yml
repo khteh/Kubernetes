@@ -16,8 +16,14 @@ data:
             "VHost": "guest",
             "Exchange": "topic_exchange",
             "Bindings": "*.critical",
-            "QueueName": "critical",
             "RoutingKey": ""
+        },
+        "RabbitMQQueueConfig": {
+            "Temporary": false,
+            "Durable": true,
+            "Exclusive": true,
+            "AutoDelete": true,
+            "Name": "critical"
         },
        "ElasticApm": {
             "ServiceName": "my-apm",

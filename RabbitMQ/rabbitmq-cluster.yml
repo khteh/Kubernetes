@@ -23,6 +23,7 @@ spec:
       - rabbitmq_federation_management
       - rabbitmq_management_agent
     additionalConfig: |
+      ssl_options.fail_if_no_peer_cert = true
       cluster_partition_handling = pause_minority
       vm_memory_high_watermark_paging_ratio = 0.99
       disk_free_limit.relative = 1.0
@@ -35,7 +36,9 @@ spec:
     #    SERVER_ADDITIONAL_ERL_ARGS="-kernel inetrc '/etc/rabbitmq/erl_inetrc'  -proto_dist inet6_tcp"
     #    RABBITMQ_CTL_ERL_ARGS="-proto_dist inet6_tcp"
   tls:
-    # The Secret must already exist in the same Namespace as the RabbitmqCluster object. It is expected that the Secret contains tls.key and tls.crt for the private key and public certificate respectively.
+    # The Secret must already exist in the same Namespace as the RabbitmqCluster object. 
+    # It is expected that the Secret contains tls.key and tls.crt for the private key and public certificate respectively.
+    # Note that caSecretName can be the same Secret as spec.tls.secretName. This Secret must have a key ca.crt containing the CA certificate.
     secretName: rabbitmq-tls-secret
     caSecretName: rabbitmq-tls-secret
     disableNonTLSListeners: true    
