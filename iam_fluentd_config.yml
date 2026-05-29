@@ -8,7 +8,7 @@ metadata:
   selfLink: /api/v1/namespaces/default/configmaps/fluentd-identityservice-config
   uid: f32e2db1-22d1-11e9-a14d-482ae31e6a94
 data:
-  td-agent.conf: |
+  fluent.conf: |
     ####
     ## Output descriptions:
     ##
@@ -44,7 +44,7 @@ data:
       @type tail
       format json
       path /var/log/aspnetcore/log*
-      pos_file /var/log/td-agent/pos/aspnetcore_logs.pos
+      pos_file /var/log/fluentd/pos/aspnetcore_logs.pos
       read_from_head true
       tag aspnetcore
     </source>

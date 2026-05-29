@@ -4,7 +4,7 @@ metadata:
   name: publisher-fluentd-config
   namespace: default
 data:
-  td-agent.conf: |
+  fluent.conf: |
     ####
     ## Output descriptions:
     ##
@@ -29,18 +29,11 @@ data:
       @id input_http
       port 8889
     </source>
-    ## live debugging agent
-    <source>
-      @type debug_agent
-      @id input_debug_agent
-      bind 127.0.0.1
-      port 24230
-    </source>
     <source>
       @type tail
       format json
       path /var/log/publisher/log*
-      pos_file /var/log/td-agent/pos/publisher_logs.pos
+      pos_file /var/log/fluentd/pos/publisher_logs.pos
       read_from_head true
       tag publisher
     </source>
@@ -145,6 +138,11 @@ data:
       </store>
     </match>
     <label @ERROR>
+      <match **>
+        @type stdout
+      </match>
+    </label>
+    <label @FLUENT_LOG>
       <match **>
         @type stdout
       </match>

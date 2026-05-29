@@ -4,7 +4,7 @@ metadata:
   name: ollama-fluentd-config
   namespace: default
 data:
-  td-agent.conf: |
+  fluent.conf: |
     ####
     ## Output descriptions:
     ##
@@ -40,7 +40,7 @@ data:
       @type tail
       format json
       path /var/log/ollama/log*
-      pos_file /var/log/td-agent/pos/ollama_logs.pos
+      pos_file /var/log/fluentd/pos/ollama_logs.pos
       read_from_head true
       tag ollama
     </source>
@@ -145,6 +145,11 @@ data:
       </store>
     </match>
     <label @ERROR>
+      <match **>
+        @type stdout
+      </match>
+    </label>
+    <label @FLUENT_LOG>
       <match **>
         @type stdout
       </match>

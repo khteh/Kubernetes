@@ -4,7 +4,7 @@ metadata:
   name: ragagent-fluentd-config
   namespace: default
 data:
-  td-agent.conf: |
+  fluent.conf: |
     ####
     ## Output descriptions:
     ##
@@ -42,7 +42,7 @@ data:
       tag ragagent
       #sample [{"python_log": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
       path /var/log/ragagent/log*
-      pos_file /var/log/td-agent/pos/ragagent_logs.pos
+      pos_file /var/log/fluentd/pos/ragagent_logs.pos
       read_from_head true
       key_name message
       # even if we failed to parse the time send the record over to splunk
@@ -63,7 +63,7 @@ data:
       tag hypercorn
       #sample [{"hypercorn": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
       path /var/log/hypercorn/errors.log
-      pos_file /var/log/td-agent/pos/hypercorn_logs.pos
+      pos_file /var/log/fluentd/pos/hypercorn_logs.pos
       read_from_head true
       key_name message
       emit_invalid_record_to_error false
@@ -87,7 +87,7 @@ data:
       # hypercorn:192.168.0.149:43472 - - [04/Apr/2025:08:44:16 +0000] "GET /health/live 2" 200 2 "-" "kube-probe/1.27"
       # expression /^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>(?:[^\"]|\\.)*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>(?:[^\"]|\\.)*)" "(?<agent>(?:[^\"]|\\.)*)")?$/
       path /var/log/hypercorn/access.log
-      pos_file /var/log/td-agent/pos/hypercorn_access_logs.pos
+      pos_file /var/log/fluentd/pos/hypercorn_access_logs.pos
       read_from_head true
       emit_invalid_record_to_error false
       reserve_time true
@@ -191,6 +191,11 @@ data:
       </store>
     </match>
     <label @ERROR>
+      <match **>
+        @type stdout
+      </match>
+    </label>
+    <label @FLUENT_LOG>
       <match **>
         @type stdout
       </match>

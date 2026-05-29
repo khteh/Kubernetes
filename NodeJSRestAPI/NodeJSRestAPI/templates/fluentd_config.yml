@@ -4,7 +4,7 @@ metadata:
   name: nodejs-fluentd-config
   namespace: default
 data:
-  td-agent.conf: |
+  fluent.conf: |
     ####
     ## Output descriptions:
     ##
@@ -40,7 +40,7 @@ data:
       @type tail
       format json
       path /var/log/nodejsrestapi/log*
-      pos_file /var/log/td-agent/pos/nodejs_logs.pos
+      pos_file /var/log/fluentd/pos/nodejs_logs.pos
       read_from_head true
       tag nodejs
     </source>
@@ -145,6 +145,11 @@ data:
       </store>
     </match>
     <label @ERROR>
+      <match **>
+        @type stdout
+      </match>
+    </label>
+    <label @FLUENT_LOG>
       <match **>
         @type stdout
       </match>

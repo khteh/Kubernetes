@@ -59,8 +59,8 @@ spec:
               volumeMounts:
                 - name: log
                   mountPath: /var/log/publisher
-                - name: publisher-fluentd-config
-                  mountPath: /etc/td-agent
+                - name: fluentd-config
+                  mountPath: /fluentd/etc
                 - name: elasticsearch-template
                   mountPath: /tmp/elasticsearch_template.json
                   subPath: elasticsearch_template.json
@@ -77,7 +77,7 @@ spec:
             - name: appsettings-publisher-production
               configMap:
                 name: appsettings-publisher-production
-            - name: publisher-fluentd-config
+            - name: fluentd-config
               configMap:
                 name: publisher-fluentd-config
             - name: elasticsearch-template

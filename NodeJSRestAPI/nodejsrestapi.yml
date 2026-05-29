@@ -115,7 +115,7 @@ spec:
             - name: log
               mountPath: /var/log/nodejsrestapi
             - name: nodejs-fluentd-config
-              mountPath: /etc/td-agent
+              mountPath: /fluentd/etc
             - name: elasticsearch-template
               mountPath: /tmp/elasticsearch_template.json
               subPath: elasticsearch_template.json
