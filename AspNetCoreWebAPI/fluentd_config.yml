@@ -31,6 +31,7 @@ data:
     </source>
     <source>
       @type tail
+      @id tail_aspnetcore_logs
       format json
       path /var/log/aspnetcore/log*
       pos_file /var/log/fluentd/pos/aspnetcore_logs.pos

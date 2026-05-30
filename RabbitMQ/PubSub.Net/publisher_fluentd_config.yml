@@ -31,6 +31,7 @@ data:
     </source>
     <source>
       @type tail
+      @id tail_publisher_logs
       format json
       path /var/log/publisher/log*
       pos_file /var/log/fluentd/pos/publisher_logs.pos

@@ -102,6 +102,7 @@ data:
     <source>
       @id fluentd-containers.log
       @type tail
+      @id tail_containers_logs
       path /var/log/containers/*.log
       pos_file /var/log/es-containers.log.pos
       tag raw.kubernetes.*

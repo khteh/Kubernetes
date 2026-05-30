@@ -9,7 +9,7 @@ data:
        "DetailedErrors": true,
         "RabbitMQConfig": {
             "ConnectionName": "RabbitMQPubSub",
-            "Endpoint": "rabbitmq",
+            "Endpoint": "rabbitmq.default.svc.cluster.local",
             "Port": 5672,
             "UserName": "",
             "Password": "",

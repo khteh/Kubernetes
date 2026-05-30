@@ -11,7 +11,7 @@ spec:
   issuerRef:
     #name: letsencrypt-issuer Domain name does not end with a valid public suffix (TLD)
     name: selfsigned-issuer
-    kind: Issuer
+    kind: ClusterIssuer
   #commonName: rabbitmq.khteh.com
   dnsNames:
     #- rabbitmq.khteh.com

@@ -29,16 +29,9 @@ data:
       @id input_http
       port 8889
     </source>
-    ## live debugging agent
-    <source>
-      @type debug_agent
-      @id input_debug_agent
-      bind 127.0.0.1
-      port 24230
-    </source>
     <source>
       @type tail
-      @id input_tail
+      @id tail_ragagent_logs
       tag ragagent
       #sample [{"python_log": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
       path /var/log/ragagent/log*
@@ -59,7 +52,7 @@ data:
     </source>
     <source>
       @type tail
-      @id input_tail
+      @id tail_hypercorn_logs
       tag hypercorn
       #sample [{"hypercorn": "2025-04-07 02:38:02 INFO     Running on https://0.0.0.0:443 (QUIC) (CTRL + C to quit)"}]
       path /var/log/hypercorn/errors.log
@@ -79,7 +72,7 @@ data:
     </source>
     <source>
       @type tail
-      @id input_tail
+      @id tail_hypercorn_access_logs
       tag hypercorn-access
       # https://docs.fluentd.org/configuration/parse-section
       # nginx:    127.0.0.1 192.168.0.1 - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777 "-" "Opera/12.0" -
