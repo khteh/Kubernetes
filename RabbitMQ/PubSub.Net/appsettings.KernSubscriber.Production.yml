@@ -9,7 +9,7 @@ data:
        "DetailedErrors": true,
         "RabbitMQConfig": {
             "ConnectionName": "RabbitMQPubSub",
-            "Endpoint": "rabbitmq.default.svc.cluster.local",
+            "Endpoint": "rabbitmq",
             "Port": 5672,
             "UserName": "",
             "Password": "",
@@ -21,7 +21,7 @@ data:
         "RabbitMQQueueConfig": {
             "Temporary": false,
             "Durable": true,
-            "Exclusive": true,
+            "Exclusive": false,
             "AutoDelete": true,
             "Name": "kern"
         },
@@ -33,7 +33,7 @@ data:
         },        
        "Logging": {
            "LogLevel": {
-                "Default": "Information",
+                "Default": "Debug",
                 "Grpc": "Warning",
                 "System": "Warning",
                 "Microsoft.Hosting.Lifetime": "Warning",

@@ -12,7 +12,7 @@ spec:
   startingDeadlineSeconds: 60
   successfulJobsHistoryLimit: 3
   suspend: false
-  concurrencyPolicy: Forbid #  (to prevent job overlaps).
+  concurrencyPolicy: Allow #  (to prevent job overlaps).
   failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
