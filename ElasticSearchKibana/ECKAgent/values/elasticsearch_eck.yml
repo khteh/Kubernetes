@@ -1,4 +1,5 @@
 ---
+# https://github.com/elastic/cloud-on-k8s/blob/main/deploy/eck-stack/examples/elasticsearch/hot-warm-cold.yaml
 eck-elasticsearch:
   version: 9.4.1
   nodeSets:
@@ -308,6 +309,7 @@ eck-kibana:
           name: kubernetes
         name: kubernetes-1
 
+# https://github.com/elastic/cloud-on-k8s/blob/main/deploy/eck-stack/examples/agent/fleet-agents.yaml
 eck-agent:
   version: 9.4.1
   enabled: true
