@@ -7,7 +7,7 @@ data:
   appsettings.Production.json: |
     {
        "DetailedErrors": true,
-        "RabbitMQConfig": {
+        "RabbitMQConnectionConfig": {
             "ConnectionName": "RabbitMQPubSub",
             "Endpoint": "rabbitmq",
             "Port": 5672,
@@ -17,6 +17,11 @@ data:
             "Exchange": "topic_exchange",
             "Bindings": "kern.*",
             "RoutingKey": ""
+        },
+        "RabbitMQChannelConfig": {
+            "PublisherConfirmationsEnabled": true,
+            "PublisherConfirmationTrackingEnabled": true,
+            "MaxOutstandingConfirmation": 256
         },
         "RabbitMQQueueConfig": {
             "Temporary": false,
@@ -33,7 +38,7 @@ data:
         },        
        "Logging": {
            "LogLevel": {
-                "Default": "Debug",
+                "Default": "Information",
                 "Grpc": "Warning",
                 "System": "Warning",
                 "Microsoft.Hosting.Lifetime": "Warning",
