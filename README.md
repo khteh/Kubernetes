@@ -104,7 +104,9 @@ pod/rabbitmq-server-1                         1/1     Running    11         2d3h
 pod/rabbitmq-server-2                         1/1     Running    11         2d3h
 pod/critical-subscriber-0                     2/2     Running    0          57m
 pod/kern-subscriber-0                         2/2     Running    0          57m
-pod/rabbitmq-publisher-job-29670030-fxg68   1/2     NotReady   0          37m
+pod/rabbitmq-publisher-job-29670320-cwxxj     0/2     Completed   0          13m
+pod/rabbitmq-publisher-job-29670325-5gng2     0/2     Completed   0          8m6s
+pod/rabbitmq-publisher-job-29670330-6hsnz     0/2     Completed   0          3m6s
 pod/redis-cluster-0                           1/1     Running     0          14d
 pod/redis-cluster-1                           1/1     Running     0          14d
 pod/redis-cluster-2                           1/1     Running     0          14d
@@ -159,7 +161,12 @@ statefulset.apps/critical-subscriber    1/1     58m
 statefulset.apps/kern-subscriber        1/1     58m
 
 NAME                                   SCHEDULE      TIMEZONE         SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/rabbitmq-publisher-job   */5 * * * *   Asia/Singapore   False     8        4m8s            43m
+cronjob.batch/rabbitmq-publisher-job   */5 * * * *   Asia/Singapore   False     0        4m41s           37m
+
+NAME                                        STATUS     COMPLETIONS   DURATION   AGE
+job.batch/rabbitmq-publisher-job-29670325   Complete   1/1           11s        14m
+job.batch/rabbitmq-publisher-job-29670330   Complete   1/1           11s        9m41s
+job.batch/rabbitmq-publisher-job-29670335   Complete   1/1           10s        4m41s
 
 NAME                                              REFERENCE             TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
 horizontalpodautoscaler.autoscaling/kibana-hpa    StatefulSet/kibana    3%/75%    2         5         2          74s
