@@ -57,16 +57,6 @@ data:
      </exclude>
     </filter>
     <filter publisher>
-      @type parser
-      key_name message
-      reserve_data true
-      remove_key_name_field true
-      <parse>
-        @type json
-        json_parser json
-      </parse>
-    </filter>
-    <filter publisher>
       @type geoip
       # Specify one or more geoip lookup field which has ip address (default: host)
       geoip_lookup_keys IP

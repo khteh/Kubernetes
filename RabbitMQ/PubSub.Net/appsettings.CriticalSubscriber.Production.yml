@@ -184,7 +184,7 @@ data:
                     "Args": {
                         "formatter": {
                             "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog",
-                            "template": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                            "template": "[{Timestamp}] {Level} {EventId} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
                         }
                     }
                 },
@@ -194,7 +194,7 @@ data:
                         "path": "/var/log/subscriber/log",
                         "formatter": {
                             "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog",
-                            "template": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                            "template": "[{Timestamp}] {Level} {EventId} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
                         },                    
                         "rollingInterval": "Day",
                         "retainedFileCountLimit": 3
