@@ -23,6 +23,27 @@ spec:
           schedulerName: default-scheduler
           securityContext: {}
           terminationGracePeriodSeconds: 30
+          initContainers: # https://github.com/kubernetes/kubernetes/issues/139368
+            - name: fluentd
+              image: khteh/fluentd:latest
+              restartPolicy: Always    # <--- This tells Kubernetes it's a native sidecar
+              volumeMounts:
+                - name: log
+                  mountPath: /var/log/publisher
+                - name: fluentd-config
+                  mountPath: /fluentd/etc
+                - name: elasticsearch-template
+                  mountPath: /tmp/elasticsearch_template.json
+                  subPath: elasticsearch_template.json
+                  readOnly: true
+                #- mountPath: /fluentd/elastic/tls.crt
+                #  name: elasticsearch-ca
+                #  subPath: tls.crt
+                #  readOnly: true
+              #resources:
+              #  limits:
+              #    cpu: 500m
+              #    memory: 2Gi
           containers:
             - name: rabbitmq-publisher-job
               image: khteh/rabbitmq-publisher:latest
@@ -49,25 +70,6 @@ spec:
                   readOnly: true
                 - name: log
                   mountPath: /var/log/publisher
-              #resources:
-              #  limits:
-              #    cpu: 500m
-              #    memory: 2Gi
-            - name: fluentd
-              image: khteh/fluentd:latest
-              volumeMounts:
-                - name: log
-                  mountPath: /var/log/publisher
-                - name: fluentd-config
-                  mountPath: /fluentd/etc
-                - name: elasticsearch-template
-                  mountPath: /tmp/elasticsearch_template.json
-                  subPath: elasticsearch_template.json
-                  readOnly: true
-                #- mountPath: /fluentd/elastic/tls.crt
-                #  name: elasticsearch-ca
-                #  subPath: tls.crt
-                #  readOnly: true
               #resources:
               #  limits:
               #    cpu: 500m
