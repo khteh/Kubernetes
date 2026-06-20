@@ -35,7 +35,9 @@ spec:
             - name: EXTENDED_CONF
               value: "yes"
             - name: NEO4J_PLUGINS
-              value: '["graph-data-science"]'
+              value: ["graph-data-science"]
+            - name: NEO4J_JDK_JAVA_OPTIONS
+              value: "--enable-native-access=ALL-UNNAMED"
           ports:
             - name: https
               containerPort: 7473
