@@ -43,6 +43,10 @@ spec:
               value: {{ .Values.configuration.path }}
             - name: EXTENDED_CONF
               value: {{ .Values.configuration.extended | quote }}
+            - name: NEO4J_PLUGINS
+              value: {{ .Values.configuration.plugins  | join "," | quote }}
+            - name: NEO4J_JDK_JAVA_OPTIONS
+              value: {{ .Values.configuration.jdkJavaOptions | quote }}
           ports:
             - name: https
               containerPort: {{ .Values.ports.https }}

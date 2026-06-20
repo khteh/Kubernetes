@@ -34,6 +34,8 @@ spec:
               value: "/config"
             - name: EXTENDED_CONF
               value: "yes"
+            - name: NEO4J_PLUGINS
+              value: '["graph-data-science"]'
           ports:
             - name: https
               containerPort: 7473

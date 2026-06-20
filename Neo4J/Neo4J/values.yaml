@@ -17,7 +17,7 @@ image:
   application:
     repository: khteh/neo4j
     # This sets the pull policy for images.
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 
@@ -61,6 +61,9 @@ securityContext: {}
 configuration:
   path: "/config"
   extended: "yes"
+  plugins: 
+    - "graph-data-science"
+  jdkJavaOptions: "--enable-native-access=ALL-UNNAMED"
 
 secrets:
   secretName: neo4j-secret
