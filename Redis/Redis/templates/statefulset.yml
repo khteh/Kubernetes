@@ -37,7 +37,12 @@ spec:
           args:
           - /conf/redis.conf
           - --cluster-announce-ip
-          - $(POD_IP)
+          # https://github.com/redis/redis/issues/15328
+          #- $(POD_IP)
+          #- $(POD_NAME).$(POD_SERVICE_NAME).$(POD_NAMESPACE).svc.cluster.local => Error: >= 46 characters
+          - $(POD_NAME).$(POD_SERVICE_NAME)
+          #- hostname
+          #- -f
           env:
             - name: POD_IP
               valueFrom:
