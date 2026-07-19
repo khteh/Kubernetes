@@ -1,0 +1,202 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appsettings-staging
+  namespace: default
+data:
+  appsettings.Staging.json: |
+    {
+      "Kestrel": {
+          "EndpointDefaults": {
+            "Protocols": "Http1AndHttp2AndHttp3"
+          },
+          "Endpoints": {
+             "Https": {
+                "Url": "https://*",
+                "Protocols": "Http1AndHttp2AndHttp3",
+                "Certificate": {
+                    "Path": "/tmp/localhost.pfx",
+                    "Password": "AspNetCoreWebApi"
+                }
+              }
+          },
+          "Certificates": {
+              "Default": {
+                "Path": "/tmp/localhost.pfx",
+                "Password": "AspNetCoreWebApi"
+              }
+          }
+       },
+       "DetailedErrors": true,
+        "RedisCache": {
+            "Connection": "svc-redis-cluster:6379",
+            "InstanceName": "AspNetCoreWebApiRedis"
+        },
+       "Logging": {
+           "LogLevel": {
+                "Default": "Information",
+                "Grpc": "Warning",
+                "System": "Warning",
+                "Microsoft.Hosting.Lifetime": "Warning",
+                "Microsoft.AspNetCore": "Warning",
+                "Microsoft.AspNetCore.Hosting": "Warning",
+                "Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker": "Warning",
+                "Microsoft.AspNetCore.Components.Server": "Warning",
+                "Microsoft.AspNetCore.Components": "Warning",
+                "Microsoft.AspNetCore.Server": "Warning",
+                "Microsoft.AspNetCore.Server.Kestrel.ApplicationError": "Warning",
+                "Microsoft.AspNetCore.Server.Kestrel.ApplicationNeverCompleted": "Warning",
+                "Microsoft.AspNetCore.Server.Kestrel.BadRequests.ConnectionBadRequest": "Information",
+                "Microsoft.AspNetCore.Server.Kestrel.BadRequests.RequestProcessingError": "Warning",
+                "Microsoft.AspNetCore.Server.Kestrel.Connections.ConnectionAccepted": "Information",
+                "Microsoft.AspNetCore.Server.Kestrel.Http2.Http2ConnectionError": "Warning",
+                "Microsoft.AspNetCore.Server.Kestrel.Http3.Http3ConnectionError": "Warning"
+            },
+            "Debug": {
+                "LogLevel": {
+                    "Default": "Information"
+                }
+            },
+            "Console": {
+                "IncludeScopes": true,
+                "LogLevel": {
+                    "Microsoft.AspNetCore.Mvc.Razor.Internal": "Warning",
+                    "Microsoft.AspNetCore.Mvc.Razor.Razor": "Warning",
+                    "Microsoft.AspNetCore.Mvc.Razor": "Warning",
+                    "Default": "Information"
+                }
+            },
+            "EventSource": {
+                "LogLevel": {
+                    "Microsoft": "Information"
+                }
+            },
+            "EventLog": {
+                "LogLevel": {
+                    "Microsoft": "Information"
+                }
+            },
+            "ApplicationInsights": {
+                "LogLevel": {
+                    "Default": "Information"
+                }
+            }
+         },
+        "Serilog": {
+            "Using": [
+                "Serilog.Exceptions",
+                "Elastic.Serilog.Sinks",
+                "Serilog.Sinks.Console",
+                "Serilog.Enrichers.Thread",
+                "Serilog.Enrichers.HttpContext"
+            ],
+            "MinimumLevel": {
+                "Default": "Debug",
+                "Override": {
+                    "Microsoft": "Debug",
+                    "System": "Debug",
+                    "Grpc": "Debug",
+                    "Microsoft.Hosting.Lifetime": "Debug"
+                }
+            },
+            "Enrich": [
+                "FromLogContext",
+                "WithMachineName",
+                "WithThreadId",
+                "WithExceptionDetails",
+                "WithMemoryUsage",
+                "WithMemoryUsageExact",
+                "WithRequestBody",
+                "WithRequestQuery",
+                "WithClientIp",
+                "WithRequestHeader",
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "addValueIfHeaderAbsence": true,
+                        "headerName": "X-Correlation-Id",
+                        "propertyName": "CorrelationId"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "User-Agent",
+                        "propertyName": "UserAgent"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "X-Original-For",
+                        "propertyName": "X_Original_For"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "X-Forwarded-Proto",
+                        "propertyName": "X_Forwarded_Proto"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "X-Original-Proto",
+                        "propertyName": "X_Original_Proto"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "X-Forwarded-Host",
+                        "propertyName": "X_Forwarded_Host"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "X-Original-Host",
+                        "propertyName": "X_Original_Host"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "Content-Length",
+                        "propertyName": "ContentLength"
+                    }
+                },
+                {
+                    "Name": "WithRequestHeader",
+                    "Args": {
+                        "headerName": "Content-Type",
+                        "propertyName": "ContentType"
+                    }
+                }            
+            ],
+            "WriteTo": [
+                {
+                    "Name": "Console",
+                    "Args": {
+                        "formatter": {
+                            "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog",
+                            "template": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                        },                    
+                    }
+                },
+                {
+                    "Name": "File",
+                    "Args": {
+                        "path": "/var/log/aspnetcore/log",
+                        "formatter": {
+                            "type": "Elastic.CommonSchema.Serilog.EcsTextFormatter, Elastic.CommonSchema.Serilog",
+                            "template": "[{Timestamp}] {Level} {EventId} IP:{ClientIp} CorrelationId:{CorrelationId} Agent:{UserAgent} ContentType:{ContentType} ContentLength:{ContentLength} RequestBody:{RequestBody} RequestQuery:{RequestQuery} MemoryUsage:{MemoryUsageExact}/{MemoryUsage} {Message:j} {Properties} {NewLine}{Exception}{NewLine}"
+                        },                    
+                        "rollingInterval": "Day",
+                        "retainedFileCountLimit": 3
+                    }
+                }
+            ]
+        }
+    }
