@@ -61,6 +61,7 @@ Kubernetes cluster which consists of the following components:
 ```
 $ helm list
 NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+aspnetcorewebapi	default  	1       	2026-07-19 14:16:13.624747386 +0800 +08	deployed	AspNetCoreWebAPI-1.0.0	1.0.0
 common-config	default  	1       	2026-04-30 19:48:02.558336511 +0800 +08	deployed	common-config-1.0.0	1.0.0
 mlflow       	default  	1       	2026-05-10 18:45:05.436044549 +0800 +08	deployed	mlflow-1.0.0       	1.0.0
 neo4j        	default  	1       	2026-04-30 12:14:44.725694023 +0800 +08	deployed	Neo4J-1.0.0        	1.0.0
