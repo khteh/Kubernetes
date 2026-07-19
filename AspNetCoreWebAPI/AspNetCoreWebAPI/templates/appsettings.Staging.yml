@@ -91,12 +91,12 @@ data:
                 "Serilog.Enrichers.HttpContext"
             ],
             "MinimumLevel": {
-                "Default": "Debug",
+                "Default": "Information",
                 "Override": {
-                    "Microsoft": "Debug",
-                    "System": "Debug",
-                    "Grpc": "Debug",
-                    "Microsoft.Hosting.Lifetime": "Debug"
+                    "Microsoft": "Information",
+                    "System": "Information",
+                    "Grpc": "Information",
+                    "Microsoft.Hosting.Lifetime": "Information"
                 }
             },
             "Enrich": [
