@@ -421,10 +421,11 @@ Interface: [::], port: 5672, protocol: amqp, purpose: AMQP 0-9-1 and AMQP 1.0
 
 ```
 $ k get hpa
-NAME          REFERENCE             TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-kibana-hpa    StatefulSet/kibana    11%/75%   2         5         2          20s
-restapi-hpa   StatefulSet/restapi   1%/75%    2         5         2          22m
-rabbitmq-hpa  StatefulSet/rabbitmq  41%/75%   3         6         3          4d5h
+NAME                   REFERENCE                      TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          57m
+kibana-hpa             StatefulSet/kibana             11%/75%         2         5         2          20s
+restapi-hpa            StatefulSet/restapi            1%/75%          2         5         2          22m
+rabbitmq-hpa           StatefulSet/rabbitmq           41%/75%         3         6         3          4d5h
 ```
 
 ## Manifest validation
