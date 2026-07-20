@@ -156,7 +156,7 @@ statefulset.apps/neo4j                  1/1     140m
 statefulset.apps/nodejsrestapi          2/2     105s
 statefulset.apps/pythonrestapi          2/2     49m
 statefulset.apps/ollama                 2/2     19m
-statefulset.appsrabbitmq-server         3/3     2d3h
+statefulset.apps/rabbitmq-server        3/3     2d3h
 statefulset.apps/redis-cluster          6/6     14d
 statefulset.apps/critical-subscriber    1/1     58m
 statefulset.apps/kern-subscriber        1/1     58m
@@ -169,9 +169,8 @@ job.batch/rabbitmq-publisher-job-29670325   Complete   1/1           11s        
 job.batch/rabbitmq-publisher-job-29670330   Complete   1/1           11s        9m41s
 job.batch/rabbitmq-publisher-job-29670335   Complete   1/1           10s        4m41s
 
-NAME                                              REFERENCE             TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/kibana-hpa    StatefulSet/kibana    3%/75%    2         5         2          74s
-horizontalpodautoscaler.autoscaling/restapi-hpa   StatefulSet/restapi   1%/75%    2         5         2          23m
+NAME                                                       REFERENCE                      TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          34m
 ```
 
 ## Redis Cluster:
