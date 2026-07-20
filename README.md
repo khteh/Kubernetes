@@ -79,6 +79,8 @@ redis-cluster	default  	1       	2026-05-06 12:43:23.866466742 +0800 +08	deploye
 $ k get all
 NAME                                          READY   STATUS      RESTARTS   AGE
 pod/daemonset-8s4zs                           1/1     Running     0          108m
+pod/aspnetcorewebapi-0                        2/2     Running     0          34m
+pod/aspnetcorewebapi-1                        2/2     Running     0          34m
 pod/khteh-es-es-master-0                      1/1     Running     0          3m18s
 pod/khteh-es-es-master-1                      1/1     Running     0          3m18s
 pod/khteh-es-es-master-2                      1/1     Running     0          3m18s
@@ -123,6 +125,7 @@ service/khteh-es-es-internal-http     ClusterIP   10.152.183.49    <none>       
 service/khteh-es-es-master            ClusterIP   None             <none>        9200/TCP            5m16s
 service/khteh-es-es-data              ClusterIP   None             <none>        9200/TCP            5m16s
 service/khteh-kibana-kb-http          ClusterIP   10.152.183.49    <none>        5601/TCP            6m33s
+service/svc-aspnetcorewebapi          ClusterIP   None             <none>        443/TCP             34m
 service/svc-postgresql                ClusterIP   None             <none>        5432/TCP            3d22h
 service/svc-postgresql-nodeport       NodePort    10.152.183.70    <none>        5432:30000/TCP      3d22h
 service/svc-chroma                    ClusterIP   None             <none>        80/TCP              2d
@@ -148,6 +151,7 @@ NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
 khteh-kibana-kb                        2/2     2            2           7m45s
 
 NAME                                    READY   AGE
+statefulset.apps/aspnetcorewebapi       2/2     34m
 statefulset.apps/khteh-es-es-master     3/3     16m
 statefulset.apps/khteh-es-es-data       5/5     16m
 statefulset.apps/postgresql             1/1     140m
