@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: appsettings-production
+  name: appsettings-{{ .Values.applicationName }}-{{ .Values.environment | lower }}
   namespace: default
 data:
-  appsettings.Production.json: |
+  appsettings.{{ .Values.environment }}.json: |
     {
       "Kestrel": {
           "EndpointDefaults": {
@@ -28,12 +28,14 @@ data:
           }
        },
        "DetailedErrors": true,
+       {{- if eq .Values.environment "Production" }}
        "ElasticApm": {
             "ServiceName": "my-apm",
             "ServerUrl": "https://my-apm-http:8200",
             "TransactionSampleRate": 1.0,
             "VerifyServerCert": false
         },
+        {{- end }}
         "RedisCache": {
             "Connection": "svc-redis-cluster:6379",
             "InstanceName": "AspNetCoreWebApiRedis"

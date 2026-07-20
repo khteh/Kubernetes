@@ -237,65 +237,8 @@ autoscaling:
   requestsPerSecond: 10k
   # targetMemoryUtilizationPercentage: 80
 
-# Additional volumes on the output Deployment definition.
-volumes:
-  - name: email-credentials
-    secret:
-      secretName: email-credentials
-      items:
-        - key: appsettings.email.json
-          path: appsettings.email.json
-  - name: appsettings-staging
-    configMap:
-      name: appsettings-staging
-  - name: appsettings-production
-    configMap:
-      name: appsettings-production
-  - name: postgresql-connection
-    secret:
-      secretName: aspnetcorewebapi
-      items:
-        - key: aspnetcorewebapi.postgresql.json
-          path: appsettings.postgresql.json
-  - name: fluentd-config
-    configMap:
-      name: aspnetcore-fluentd-config
-  - name: elasticsearch-template
-    configMap:
-      name: elasticsearch-template
-  - name: log
-    emptyDir: {}
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  application:
-    - name: email-credentials
-      mountPath: /app/appsettings.email.json
-      subPath: appsettings.email.json
-      readOnly: true
-    - name: appsettings-staging
-      mountPath: /app/appsettings.Staging.json
-      subPath: appsettings.Staging.json
-      readOnly: true
-    - name: appsettings-production
-      mountPath: /app/appsettings.Production.json
-      subPath: appsettings.Production.json
-      readOnly: true
-    - name: postgresql-connection
-      mountPath: /app/appsettings.postgresql.json
-      subPath: appsettings.postgresql.json
-      readOnly: true
-    - name: log
-      mountPath: /var/log/aspnetcore
-  sidecar:
-    - name: log
-      mountPath: /var/log/aspnetcore
-    - name: fluentd-config
-      mountPath: /fluentd/etc
-    - name: elasticsearch-template
-      mountPath: /tmp/elasticsearch_template.json
-      subPath: elasticsearch_template.json
-      readOnly: true
+terminationMessagePath: /dev/termination-log
+terminationMessagePolicy: File
 
 nodeSelector: {}
 tolerations: []
