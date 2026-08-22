@@ -15,8 +15,7 @@ cluster:
   # More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
   imagePullPolicy: IfNotPresent
 
-  superuserSecret:
-    name: superuser-secret # https://github.com/cloudnative-pg/charts/issues/874
+  superuserSecret: "superuser-secret" # https://github.com/cloudnative-pg/charts/issues/874
   enableSuperuserAccess: true
 
   roles:

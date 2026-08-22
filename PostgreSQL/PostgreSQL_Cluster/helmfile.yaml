@@ -32,12 +32,12 @@ repositories:
 releases:
   - name: cloudnative-pg # name of the release (helm install <...> first_chart)
     chart: cloudnative-pg/cloudnative-pg
-    version: 0.28.2 # helm search repo cloudnative-pg/cloudnative-pg --versions
+    version: 0.29.0 # helm search repo cloudnative-pg/cloudnative-pg --versions
     namespace: postgresql-cluster
 
   - name: cluster
     chart: cloudnative-pg/cluster
-    version: 0.6.0 # helm search repo cloudnative-pg/cluster --versions
+    version: 0.8.1 # helm search repo cloudnative-pg/cluster --versions
     namespace: postgresql-cluster
     needs:
       - postgresql-cluster/cloudnative-pg
