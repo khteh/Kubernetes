@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db-langchain
-  namespace: default
+  namespace: postgresql-cluster
 data:
   Langchain.sql: |+
     --

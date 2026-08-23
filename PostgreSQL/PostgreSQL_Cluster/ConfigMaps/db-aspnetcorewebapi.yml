@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db-aspnetcorewebapi
-  namespace: default
+  namespace: postgresql-cluster
 data:
   AspNetCoreWebApi.sql: |+
     --
