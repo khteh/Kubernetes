@@ -7,7 +7,7 @@ data:
     {
         "ENVIRONMENT": "production",
         "DEBUG": true,
-        "TESTING": true,
+        "TESTING": false,
         "LOGLEVEL": "INFO",
         "SECRET_KEY": "PythonRestAPI",
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
