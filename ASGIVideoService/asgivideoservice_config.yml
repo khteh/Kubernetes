@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: asgivideoservice
+data:
+  asgivideoservice_config.json: |
+    {
+        "ENVIRONMENT": "development",
+        "DEBUG": true,
+        "TESTING": false,
+        "LOGLEVEL": "DEBUG",
+        "SECRET_KEY": "ASGIVideoService",
+        "OUTPUT_DIR": "output",
+        "GENERATION_PROVIDER": "simulated",
+        "MAX_VIDEO_SECONDS": 90,
+        "VIDEO_WIDTH": 3840,
+        "VIDEO_HEIGHT": 2160,
+        "VIDEO_FPS": 60,
+        "NVENC_MODE": "auto", 
+        "TTS_VOICE": "en-US-AriaNeural",
+        "AI_VIDEO_TIMEOUT_SECONDS": 10,
+        "LLM_VALIDATION_MODEL": "claude-3-5-haiku-latest",
+        "WORKER_CONCURRENCY": 10,
+        "MAX_JOB_ATTEMPTS": 3,
+        "FFMPEG_TIMEOUT_SECONDS": 120.0,
+        "FFPROBE_TIMEOUT_SECONDS": 30,
+        "TTS_TIMEOUT_SECONDS": 30,
+        "HEALTH_CHECK_CACHE_SECONDS": 30
+    }
