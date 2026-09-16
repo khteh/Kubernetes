@@ -1,0 +1,91 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ .Values.eckName }}
+  labels:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
+spec:
+  version: {{ .Values.version }} # https://www.elastic.co/guide/en/elasticsearch/reference/current/es-release-notes.html
+  auth:
+    fileRealm:
+      - secretName: {{ .Values.secretName }}
+  nodeSets:
+    - name: master
+      count: {{ .Values.master.count }}
+      config:
+        # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
+        #node.roles: ["master", "data", "ingest", "ml"]
+        node.roles: {{ toJson .Values.master.roles }}
+        script.painless.regex.enabled: {{ .Values.master.cors.enabled }}
+        http.cors.enabled: {{ .Values.master.cors.enabled }}
+        http.cors.allow-origin: {{ .Values.master.cors.origin | quote}}
+        #network.host: _site_ Forbidden: Configuration setting is reserved for internal use
+        #node.name: ${HOSTNAME} Forbidden: Configuration setting is reserved for internal use
+        bootstrap.memory_lock: false # https://www.elastic.co/guide/en/elasticsearch/reference/8.17/bootstrap-checks-memory-lock.html
+        #xpack.security.transport.ssl.enabled: true Forbidden: Configuration setting is reserved for internal use
+        cluster.max_shards_per_node: {{ .Values.master.max_shards_per_node }}
+      podTemplate:
+        spec:
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          containers:
+            - name: elasticsearch
+              {{- with .Values.startupProbe }}
+              startupProbe:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              {{- with .Values.readinessProbe }}
+              readinessProbe:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              env:
+                - name: READINESS_PROBE_TIMEOUT
+                  value: {{ .Values.readinessProbe.timeoutSeconds | quote }}
+              {{- with .Values.volumeMounts }}
+              volumeMounts:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+      {{- with .Values.master.volumeClaimTemplates }}
+      volumeClaimTemplates:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    - name: data
+      count: {{ .Values.dataCount }}
+      config:
+        # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
+        #node.roles: ["master", "data", "ingest", "ml"]
+        node.roles: {{ toJson .Values.data.roles }}
+        script.painless.regex.enabled: {{ .Values.data.cors.enabled }}
+        http.cors.enabled: {{ .Values.data.cors.enabled }}
+        http.cors.allow-origin: {{ .Values.data.cors.origin | quote}}
+        #network.host: _site_ Forbidden: Configuration setting is reserved for internal use
+        #node.name: ${HOSTNAME} Forbidden: Configuration setting is reserved for internal use
+        bootstrap.memory_lock: false # https://www.elastic.co/guide/en/elasticsearch/reference/8.17/bootstrap-checks-memory-lock.html
+        #xpack.security.transport.ssl.enabled: true Forbidden: Configuration setting is reserved for internal use
+        cluster.max_shards_per_node: {{ .Values.data.max_shards_per_node }}
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              {{- with .Values.startupProbe }}
+              startupProbe:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              {{- with .Values.readinessProbe }}
+              readinessProbe:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              env:
+                - name: READINESS_PROBE_TIMEOUT
+                  value: {{ .Values.readinessProbe.timeoutSeconds | quote }}
+              {{- with .Values.volumeMounts }}
+              volumeMounts:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+      {{- with .Values.data.volumeClaimTemplates }}
+      volumeClaimTemplates:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
