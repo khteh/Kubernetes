@@ -61,6 +61,7 @@ Kubernetes cluster which consists of the following components:
 ```
 $ helm list
 NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+asgivideoservice	default  	1       	2026-09-16 17:19:07.028726594 +0800 +08	deployed	ASGIVideoService-1.0.0	1.0.0
 aspnetcorewebapi	default  	1       	2026-07-19 14:16:13.624747386 +0800 +08	deployed	AspNetCoreWebAPI-1.0.0	1.0.0
 common-config	default  	1       	2026-04-30 19:48:02.558336511 +0800 +08	deployed	common-config-1.0.0	1.0.0
 mlflow       	default  	1       	2026-05-10 18:45:05.436044549 +0800 +08	deployed	mlflow-1.0.0       	1.0.0
@@ -78,6 +79,8 @@ redis-cluster	default  	1       	2026-05-06 12:43:23.866466742 +0800 +08	deploye
 ```
 $ k get all
 NAME                                          READY   STATUS      RESTARTS   AGE
+pod/asgivideoservice-0                        2/2     Running     3 (121m ago)      124m
+pod/asgivideoservice-1                        2/2     Running     1 (28m ago)       124m
 pod/daemonset-8s4zs                           1/1     Running     0          108m
 pod/aspnetcorewebapi-0                        2/2     Running     0          34m
 pod/aspnetcorewebapi-1                        2/2     Running     0          34m
@@ -125,7 +128,10 @@ service/khteh-es-es-internal-http     ClusterIP   10.152.183.49    <none>       
 service/khteh-es-es-master            ClusterIP   None             <none>        9200/TCP            5m16s
 service/khteh-es-es-data              ClusterIP   None             <none>        9200/TCP            5m16s
 service/khteh-kibana-kb-http          ClusterIP   10.152.183.49    <none>        5601/TCP            6m33s
-service/svc-aspnetcorewebapi          ClusterIP   None             <none>        443/TCP             34m
+service/svc-asgivideoservice          ClusterIP   None             <none>        443/UDP             124m
+service/svc-asgivideoservice-nodeport NodePort    10.152.183.189   <none>        443:31001/UDP       124m
+service/svc-aspnetcorewebapi          ClusterIP   None             <none>        443/TCP             8d
+service/svc-aspnetcorewebapi-nodeport NodePort    10.152.183.25    <none>        443:31000/TCP       8d
 service/svc-postgresql                ClusterIP   None             <none>        5432/TCP            3d22h
 service/svc-postgresql-nodeport       NodePort    10.152.183.70    <none>        5432:30000/TCP      3d22h
 service/svc-chroma                    ClusterIP   None             <none>        80/TCP              2d
@@ -151,6 +157,7 @@ NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
 khteh-kibana-kb                        2/2     2            2           7m45s
 
 NAME                                    READY   AGE
+statefulset.apps/asgivideoservice       2/2     124m
 statefulset.apps/aspnetcorewebapi       2/2     34m
 statefulset.apps/khteh-es-es-master     3/3     16m
 statefulset.apps/khteh-es-es-data       5/5     16m
@@ -174,6 +181,7 @@ job.batch/rabbitmq-publisher-job-29670330   Complete   1/1           11s        
 job.batch/rabbitmq-publisher-job-29670335   Complete   1/1           10s        4m41s
 
 NAME                                                       REFERENCE                      TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/hpa-asgivideoservice   StatefulSet/asgivideoservice   <unknown>/10k   2         5         2          124m
 horizontalpodautoscaler.autoscaling/hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          34m
 ```
 
@@ -422,6 +430,7 @@ Interface: [::], port: 5672, protocol: amqp, purpose: AMQP 0-9-1 and AMQP 1.0
 ```
 $ k get hpa
 NAME                   REFERENCE                      TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+hpa-asgivideoservice   StatefulSet/asgivideoservice   <unknown>/10k   2         5         2          127m
 hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          57m
 kibana-hpa             StatefulSet/kibana             11%/75%         2         5         2          20s
 restapi-hpa            StatefulSet/restapi            1%/75%          2         5         2          22m
