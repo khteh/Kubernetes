@@ -94,11 +94,9 @@ spec:
             successThreshold: 1
           volumeMounts:
             - name: asgivideoservice-config
-              mountPath: /etc/asgivideoservice_config.json
-              subPath: asgivideoservice_config.json
+              mountPath: /etc/asgi-video-service_config.json
+              subPath: asgi-video-service_config.json
               readOnly: true
-            # If your volumeMounts configuration relies on a subPath, it forces Kubernetes to look for specific file keys inside the Secret before the container starts. [1] (https://stackoverflow.com/questions/77804867/mountvolume-setup-failed-for-volume-my-volume-references-non-existent-secret)
-            # When a subPath is specified, Kubernetes hard-fails during the setup step if the Secret is missing, entirely bypassing the optional: true behavior.
             - name: asgivideoservice-secret
               mountPath: /app/.env
               subPath: .env
@@ -107,8 +105,10 @@ spec:
               mountPath: /etc/hypercorn.toml
               subPath: hypercorn.toml
               readOnly: true              
+            - name: output
+              mountPath: /app/output              
             - name: log
-              mountPath: /var/log/asgivideoservice
+              mountPath: /var/log/asgi-video-service
             - name: hypercornlog
               mountPath: /var/log/hypercorn
           resources:
@@ -119,7 +119,7 @@ spec:
           image: khteh/fluentd:latest
           volumeMounts:          
             - name: log
-              mountPath: /var/log/asgivideoservice
+              mountPath: /var/log/asgi-video-service
             - name: hypercornlog
               mountPath: /var/log/hypercorn
             - name: asgivideoservice-fluentd-config
@@ -149,6 +149,7 @@ spec:
             items:
               - key: .env
                 path: .env
+            optional: true
         - name: asgivideoservice-fluentd-config
           configMap:
             name: asgivideoservice-fluentd-config
@@ -164,3 +165,11 @@ spec:
         #    defaultMode: 420
         #    optional: false
         #    secretName: elasticsearch-eck-ca
+  volumeClaimTemplates:
+    - metadata:
+        name: output
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi

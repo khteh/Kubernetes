@@ -5,10 +5,10 @@ metadata:
 data:
   asgi-video-service_config.json: |
     {
-        "ENVIRONMENT": "development",
+        "ENVIRONMENT": "production",
         "DEBUG": true,
         "TESTING": false,
-        "LOGLEVEL": "DEBUG",
+        "LOGLEVEL": "INFO",
         "SECRET_KEY": "ASGIVideoService",
         "OUTPUT_DIR": "output",
         "GENERATION_PROVIDER": "simulated",
