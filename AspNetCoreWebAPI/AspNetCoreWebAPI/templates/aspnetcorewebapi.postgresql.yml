@@ -1,8 +1,11 @@
 apiVersion: v1
+data:
+  aspnetcorewebapi.postgresql.json: ewogICAgIkNvbm5lY3Rpb25TdHJpbmdzIjogewogICAgICAgICJEZWZhdWx0IjogIkhvc3Q9c3ZjLXBvc3RncmVzcWw7RGF0YWJhc2U9QXNwTmV0Q29yZVdlYkFwaTtVc2VybmFtZT1ndWVzdDtQYXNzd29yZD1QQCQkdzByZDsiCiAgICB9Cn0K
 kind: Secret
-type: Opaque
 metadata:
+  creationTimestamp: "2026-10-18T06:18:25Z"
   name: aspnetcorewebapi
   namespace: default
-data:
-  aspnetcorewebapi.postgresql.json: ewogICAgIkNvbm5lY3Rpb25TdHJpbmdzIjogewogICAgICAgICJEZWZhdWx0IjogIkhvc3Q9c3ZjLXBvc3RncmVzcWw7RGF0YWJhc2U9QXNwTmV0Q29yZVdlYkFwaTtVc2VybmFtZT1ndWVzdDtQYXNzd29yZD1QQCQkdzByZDtNYXggUG9vbCBTaXplPTEwOyIKICAgIH0KfQo=
+  resourceVersion: "16486201"
+  uid: 886bfacc-b742-44f1-9288-fed1db2d0af3
+type: Opaque
