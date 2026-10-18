@@ -8,10 +8,12 @@ data:
     errorlog = "/var/log/hypercorn/errors.log"
     loglevel = "DEBUG"
     alt_svc_headers = ["h3=\":443\"; ma=2592000"]
-    bind = "0.0.0.0:443"
+    #bind = "0.0.0.0:443"
     quic_bind = ["0.0.0.0:443", "[::]:443"]
+    insecure_bind = "0.0.0.0:8080"
     certfile = "/tmp/server.crt"
     keyfile = "/tmp/server.key"
+    keep_alive_timeout = 300
     server_names = []
     worker_class = "asyncio"
     #workers = 100

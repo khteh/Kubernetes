@@ -49,11 +49,11 @@ data:
       @type grep
       <exclude>
         key $.fields.Path
-        pattern /api/version
+        pattern ^/api/version$
      </exclude>
       <exclude>
         key $.fields.RequestPath
-        pattern /api/version
+        pattern ^/api/version$
      </exclude>
     </filter>
     <filter ollama>
