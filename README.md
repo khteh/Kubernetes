@@ -21,7 +21,7 @@ Kubernetes cluster which consists of the following components:
   - Executor (GETH)
   - Consensus (Lodestar Beacon and Validator)
 
-## Prerequisites
+# Prerequisites
 
 - Install microk8s
 - Install awscli
@@ -29,7 +29,7 @@ Kubernetes cluster which consists of the following components:
 - Install helm-secrets plugin.
 - Run `aws config` to set up aws configurations and credentials
 
-## Update kubeconfig
+# Update kubeconfig
 
 - `aws eks update-kubeconfig --region <region> --name <cluster name>`
 - The step above will update `~/.kube/config`
@@ -37,11 +37,11 @@ Kubernetes cluster which consists of the following components:
 - For local k8s cluster, `cp /var/snap/microk8s/current/credentials/client.config ~/.kube/config`
 - So, copy the EKS config from `~/.kube/config` to `/var/snap/microk8s/current/credentials/client.config`
 
-## Set Aliases
+# Set Aliases
 
 `snap alias microk8s.kubectl kubectl`
 
-## List and use contexts
+# List and use contexts
 
 - `kubectl config get-contexts` will show available clusters, both local and remote:
 
@@ -56,7 +56,7 @@ Kubernetes cluster which consists of the following components:
 
 ![Kubernetes cluster](./k8s.jpg?raw=true "Kubernetes Cluster")
 
-## Helm Charts
+# Helm Charts
 
 ```
 $ helm list
@@ -74,7 +74,7 @@ ragagent     	default  	1       	2026-04-30 12:27:31.357106725 +0800 +08	deploye
 redis-cluster	default  	1       	2026-05-06 12:43:23.866466742 +0800 +08	deployed	RedisCluster-1.0.0 	1.0.0
 ```
 
-## Cluster Resources
+# Cluster Resources
 
 ```
 $ k get all
@@ -185,7 +185,7 @@ horizontalpodautoscaler.autoscaling/hpa-asgivideoservice   StatefulSet/asgivideo
 horizontalpodautoscaler.autoscaling/hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          34m
 ```
 
-## Redis Cluster:
+# Redis Cluster:
 
 - 3 master nodes
 - 3 slave nodes
@@ -258,7 +258,7 @@ connected
 12530
 ```
 
-## Elasticsearch Cluster:
+# Elasticsearch Cluster:
 
 ```
 $ k get es
@@ -266,7 +266,7 @@ NAME       HEALTH   NODES   VERSION   PHASE   AGE
 khteh-es   green    8       9.2.2    Ready   5m35s
 ```
 
-## Kibana
+# Kibana
 
 - Point the browser to localhost/kibana
 - Supports GeoIP
@@ -277,7 +277,7 @@ NAME           HEALTH   NODES   VERSION   AGE
 khteh-kibana   green    2       9.2.2    5m5s
 ```
 
-## RabbitMQ Cluster:
+# RabbitMQ Cluster:
 
 ```
 $ k get rabbitmqcluster
@@ -425,7 +425,7 @@ Interface: [::], port: 25672, protocol: clustering, purpose: inter-node and CLI 
 Interface: [::], port: 5672, protocol: amqp, purpose: AMQP 0-9-1 and AMQP 1.0
 ```
 
-## Horizontal Pod Autoscaler:
+# Horizontal Pod Autoscaler:
 
 ```
 $ k get hpa
@@ -437,12 +437,12 @@ restapi-hpa            StatefulSet/restapi            1%/75%          2         
 rabbitmq-hpa           StatefulSet/rabbitmq           41%/75%         3         6         3          4d5h
 ```
 
-## Manifest validation
+# Manifest validation
 
 - `sudo apt install -y yamllint`
 - `yamllint <filename>.yml`
 
-## GPU
+# GPU
 
 - Ensure the operator is running properly
 
@@ -474,9 +474,9 @@ Allocatable:
   pods:               110
 ```
 
-## Helm Charts
+# Helm Charts
 
-### Secrets
+## Secrets
 
 - Create a GPG key: `gpg --full-generate-key`
 - `gpg --list-keys`
@@ -484,12 +484,57 @@ Allocatable:
 - `gpg --list-secret-keys`
 - Encrypt secret files: `helm secrets encrypt my_secret.yml > my_secret.yml.enc`
 
-### Debug
+## SOPS
+
+This is how every sops file looks: your values as ENC[...] strings, followed by one sops: block. The sops: block holds the encrypted data key, the PGP recipient, an integrity checksum (mac) and some metadata. You never edit it by hand. Your two files should now look like this:
+
+```
+dbPassword: ENC[AES256_GCM,data:...,type:str]
+emailCredentials: ENC[AES256_GCM,data:...,type:str]
+jwtSigningKey: ENC[AES256_GCM,data:...,type:str]
+sops:
+    pgp:
+        - ...
+    mac: ENC[...]
+    lastmodified: ...
+    version: 3.13.0
+```
+
+That's three keys with one sops: block. Steps to create a `secrets/<env>.yml` sops file:
+
+1. `cd <App>/<Chart>`
+2. `mkdir -p secrets`
+3. ```
+   # Write all keys into one plaintext file
+   $EDITOR secrets/staging.dec.yml
+   ```
+4. ```
+   # Encrypt to the real file name, keeping the plaintext
+   helm secrets encrypt secrets/staging.dec.yml > secrets/staging.yml
+   ```
+5. Create production from staging:
+
+   ```
+   helm secrets decrypt secrets/staging.yml > secrets/production.dec.yml
+   $EDITOR secrets/production.dec.yml            # change values, e.g. a new jwtSigningKey
+   helm secrets encrypt secrets/production.dec.yml > secrets/production.yml
+   shred -u secrets/production.dec.yml
+   ```
+
+   Day-to-day:
+   Task |sops |helm secrets |
+   Create or edit |sops secrets/staging.yml |helm secrets edit secrets/staging.yml|
+   Encrypt to stdout |sops -e file |helm secrets encrypt file |
+   Encrypt in place |sops -e -i file |helm secrets encrypt -i file |
+   View |sops -d file |helm secrets decrypt file |
+   Decrypt in place |sops -d -i file |helm secrets decrypt -i file |
+
+## Debug
 
 - `helm lint <chart folder>`
 - `helm template --debug <chart folder>`
 
-### Install
+## Install, Update, Uninstall
 
 - To find versions of chart from remote repository:
 
@@ -508,10 +553,6 @@ $ helmfile -e dev apply    # install or upgrade
 $ helmfile -e dev template # render manifests locally, like helm template
 ```
 
-### Update
-
 - `helm upgrade --install <name> <chart folder>`
-
-### Uninstall
 
 - `helm uninstall <name>`
