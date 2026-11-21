@@ -34,7 +34,6 @@ nameOverride: ""
 fullnameOverride: ""
 
 # Use staging so that it doesn't fail on missing ElasticAPM
-environment: Staging
 urls: "https://+;http://+"
 httpsPort: 443
 forwardedHeadersEnabled: "true"

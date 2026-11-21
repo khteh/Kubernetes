@@ -3,3 +3,6 @@
 *.crt*
 *.cert*
 *.bak
+AspNetCoreWebAPI/AspNetCoreWebAPI/secrets/aspnetcorewebapi.postgresql.yml
+AspNetCoreWebAPI/AspNetCoreWebAPI/secrets/email_credentials.yml
+AspNetCoreWebAPI/AspNetCoreWebAPI/secrets/SecretKey.yml

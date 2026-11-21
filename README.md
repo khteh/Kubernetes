@@ -502,6 +502,12 @@ $ helm search repo <repo-name>/<chart-name> --versions
 - `helmfile sync`: Executes `helm upgrade --install` for all releases defined in the file.
 - `helmfile apply`: Similar to sync, but often used with the helm-diff plugin to show changes before applying them.
 
+```
+$ helmfile -e dev diff     # preview changes (needs the helm-diff plugin)
+$ helmfile -e dev apply    # install or upgrade
+$ helmfile -e dev template # render manifests locally, like helm template
+```
+
 ### Update
 
 - `helm upgrade --install <name> <chart folder>`

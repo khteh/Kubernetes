@@ -1,3 +1,4 @@
 *.drawio binary
 *.jpg binary
 *.png binary
+**/secrets/*.yml diff=sopsdiffer

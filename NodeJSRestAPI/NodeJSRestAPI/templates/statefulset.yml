@@ -32,7 +32,7 @@ spec:
       containers:
       - name: {{ .Values.applicationName }}
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.application.pullPolicy }}
         env:
           - name: POSTGRESQL_HOST
             value: "{{ .Values.postgresql.hostname }}"

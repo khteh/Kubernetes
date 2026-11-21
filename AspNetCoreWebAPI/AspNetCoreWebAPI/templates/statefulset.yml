@@ -32,7 +32,7 @@ spec:
       containers:
       - name: {{ .Values.applicationName }}
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.application.pullPolicy }}
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: "{{ .Values.environment }}"
@@ -54,6 +54,11 @@ spec:
             value: "{{ .Values.ThreadPool_ForceMaxWorkerThreads }}"
           - name: PATH_BASE
             value: "{{ .Values.pathBase }}"
+          - name: AuthSettings__SecretKey
+            valueFrom:
+              secretKeyRef:
+                name: aspnetcorewebapi.secretkey
+                key: AuthSettings__SecretKey
         ports:
         - containerPort: {{ .Values.service.httpPort }}
           name: {{ .Values.service.portName }}
@@ -122,7 +127,7 @@ spec:
             name: appsettings-{{ .Values.applicationName }}-{{ .Values.environment | lower }}
         - name: postgresql-connection
           secret:
-            secretName: aspnetcorewebapi
+            secretName: aspnetcorewebapi.postgresql
             items:
               - key: aspnetcorewebapi.postgresql.json
                 path: appsettings.postgresql.json
