@@ -522,12 +522,13 @@ That's three keys with one sops: block. Steps to create a `secrets/<env>.yml` so
    ```
 
    Day-to-day:
-   Task |sops |helm secrets |
-   Create or edit |sops secrets/staging.yml |helm secrets edit secrets/staging.yml|
-   Encrypt to stdout |sops -e file |helm secrets encrypt file |
-   Encrypt in place |sops -e -i file |helm secrets encrypt -i file |
-   View |sops -d file |helm secrets decrypt file |
-   Decrypt in place |sops -d -i file |helm secrets decrypt -i file |
+   |Task |sops |helm secrets |
+   | :--- | :---: | ---: |  
+   |Create or edit |sops secrets/staging.yml |helm secrets edit secrets/staging.yml|
+   |Encrypt to stdout |sops -e file |helm secrets encrypt file |
+   |Encrypt in place |sops -e -i file |helm secrets encrypt -i file |
+   |View |sops -d file |helm secrets decrypt file |
+   |Decrypt in place |sops -d -i file |helm secrets decrypt -i file |
 
 ## Debug
 
