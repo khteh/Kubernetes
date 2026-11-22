@@ -183,7 +183,7 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     #    value: khteh.com
   periodSeconds: 5
   timeoutSeconds: 10
-  failureThreshold: 36
+  failureThreshold: 36 # 3 minutes. Lower value will cause the probe to fail.
   successThreshold: 1
 readinessProbe:
   httpGet:
