@@ -30,8 +30,8 @@ data:
     server.directories.lib = lib
     server.directories.run = run
     #server.directories.licenses=licenses
-    server.directories.transaction.logs.root = /var/log/neo4j/transactions
     server.databases.default_to_read_only = false
+    server.jvm.additional={{ .Values.configuration.jdkJavaOptions }}
     # Use more reliable defaults SSL / TLS settings for K8s
     dbms.ssl.policy.bolt.client_auth = NONE
     dbms.ssl.policy.https.client_auth = NONE

@@ -29,24 +29,25 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}      
       containers:
         - name: {{ .Values.applicationName }}       
           image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.application.pullPolicy }}
           env:
-            - name: NEO4J_AUTH
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.secretName }}
-                  key: {{ .Values.secrets.secretKey }}
-            - name: NEO4J_CONF
-              value: {{ .Values.configuration.path }}
+            - name: NEO4J_AUTH_PATH
+              value: /run/secrets/neo4j/{{ .Values.secrets.secretKey }}
+            {{- with .Values.configuration.plugins }}
+            - name: NEO4J_PLUGINS
+              value: {{ toJson . | quote }}
+            {{- end }}
             - name: EXTENDED_CONF
               value: {{ .Values.configuration.extended | quote }}
             - name: NEO4J_PLUGINS
               value: {{ .Values.configuration.plugins  | join "," | quote }}
-            - name: NEO4J_JDK_JAVA_OPTIONS
-              value: {{ .Values.configuration.jdkJavaOptions | quote }}
           ports:
             - name: https
               containerPort: {{ .Values.ports.https }}

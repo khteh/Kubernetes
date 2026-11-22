@@ -11,7 +11,7 @@ podManagementPolicy: Parallel
 updateStrategy: RollingUpdate
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
-terminationGracePeriodSeconds: 10
+terminationGracePeriodSeconds: 60 # so Neo4j has time to flush to disk and shut down cleanly.
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   application:
@@ -47,8 +47,8 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 7474               # neo4j user's group, so it can write to the existing PVC that root created
 
 securityContext: {}
   # capabilities:
@@ -59,16 +59,14 @@ securityContext: {}
   # runAsUser: 1000
 
 configuration:
-  path: "/config"
   extended: "yes"
-  plugins: 
-    - "graph-data-science"
+  plugins: []                 # baked into the image
   jdkJavaOptions: "--enable-native-access=ALL-UNNAMED"
 
 secrets:
   secretName: neo4j-secret
   secretKey: NEO4J_AUTH
-  
+
 ports:
   https: 7473
   http: 7474
@@ -159,9 +157,8 @@ resources: {}
 startupProbe: # failureThreshold * periodSeconds long enough to cover the worst case startup time
   tcpSocket:
     port: bolt
-  failureThreshold: 10
+  failureThreshold: 20
   timeoutSeconds: 10
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
 readinessProbe:
@@ -169,14 +166,12 @@ readinessProbe:
     port: bolt
   failureThreshold: 10
   timeoutSeconds: 10
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
 livenessProbe:
   tcpSocket:
     port: bolt
   failureThreshold: 5
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 10
@@ -191,6 +186,10 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
+  - name: neo4j-auth
+    secret:
+      secretName: neo4j-secret
+      defaultMode: 0440
   - name: neo4j-config
     configMap:
       name: neo4j-config
@@ -202,6 +201,9 @@ volumes:
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
+  - name: neo4j-auth
+    mountPath: /run/secrets/neo4j
+    readOnly: true
   - name: neo4j-config
     mountPath: /config/neo4j.conf
     subPath: neo4j.conf

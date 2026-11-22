@@ -474,6 +474,23 @@ Allocatable:
   pods:               110
 ```
 
+# Probe timeout / failure threshold configuration.
+
+- The startup probe only runs until it succeeds once. On a healthy pod, a high failureThreshold makes no difference to normal running. Readiness and liveness take over after that.
+- To check how long the pod starts up:
+  ```
+  kubectl logs myapp-0 | grep -E 'INFO  (Starting|Started)\.'
+  # or: time from pod start to Ready
+  kubectl get pod myapp-0 -o jsonpath='{.status.startTime}{"\n"}{.status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'
+  ```
+- Then set the budget to roughly 3–5 times that, so recovery and upgrades fit:
+
+| Normal startup |                   Suggested failureThreshold (periodSeconds: 10) |
+| :------------- | ---------------------------------------------------------------: |
+| < 30 s         |                                                  18–30 (3–5 min) |
+| 30–90 s        |                                                 30–60 (5–10 min) |
+| > 90 s         | or a large database 60+, and increase it before planned upgrades |
+
 # Helm Charts
 
 ## Secrets
@@ -523,7 +540,7 @@ That's three keys with one sops: block. Steps to create a `secrets/<env>.yml` so
 
    Day-to-day:
    |Task |sops |helm secrets |
-   | :--- | :---: | ---: |  
+   | :--- | :---: | ---: |
    |Create or edit |sops secrets/staging.yml |helm secrets edit secrets/staging.yml|
    |Encrypt to stdout |sops -e file |helm secrets encrypt file |
    |Encrypt in place |sops -e -i file |helm secrets encrypt -i file |
@@ -551,10 +568,18 @@ $ helm search repo <repo-name>/<chart-name> --versions
 $ helmfile -e staging diff     # preview changes (needs the helm-diff plugin)
 $ helmfile -e staging apply    # install or upgrade
 $ helmfile -e staging template # render manifests locally, like helm template
+$ helmfile -e staging destroy
 ```
-
-- `kubectl rollout status sts/myapp`
 
 - `helm upgrade --install <name> <chart folder>`
 
 - `helm uninstall <name>`
+
+## Status check
+
+- `kubectl rollout status sts/myapp`
+
+```
+helm list -n default                # actual Helm releases in the namespace
+helmfile -e staging status          # status of each helmfile release in the cluster
+```
