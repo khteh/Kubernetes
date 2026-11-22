@@ -78,6 +78,7 @@ data:
       # nginx:    127.0.0.1 192.168.0.1 - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777 "-" "Opera/12.0" -
       # apache2:  192.168.0.1 - - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777 "-" "Opera/12.0"
       # hypercorn:192.168.0.149:43472 - - [04/Apr/2025:08:44:16 +0000] "GET /health/live 2" 200 2 "-" "kube-probe/1.27"
+      # [2026-11-22 09:05:22 +0000] [28] [INFO] 192.168.0.6:39782 - - [22/Nov/2026:09:05:22 +0000] \"GET /health/ready 2\" 200 2 \"-\" \"kube-probe/1.36\"
       # expression /^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>(?:[^\"]|\\.)*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>(?:[^\"]|\\.)*)" "(?<agent>(?:[^\"]|\\.)*)")?$/
       path /var/log/hypercorn/access.log
       pos_file /var/log/fluentd/pos/hypercorn_access_logs.pos
