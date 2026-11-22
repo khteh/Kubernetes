@@ -22,7 +22,8 @@ spec:
         component: {{ .Values.componentName }}
       annotations:
         # Re-evaluates on every upgrade; triggers restart if config changes
-        checksum/config: {{ include (print $.Template.BasePath "/appsettings.yml") . | sha512sum }}
+        checksum/appsettings: {{ include (print $.Template.BasePath "/appsettings.yml") . | sha512sum }}
+        checksum/fluentd-config: {{ include (print $.Template.BasePath "/fluentd_config.yml") . | sha512sum }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.affinity }}
@@ -57,7 +58,7 @@ spec:
           - name: AuthSettings__SecretKey
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.secrets.jwtSigningKeySecretName }}
+                name: {{ .Values.secrets.name }}
                 key: AuthSettings__SecretKey
         ports:
         - containerPort: {{ .Values.service.httpPort }}
@@ -118,7 +119,7 @@ spec:
       volumes:
         - name: email-credentials
           secret:
-            secretName: email-credentials
+            secretName: {{ .Values.secrets.name }}
             items:
               - key: appsettings.email.json
                 path: appsettings.email.json
@@ -127,7 +128,7 @@ spec:
             name: appsettings-{{ .Values.applicationName }}-{{ .Values.environment | lower }}
         - name: postgresql-connection
           secret:
-            secretName: aspnetcorewebapi.postgresql
+            secretName: {{ .Values.secrets.name }}
             items:
               - key: aspnetcorewebapi.postgresql.json
                 path: appsettings.postgresql.json

@@ -74,9 +74,7 @@ securityContext: {}
   # runAsUser: 1000
 
 secrets:
-  dbSecretName: aspnetcorewebapi.postgresql
-  emailSecretName: email-credentials
-  jwtSigningKeySecretName: aspnetcorewebapi.secretkey
+  name: aspnetcorewebapi-secret
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
