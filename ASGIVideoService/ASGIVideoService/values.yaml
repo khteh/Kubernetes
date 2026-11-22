@@ -89,6 +89,7 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
+  name: khteh-ingress
   enabled: false
   className: ""
   annotations: {}
@@ -214,8 +215,8 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 5
   #targetCPUUtilizationPercentage: 80
-  containerAverageUtilization: 75
-  requestsPerSecond: 10k
+  containerAverageCPUUtilization: 75
+  # requestsPerSecond: 10k      # needs prometheus-adapter + an Ingress
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.

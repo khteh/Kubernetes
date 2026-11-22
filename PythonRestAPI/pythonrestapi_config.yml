@@ -13,6 +13,6 @@ data:
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
         "DB_DATABASE": "library",
-        "DB_MAX_CONNECTIONS": 10,
+        "DB_MAX_CONNECTIONS": 5,
         "UPLOADS_DEFAULT_DEST": "/var/uploads"
     }

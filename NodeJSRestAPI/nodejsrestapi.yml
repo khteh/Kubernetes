@@ -69,7 +69,6 @@ spec:
               path: /health/ready
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -79,7 +78,6 @@ spec:
               path: /health/ready
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -89,7 +87,6 @@ spec:
               path: /health/live
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3

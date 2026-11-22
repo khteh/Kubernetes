@@ -74,9 +74,14 @@ service:
   protocol: UDP
   targetPort: https-udp
   nodePort: 31002
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1800
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
+  name: khteh-ingress
   enabled: false
   className: ""
   annotations: {}
@@ -171,7 +176,6 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -184,7 +188,6 @@ readinessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -197,7 +200,6 @@ livenessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -209,8 +211,8 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 5
   #targetCPUUtilizationPercentage: 80
-  containerAverageUtilization: 75
-  requestsPerSecond: 10k
+  containerAverageCPUUtilization: 75
+  # requestsPerSecond: 10k      # needs prometheus-adapter + an Ingress
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.

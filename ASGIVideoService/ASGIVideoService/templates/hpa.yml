@@ -14,14 +14,14 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.containerAverarageCPUUtilization }}
+    {{- with .Values.autoscaling.containerAverageCPUUtilization }}
     - type: ContainerResource
       containerResource:
         name: cpu
-        container: {{.Values.applicationName}}
+        container: {{ $.Values.applicationName }}
         target: 
           type: Utilization
-          averageUtilization: {{.Values.autoscaling.containerAverarageCPUUtilization }}
+          averageUtilization: {{ . }}
     {{- end}}
     {{- if .Values.autoscaling.requestsPerSecond }}
     - type: Object
@@ -31,7 +31,7 @@ spec:
         describedObject:
           apiVersion: networking.k8s.io/v1
           kind: Ingress 
-          name: ingress
+          name: {{ .Values.ingress.name }}
         target: 
           type: Value
           value: {{.Values.autoscaling.requestsPerSecond }}

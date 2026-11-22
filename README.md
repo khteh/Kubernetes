@@ -181,8 +181,8 @@ job.batch/rabbitmq-publisher-job-29670330   Complete   1/1           11s        
 job.batch/rabbitmq-publisher-job-29670335   Complete   1/1           10s        4m41s
 
 NAME                                                       REFERENCE                      TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/hpa-asgivideoservice   StatefulSet/asgivideoservice   <unknown>/10k   2         5         2          124m
-horizontalpodautoscaler.autoscaling/hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   <unknown>/10k   2         5         2          34m
+horizontalpodautoscaler.autoscaling/hpa-aspnetcorewebapi   StatefulSet/aspnetcorewebapi   cpu: 1%/75%   2         5         2          6h
+horizontalpodautoscaler.autoscaling/hpa-ragagent           StatefulSet/ragagent           cpu: 2%/75%   2         5         2          36m
 ```
 
 # Redis Cluster:

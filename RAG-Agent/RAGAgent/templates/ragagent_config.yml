@@ -2,10 +2,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ragagent
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
 data:
   ragagent_config.json: |
     {
-        "ENVIRONMENT": "production",
         "DEBUG": true,
         "TESTING": true,
         "LOGLEVEL": "INFO",
@@ -13,7 +16,7 @@ data:
         "SQLALCHEMY_TRACK_MODIFICATIONS": false,
         "DB_HOST": "svc-postgresql",
         "DB_DATABASE": "Langchain",
-        "DB_MAX_CONNECTIONS": 10,
+        "DB_MAX_CONNECTIONS": 5,
         "EMBEDDING_MODEL": "embeddinggemma",
         "EMBEDDING_DIMENSIONS": 768,
         "VECTORSTORE_TABLE": "ragagent_vectorstore",

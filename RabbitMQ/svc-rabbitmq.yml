@@ -19,3 +19,7 @@ spec:
      protocol: TCP
      port: 5672
      targetPort: amqp
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1800
