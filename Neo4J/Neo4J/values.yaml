@@ -68,7 +68,7 @@ configuration:
 secrets:
   secretName: neo4j-secret
   secretKey: NEO4J_AUTH
-
+  
 ports:
   https: 7473
   http: 7474
@@ -83,6 +83,10 @@ service:
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1800
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

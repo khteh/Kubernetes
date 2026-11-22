@@ -6,6 +6,10 @@ metadata:
     component: {{ .Values.componentName }}
     app: {{ .Values.applicationName }}
 spec:
+  clusterIP: None
+  selector:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
   ports:
   - name: https
     port: {{ .Values.ports.https }}
@@ -16,10 +20,11 @@ spec:
   - name: bolt
     port: {{ .Values.ports.bolt }}
     targetPort: bolt
-  clusterIP: None
-  selector:
-    app: {{ .Values.applicationName }}
-    component: {{ .Values.componentName }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -30,6 +35,9 @@ metadata:
     app: {{ .Values.applicationName }}
 spec:
   type: NodePort
+  selector:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
   ports:
   - name: https
     port: {{ .Values.ports.https }}
@@ -40,6 +48,8 @@ spec:
   - name: bolt
     port: {{ .Values.ports.bolt }}
     nodePort: {{ .Values.ports.boltNodePort }}
-  selector:
-    app: {{ .Values.applicationName }}
-    component: {{ .Values.componentName }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
