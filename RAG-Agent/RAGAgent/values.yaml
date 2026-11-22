@@ -183,7 +183,7 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     #    value: khteh.com
   periodSeconds: 5
   timeoutSeconds: 10
-  failureThreshold: 3
+  failureThreshold: 36
   successThreshold: 1
 readinessProbe:
   httpGet:
