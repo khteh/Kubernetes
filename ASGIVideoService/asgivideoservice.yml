@@ -61,7 +61,6 @@ spec:
               #httpHeaders:
               #  - name: Host
               #    value: khteh.com
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -74,7 +73,6 @@ spec:
               #httpHeaders:
               #  - name: Host
               #    value: khteh.com
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -87,7 +85,6 @@ spec:
               #httpHeaders:
               #  - name: Host
               #    value: khteh.com
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3

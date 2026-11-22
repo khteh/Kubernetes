@@ -15,6 +15,11 @@ spec:
   selector:
     app: {{ .Values.applicationName }}
     component: {{ .Values.componentName }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -34,3 +39,8 @@ spec:
   selector:
     app: {{ .Values.applicationName }}
     component: {{ .Values.componentName }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
