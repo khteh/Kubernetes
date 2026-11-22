@@ -47,17 +47,14 @@ spec:
           startupProbe: # failureThreshold * periodSeconds long enough to cover the worst case startup time
             tcpSocket:
               port: metrics
-            initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
             tcpSocket:
               port: metrics
-            initialDelaySeconds: 10
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
               port: metrics
-            initialDelaySeconds: 30
             periodSeconds: 10
           volumeMounts:
             - name: validator

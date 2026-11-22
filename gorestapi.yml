@@ -41,12 +41,20 @@ spec:
               name: https
               protocol: TCP
           #          hostPort: 8082
+          startupProbe: # failureThreshold * periodSeconds long enough to cover the worst case startup time
+            httpGet:
+              path: /ready
+              port: https
+              scheme: HTTPS
+            periodSeconds: 5
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
           readinessProbe:
             httpGet:
               path: /ready
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -56,7 +64,6 @@ spec:
               path: /live
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 20
             periodSeconds: 3
             timeoutSeconds: 10
             failureThreshold: 3

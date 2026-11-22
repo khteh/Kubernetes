@@ -76,6 +76,10 @@ service:
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1800
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -151,7 +155,6 @@ startupProbe:
       - sh
       - -c
       - "redis-cli -h $(hostname) ping"
-  initialDelaySeconds: 15
   periodSeconds: 5
   timeoutSeconds: 5
   failureThreshold: 3
@@ -162,7 +165,6 @@ readinessProbe:
       - sh
       - -c
       - "redis-cli -h $(hostname) ping"
-  initialDelaySeconds: 15
   periodSeconds: 5
   timeoutSeconds: 5
   failureThreshold: 3
@@ -173,7 +175,6 @@ livenessProbe:
       - sh
       - -c
       - "redis-cli -h $(hostname) ping"
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 5
   failureThreshold: 3

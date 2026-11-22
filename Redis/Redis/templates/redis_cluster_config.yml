@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: redis-cluster-config
   labels:
-    app: redis-cluster
-    component: redis
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
 data:
   redis.conf: |+
     cluster-enabled yes

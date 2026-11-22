@@ -74,19 +74,16 @@ serviceMonitor:
   targetLabels: []
 
 startupProbe:
-  initialDelaySeconds: 30
   periodSeconds: 20
   timeoutSeconds: 6
   failureThreshold: 3
 
 readinessProbe:
-  initialDelaySeconds: 30
   periodSeconds: 20
   timeoutSeconds: 6
   failureThreshold: 3
 
 livenessProbe:
-  initialDelaySeconds: 30
   periodSeconds: 20
   timeoutSeconds: 6
   failureThreshold: 3
