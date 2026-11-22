@@ -36,7 +36,6 @@ spec:
               path: /api/version
               port: ollama
               scheme: HTTP
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -46,7 +45,6 @@ spec:
               path: /api/version
               port: ollama
               scheme: HTTP
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3
@@ -56,7 +54,6 @@ spec:
               path: /api/version
               port: ollama
               scheme: HTTP
-            initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 10
             failureThreshold: 3

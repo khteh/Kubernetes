@@ -143,7 +143,6 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     path: /api/version
     port: ollama
     scheme: HTTP
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -153,7 +152,6 @@ readinessProbe:
     path: /api/version
     port: ollama
     scheme: HTTP
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -163,7 +161,6 @@ livenessProbe:
     path: /api/version
     port: ollama
     scheme: HTTP
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
