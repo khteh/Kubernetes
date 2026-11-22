@@ -37,6 +37,11 @@ spec:
       protocol: {{ .Values.service.protocol }}
       name: {{ .Values.service.httpsPortName }}
       nodePort: {{ .Values.service.nodePort }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- with .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     app: {{ .Values.applicationName }}
     component: {{ .Values.componentName }}

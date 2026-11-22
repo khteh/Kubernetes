@@ -546,13 +546,14 @@ $ helm search repo <repo-name>/<chart-name> --versions
 - `helm install <name> --dry-run --debug <chart folder> --set-file secretPath=<secret file path> --wait`
 - `--wait` is needed especially for running helm hooks which need the pods to be in ready state.
 - `helmfile sync`: Executes `helm upgrade --install` for all releases defined in the file.
-- `helmfile apply`: Similar to sync, but often used with the helm-diff plugin to show changes before applying them.
 
 ```
-$ helmfile -e dev diff     # preview changes (needs the helm-diff plugin)
-$ helmfile -e dev apply    # install or upgrade
-$ helmfile -e dev template # render manifests locally, like helm template
+$ helmfile -e staging diff     # preview changes (needs the helm-diff plugin)
+$ helmfile -e staging apply    # install or upgrade
+$ helmfile -e staging template # render manifests locally, like helm template
 ```
+
+- `kubectl rollout status sts/myapp`
 
 - `helm upgrade --install <name> <chart folder>`
 
