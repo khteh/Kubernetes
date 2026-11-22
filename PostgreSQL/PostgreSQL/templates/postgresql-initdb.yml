@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: postgresql-initdb
   namespace: default
+  labels:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
 data:
   AspNetCoreWebApi.sql: |+
     --
@@ -295,7 +298,7 @@ data:
 
     COPY public."AspNetUsers" ("Id", "FirstName", "LastName", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") FROM stdin;
     1b275037-61e4-40fa-b7e8-5f73eda0af06	Kok How	Teh	khteh	KHTEH	khteh@email.com	KHTEH@EMAIL.COM	f	AQAAAAIAAYagAAAAEBPxPEXEJRFDP2EZmK3ev7l7H+BbhRJKLUweYzZS2MUghirx/VKRTRYkPo4WsYp0+Q==	EIQGQKLZ4X6TPUAHQDSKSCBKSRC7CDEI	69f27f12-eb66-4295-bd14-c1a4ec65b962	\N	f	f	\N	t	0
-    9c7d4b22-4767-437c-b279-3910c7e06cfc	Mmickey	Mouse	mickey	MICKEY	mickey@email.com	MICKEY@EMAIL.COM	f	AQAAAAIAAYagAAAAEEBLEzYdFsyLtHwPooCHVjsGQbeh4xgjywfP1697ICokZShtIJ91jvG32DRZNbrkVA==	CVHDILIPJG727L4YU3P4NQ2DUMFVKZPV	33135468-febd-4a41-b85e-21290d106a12	\N	f	f	\N	t	0
+    9c7d4b22-4767-437c-b279-3910c7e06cfc	Mickey	Mouse	mickey	MICKEY	mickey@email.com	MICKEY@EMAIL.COM	f	AQAAAAIAAYagAAAAEEBLEzYdFsyLtHwPooCHVjsGQbeh4xgjywfP1697ICokZShtIJ91jvG32DRZNbrkVA==	CVHDILIPJG727L4YU3P4NQ2DUMFVKZPV	33135468-febd-4a41-b85e-21290d106a12	\N	f	f	\N	t	0
     \.
 
 

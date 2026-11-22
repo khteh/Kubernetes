@@ -1,0 +1,12 @@
+environments:
+  staging: {}
+  production: {}
+---
+releases:
+  - name: postgresql
+    namespace: default
+    chart: .
+    values:
+      - values/{{ .Environment.Name }}.yml
+    secrets:
+      - secrets/{{ .Environment.Name }}.yml

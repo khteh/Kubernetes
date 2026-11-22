@@ -57,8 +57,8 @@ securityContext: {}
 
 secrets:
   secretName: postgresql-secret
-  pgpassword: superUserPassword
   user: postgresql-user
+  pgpassword: superUserPassword
   postgres_password: postgresql-password
 
 databases:
@@ -154,7 +154,6 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
       - -e
       - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
   failureThreshold: 5
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
@@ -166,7 +165,6 @@ readinessProbe:
       - -e
       - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
   failureThreshold: 5
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
@@ -177,7 +175,6 @@ livenessProbe:
       - -c
       - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
   failureThreshold: 5
-  initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 5
