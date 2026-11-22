@@ -57,7 +57,7 @@ spec:
           - name: AuthSettings__SecretKey
             valueFrom:
               secretKeyRef:
-                name: aspnetcorewebapi.secretkey
+                name: {{ .Values.secrets.jwtSigningKeySecretName }}
                 key: AuthSettings__SecretKey
         ports:
         - containerPort: {{ .Values.service.httpPort }}

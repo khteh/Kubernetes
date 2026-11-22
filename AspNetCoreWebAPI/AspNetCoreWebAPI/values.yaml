@@ -73,6 +73,11 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+secrets:
+  dbSecretName: aspnetcorewebapi.postgresql
+  emailSecretName: email-credentials
+  jwtSigningKeySecretName: aspnetcorewebapi.secretkey
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
@@ -194,7 +199,6 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -207,7 +211,6 @@ readinessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -220,7 +223,6 @@ livenessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
