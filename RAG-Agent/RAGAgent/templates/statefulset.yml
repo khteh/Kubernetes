@@ -22,7 +22,8 @@ spec:
         component: {{ .Values.componentName }}
       annotations:
         # Re-evaluates on every upgrade; triggers restart if config changes
-        checksum/config: {{ include (print $.Template.BasePath "/ragagent_config.yml") . | sha512sum }}        
+        checksum/config: {{ include (print $.Template.BasePath "/ragagent_config.yml") . | sha512sum }}
+        checksum/fluentd: {{ include (print $.Template.BasePath "/fluentd_config.yml") . | sha512sum }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.affinity }}

@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 applicationName: ragagent
 sidecarName: fluentd
-componentName: ragagent
+componentName: llm-rag
 serviceName: svc-ragagent
 serviceNameNodePort: svc-ragagent-nodeport
 hpaName: hpa-ragagent
@@ -12,7 +12,6 @@ updateStrategy: RollingUpdate
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 2
 terminationGracePeriodSeconds: 10
-environment: production
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   application:
@@ -64,6 +63,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+secrets:
+  name: ragagent-secret
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
@@ -74,6 +76,10 @@ service:
   protocol: UDP
   targetPort: https-udp
   nodePort: 31003
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1800
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -175,7 +181,6 @@ startupProbe: # failureThreshold * periodSeconds long enough to cover the worst 
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -188,7 +193,6 @@ readinessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
@@ -201,7 +205,6 @@ livenessProbe:
     #httpHeaders:
     #  - name: Host
     #    value: khteh.com
-  initialDelaySeconds: 20
   periodSeconds: 5
   timeoutSeconds: 10
   failureThreshold: 3
