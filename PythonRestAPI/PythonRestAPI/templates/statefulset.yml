@@ -46,13 +46,11 @@ spec:
               secretKeyRef:
                 name: {{ required "PostgreSQL DB password secretName!" .Values.postgresql.secretName }}
                 key: {{ required "PostgreSQL DB password secretKey!" .Values.postgresql.passwordKey }}
-        {{- if .Values.gemini }}
           - name: GEMINI_API_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.gemini.secretName }}
-                key: {{ .Values.gemini.apikey }}
-        {{- end }}
+                name: {{ required "Application appEnv secret.name!" .Values.secrets.name }}
+                key: {{ required "GEMINI API KEY!" .Values.gemini.apikey }}
         ports:
         - containerPort: {{ .Values.service.port }}
           name: {{ .Values.service.portName }}

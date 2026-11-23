@@ -134,14 +134,16 @@ httpRoute:
   #     headers:
   #     - name: version
   #       value: v2
+secrets:
+  name: pythonrestapi-secret
+
+gemini:
+  apikey: GEMINI_API_KEY
+
 postgresql:
   secretName: postgresql-secret
   user: postgresql-user
   passwordKey: postgresql-password
-
-gemini:
-  secretName: google-gemini
-  apikey: GEMINI_API_KEY
 
 resources:
   application:

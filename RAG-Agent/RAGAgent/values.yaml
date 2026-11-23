@@ -66,6 +66,19 @@ securityContext: {}
 secrets:
   name: ragagent-secret
 
+postgresql:
+  secretName: postgresql-secret
+  user: postgresql-user
+  passwordKey: postgresql-password
+
+gemini: {}
+#  secretName: google-gemini
+#  apikey: GEMINI_API_KEY
+
+neo4j:
+  secretName: neo4j-secret
+  secretKey: NEO4J_AUTH
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
@@ -136,19 +149,6 @@ httpRoute:
   #     headers:
   #     - name: version
   #       value: v2
-postgresql:
-  secretName: postgresql-secret
-  user: postgresql-user
-  passwordKey: postgresql-password
-
-gemini: {}
-#  secretName: google-gemini
-#  apikey: GEMINI_API_KEY
-
-neo4j:
-  secretName: neo4j-secret
-  secretKey: NEO4J_AUTH
-
 resources:
   application:
     # We usually recommend not to specify default resources and to leave this as a conscious
