@@ -48,14 +48,6 @@ data:
     <filter aspnetcore>
       @type grep
       <exclude>
-        key $.fields.Path
-        pattern /health/
-     </exclude>
-      <exclude>
-        key $.fields.RequestPath
-        pattern /health/
-     </exclude>
-      <exclude>
         key $.url.path
         pattern /^\/health\//
       </exclude>     
