@@ -133,17 +133,13 @@ httpRoute:
   #     headers:
   #     - name: version
   #       value: v2
+secrets:
+  name: nodejsrestapi-secret
+
 postgresql:
-  hostname: svc-postgresql
-  port: 5432
-  database: school
   secretName: postgresql-secret
   user: postgresql-user
   passwordKey: postgresql-password
-
-gemini: {}
-#  secretName: google-gemini
-#  apikey: GEMINI_API_KEY
 
 resources:
   application:
@@ -219,6 +215,12 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
+  - name: nodejsrestapi-secret
+    secret:
+      secretName: nodejsrestapi-secret
+      items:
+        - key: .env
+          path: .env
   - name: nodejsrestapi-config
     configMap:
       name: nodejsrestapi
@@ -234,6 +236,10 @@ volumes:
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
   application:
+    - name: nodejsrestapi-secret
+      mountPath: /app/.env
+      subPath: .env
+      readOnly: true
     - name: nodejsrestapi-config
       mountPath: config/default.json
       subPath: default.json

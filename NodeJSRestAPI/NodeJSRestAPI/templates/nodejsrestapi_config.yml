@@ -2,11 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nodejsrestapi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.applicationName }}
+    component: {{ .Values.componentName }}
 data:
   default.json: |
     {
-        "Secret": "Node.JSRestAPI",
-        "DBHost": "svc-postgresql",
-        "DBPort": "5432",
-        "Database" : "school"
+        "DB_HOST": "svc-postgresql",
+        "DB_PORT": "5432",
+        "DB_DATABASE" : "school",
+        "DB_MAX_CONNECTIONS": 5,
     }

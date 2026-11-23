@@ -137,9 +137,6 @@ httpRoute:
 secrets:
   name: pythonrestapi-secret
 
-gemini:
-  apikey: GEMINI_API_KEY
-
 postgresql:
   secretName: postgresql-secret
   user: postgresql-user
@@ -219,6 +216,12 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
+  - name: pythonrestapi-secret
+    secret:
+      secretName: pythonrestapi-secret
+      items:
+        - key: .env
+          path: .env
   - name: hypercorn-config
     configMap:
       name: hypercorn-config
@@ -244,6 +247,10 @@ volumes:
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
   application:
+    - name: pythonrestapi-secret
+      mountPath: /app/.env
+      subPath: .env
+      readOnly: true
     - name: pythonrestapi-config
       mountPath: /etc/pythonrestapi_config.json
       subPath: pythonrestapi_config.json
