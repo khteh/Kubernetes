@@ -13,5 +13,9 @@ data:
         "host": "svc-postgresql",
         "port": 5432,
         "database": "school"
+      },
+      "grpc": {
+        "port": 444,
+        "requireClientCertificate": true
       }
     }
