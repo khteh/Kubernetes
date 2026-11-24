@@ -7,10 +7,11 @@ metadata:
     app: {{ .Values.applicationName }}
     component: {{ .Values.componentName }}
 data:
-  default.json: |
+  local-{{ .Values.environment }}.json: |
     {
-        "DB_HOST": "svc-postgresql",
-        "DB_PORT": "5432",
-        "DB_DATABASE" : "school",
-        "DB_MAX_CONNECTIONS": 5,
+      "db": {
+        "host": "svc-postgresql",
+        "port": 5432,
+        "database": "school"
+      }
     }

@@ -34,16 +34,27 @@ spec:
         image: "{{ .Values.image.application.repository }}:{{ .Values.image.application.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.application.pullPolicy }}
         env:
+          - name: ENVIRONMENT
+            value: {{ .Values.environment }}
+          - name: NODE_ENV
+            value: production
+          - name: NODE_CONFIG_ENV
+            value: {{ .Values.environment }}         # node-config: loads staging.json and local-staging.json            
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: postgresql-secret
-                key: postgresql-user
+                name: {{ required "PostgreSQL DB username secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB username secretKey!" .Values.postgresql.user }}
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: postgresql-secret
-                key: postgresql-password
+                name: {{ required "PostgreSQL DB password secretName!" .Values.postgresql.secretName }}
+                key: {{ required "PostgreSQL DB password secretKey!" .Values.postgresql.passwordKey }}
+          - name: GEMINI_API_KEY
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Values.secrets.name }}
+                key: GEMINI_API_KEY
         ports:
         - containerPort: {{ .Values.service.port }}
           name: {{ .Values.service.portName }}
@@ -60,10 +71,14 @@ spec:
         livenessProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
-        {{- with .Values.volumeMounts.application }}
         volumeMounts:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+          # Mount only this file, next to the image's default.json and custom-environment-variables.json.
+          - name: nodejsrestapi-config
+            mountPath: /app/config/local-{{ .Values.environment }}.json
+            subPath: local-{{ .Values.environment }}.json
+            readOnly: true
+          - name: log
+            mountPath: /var/log/nodejsrestapi
         {{- with .Values.resources.application }}
         resources:
           {{- toYaml . | nindent 10 }}
@@ -72,10 +87,15 @@ spec:
         terminationMessagePolicy: File
       - name: {{ .Values.sidecarName }}
         image: "{{ .Values.image.sidecar.repository }}:{{ .Values.image.sidecar.tag }}"
-        {{- with .Values.volumeMounts.sidecar }}
         volumeMounts:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+          - name: log
+            mountPath: /var/log/nodejsrestapi
+          - name: nodejs-fluentd-config
+            mountPath: /fluentd/etc
+          - name: elasticsearch-template
+            mountPath: /tmp/elasticsearch_template.json
+            subPath: elasticsearch_template.json
+            readOnly: true
         {{- with .Values.resources.sidecar }}
         resources:
           {{- toYaml . | nindent 10 }}

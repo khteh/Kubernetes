@@ -215,12 +215,6 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
-  - name: nodejsrestapi-secret
-    secret:
-      secretName: nodejsrestapi-secret
-      items:
-        - key: .env
-          path: .env
   - name: nodejsrestapi-config
     configMap:
       name: nodejsrestapi
@@ -232,29 +226,6 @@ volumes:
       name: elasticsearch-template
   - name: log
     emptyDir: {}
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  application:
-    - name: nodejsrestapi-secret
-      mountPath: /app/.env
-      subPath: .env
-      readOnly: true
-    - name: nodejsrestapi-config
-      mountPath: config/default.json
-      subPath: default.json
-      readOnly: true
-    - name: log
-      mountPath: /var/log/nodejsrestapi
-  sidecar:
-    - name: log
-      mountPath: /var/log/nodejsrestapi
-    - name: nodejs-fluentd-config
-      mountPath: /fluentd/etc
-    - name: elasticsearch-template
-      mountPath: /tmp/elasticsearch_template.json
-      subPath: elasticsearch_template.json
-      readOnly: true
 
 nodeSelector: {}
 tolerations: []
